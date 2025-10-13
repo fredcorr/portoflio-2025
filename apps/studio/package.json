@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "sanity dev",
+    "dev": "node ../../scripts/generate-studio-env.js -- sanity dev",
     "start": "sanity start",
     "build": "sanity build",
+    "build:local": "node ../../scripts/generate-studio-env.js -- sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy"
   },
   "dependencies": {
     "@sanity/vision": "^4.10.2",
+    "dotenv-cli": "^10.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sanity": "^4.10.2",

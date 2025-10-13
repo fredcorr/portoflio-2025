@@ -19,8 +19,8 @@ async function getPage(slug: string, isDraft: boolean) {
 export async function generateStaticParams() {
   // Skip static generation if Sanity credentials aren't configured
   if (
-    !process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
-    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'placeholder'
+    !process.env.SANITY_PROJECT_ID ||
+    process.env.SANITY_PROJECT_ID === 'placeholder'
   ) {
     return []
   }

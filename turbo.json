@@ -1,6 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "SANITY_PROJECT_ID",
+    "SANITY_DATASET",
+    "SANITY_API_READ_TOKEN",
+    "SANITY_PREVIEW_SECRET",
+    "SANITY_STUDIO_HOST"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

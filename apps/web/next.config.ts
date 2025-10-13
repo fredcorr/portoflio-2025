@@ -4,6 +4,7 @@ import path from 'path'
 const nextConfig: NextConfig = {
   // Set the workspace root for the monorepo
   outputFileTracingRoot: path.join(__dirname, '../../'),
+  
   images: {
     remotePatterns: [
       {
