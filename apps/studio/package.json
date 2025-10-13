@@ -1,0 +1,27 @@
+{
+  "name": "studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "^4.10.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sanity": "^4.10.2",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@portfolio/types": "*",
+    "@sanity/types": "^4.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  }
+}
