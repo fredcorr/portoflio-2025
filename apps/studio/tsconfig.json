@@ -4,6 +4,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": [],
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -17,7 +18,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@portfolio/types": ["../../shared/types"]
+      "@portfolio/types/*": ["../../shared/types/*"],
+      "@components/atoms": ["./schemas/components/atoms"],
+      "@components/*": ["./schemas/components/*"],
+      "@schemas/*": ["./schemas/*"],
+      "@studio/types": ["./types"]
     }
   },
   "include": ["./**/*.ts", "./**/*.tsx"],

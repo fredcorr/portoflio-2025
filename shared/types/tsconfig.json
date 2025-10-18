@@ -14,7 +14,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": []
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
