@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": ["node", "react", "react-dom"],
     "plugins": [
       {
         "name": "next"
@@ -20,7 +21,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@portfolio/types": ["../../shared/types"]
+      "@portfolio/types/*": ["../../shared/types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

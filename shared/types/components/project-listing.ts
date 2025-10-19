@@ -1,7 +1,8 @@
 import { ComponentTypeName } from '../base'
+import type { SanityComponentBase } from './base-component'
 
-export interface ProjectListingComponent {
-  _type: ComponentTypeName.ProjectListing
+export interface ProjectListingComponent
+  extends SanityComponentBase<ComponentTypeName.ProjectListing> {
   title?: string
   subtitle?: unknown[]
   projects?: Array<{

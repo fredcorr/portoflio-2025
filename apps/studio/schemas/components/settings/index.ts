@@ -1,9 +1,9 @@
 import { defineType } from 'sanity'
 import { LuSettings } from 'react-icons/lu'
 import { GlobalItemsType } from '@portfolio/types/base'
-import String from '../atoms/string'
-import Link from '../atoms/link'
-import List from '../atoms/list'
+import String from '@components/atoms/string'
+import Link from '@components/atoms/link'
+import List from '@components/atoms/list'
 
 const SettingsSchema = defineType({
   name: GlobalItemsType.Settings,

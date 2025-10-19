@@ -5,12 +5,20 @@ import { schemaTypes } from './schemas'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 
+if (!process.env.SANITY_STUDIO_PROJECT_ID) {
+  throw new Error('Missing SANITY_STUDIO_PROJECT_ID environment variable')
+}
+
+if (!process.env.SANITY_STUDIO_DATASET) {
+  throw new Error('Missing SANITY_STUDIO_DATASET environment variable')
+}
+
 export default defineConfig({
   name: 'default',
   title: 'Portfolio Studio',
 
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'your-project-id',
-  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+  dataset: process.env.SANITY_STUDIO_DATASET,
 
   plugins: [
     structureTool({

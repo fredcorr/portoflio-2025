@@ -1,19 +1,49 @@
-import { ComponentTypeName, PageTypeName } from '../base'
+import type { AboutPageHeroComponent } from './about-page-hero'
+import type { AnimatedStraplineComponent } from './animated-strapline'
+import type { BlockTextComponent } from './block-text'
+import type { CardsComponent } from './cards'
+import type { CollaborateHighlightsComponent } from './collaborate-highlights'
+import type { FaqsComponent } from './faqs'
+import type { FormComponent } from './form'
+import type { HomePageHeroComponent } from './home-page-hero'
+import type { ImageGalleryComponent } from './image-gallery'
+import type { ImageGridComponent } from './image-grid'
+import type { ProcessComponent } from './process'
+import type { ProjectListingComponent } from './project-listing'
+import type { StatsComponent } from './stats'
+import type { TestimonialsComponent } from './testimonials'
+import type { ToolSetComponent } from './tool-set'
 
-export * from './homePageHero'
-export * from './projectListing'
+export type { AboutPageHeroComponent } from './about-page-hero'
+export type { AnimatedStraplineComponent } from './animated-strapline'
+export type { BlockTextComponent } from './block-text'
+export type { CardsComponent } from './cards'
+export type { CollaborateHighlightsComponent } from './collaborate-highlights'
+export type { FaqsComponent } from './faqs'
+export type { FormComponent } from './form'
+export type { HomePageHeroComponent } from './home-page-hero'
+export type { ImageGalleryComponent } from './image-gallery'
+export type { ImageGridComponent } from './image-grid'
+export type { ProcessComponent } from './process'
+export type { ProjectListingComponent } from './project-listing'
+export type { StatsComponent } from './stats'
+export type { TestimonialsComponent } from './testimonials'
+export type { ToolSetComponent } from './tool-set'
+export type { SanityComponentBase } from './base-component'
 
-export const baseComponents = Object.freeze<readonly ComponentTypeName[]>([
-  ComponentTypeName.HomePageHero,
-  ComponentTypeName.ProjectListing,
-])
-
-export const pageComponentsByType = Object.freeze(
-  Object.values(PageTypeName).reduce(
-    (acc, pageType) => {
-      acc[pageType] = baseComponents
-      return acc
-    },
-    {} as Record<PageTypeName, readonly ComponentTypeName[]>
-  )
-)
+export type Components =
+  | HomePageHeroComponent
+  | ProjectListingComponent
+  | TestimonialsComponent
+  | CardsComponent
+  | AboutPageHeroComponent
+  | CollaborateHighlightsComponent
+  | ProcessComponent
+  | ImageGalleryComponent
+  | ImageGridComponent
+  | StatsComponent
+  | FaqsComponent
+  | ToolSetComponent
+  | FormComponent
+  | AnimatedStraplineComponent
+  | BlockTextComponent;

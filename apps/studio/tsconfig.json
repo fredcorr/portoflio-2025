@@ -19,10 +19,16 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@portfolio/types/*": ["../../shared/types/*"],
-      "@components/atoms": ["./schemas/components/atoms"],
-      "@components/*": ["./schemas/components/*"],
       "@schemas/*": ["./schemas/*"],
-      "@studio/types": ["./types"]
+      "@components/atoms/*": ["./schemas/components/atoms/*"],
+      "@components/molecules/*": ["./schemas/components/molecules/*"],
+      "@components/organisms/*": ["./schemas/components/organisms/*"],
+      "@components/settings/*": ["./schemas/components/settings/*"],
+      "@components/*": ["./schemas/components/*"],
+      "@utils/*": ["./utils/*"],
+      "@structure/*": ["./structure/*"],
+      "@studio/types": ["./types/index.ts"],
+      "@studio/types/*": ["./types/*"]
     }
   },
   "include": ["./**/*.ts", "./**/*.tsx"],

@@ -1,6 +1,6 @@
 import { ComponentTypeName } from '@portfolio/types/base'
 import { GiHeron } from 'react-icons/gi'
-import String from '../atoms/string'
+import String from '@components/atoms/string'
 import { defineType } from 'sanity'
 
 const HomePageHero = defineType({

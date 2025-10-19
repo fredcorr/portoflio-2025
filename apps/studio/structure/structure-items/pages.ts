@@ -3,6 +3,7 @@ import { PageTypeName } from '@portfolio/types/base'
 import { LuLayers } from 'react-icons/lu'
 
 export const PAGE_STRUCTURE_TYPES = new Set<string>([
+  PageTypeName.Page as string,
   PageTypeName.ProjectPage as string,
   PageTypeName.AboutPage as string,
   PageTypeName.ContactPage as string,
@@ -25,7 +26,7 @@ const PagesItem = (S: StructureBuilder) =>
             .documentId(documentId)
             .schemaType(
               (context as { schemaType?: string }).schemaType ??
-                PageTypeName.ProjectPage
+                PageTypeName.Page
             )
         )
     )

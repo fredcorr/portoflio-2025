@@ -29,6 +29,7 @@ export const Link = (base: CommonFieldProps) => {
           PageTypeName.ProjectPage,
           PageTypeName.AboutPage,
           PageTypeName.ContactPage,
+          PageTypeName.Page,
         ]
       ),
     ],

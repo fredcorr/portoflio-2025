@@ -1,0 +1,5 @@
+export { PageTemplate } from './PageTemplate'
+export { AboutTemplate } from './AboutTemplate'
+export { ContactTemplate } from './ContactTemplate'
+export { ProjectTemplate } from './ProjectTemplate'
+export { HomeTemplate } from './HomeTemplate'

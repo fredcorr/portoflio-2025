@@ -1,9 +1,14 @@
-import Link from 'next/link'
+import { RenderTemplate } from '@/components/hoc/RenderTemplate'
+import { client, previewClient } from '@/sanity/client'
+import { PageTypeName } from '@portfolio/types/base'
 import { notFound } from 'next/navigation'
 import { draftMode } from 'next/headers'
-import { client, previewClient } from '@/sanity/client'
-import { PAGE_BY_SLUG_QUERY, ALL_PAGES_QUERY } from '@/sanity/queries'
-
+import Link from 'next/link'
+import {
+  PAGE_BY_SLUG_QUERY,
+  ALL_PAGES_QUERY,
+  HOMEPAGE_QUERY,
+} from '@/sanity/queries/base'
 interface PageProps {
   params: Promise<{
     slug?: string[]
@@ -12,28 +17,14 @@ interface PageProps {
 
 async function getPage(slug: string, isDraft: boolean) {
   const sanityClient = isDraft ? previewClient : client
+
   const page = await sanityClient.fetch(PAGE_BY_SLUG_QUERY, { slug })
-  return page
-}
 
-export async function generateStaticParams() {
-  // Skip static generation if Sanity credentials aren't configured
-  if (
-    !process.env.SANITY_PROJECT_ID ||
-    process.env.SANITY_PROJECT_ID === 'placeholder'
-  ) {
-    return []
+  if (page || slug !== '/') {
+    return page
   }
 
-  try {
-    const pages = await client.fetch(ALL_PAGES_QUERY)
-    return pages.map((page: { slug: { current: string } }) => ({
-      slug: page.slug.current === '/' ? [] : page.slug.current.split('/'),
-    }))
-  } catch (error) {
-    console.warn('Failed to fetch pages for static generation:', error)
-    return []
-  }
+  return sanityClient.fetch(HOMEPAGE_QUERY)
 }
 
 export default async function Page({ params }: PageProps) {
@@ -64,8 +55,44 @@ export default async function Page({ params }: PageProps) {
           </p>
         </div>
       )}
-      <h1 className="text-4xl font-bold mb-4">{page.title}</h1>
-      {/* Add your page content rendering here */}
+      <RenderTemplate page={page} />
     </main>
   )
+}
+
+export async function generateStaticParams() {
+  // Skip static generation if Sanity credentials aren't configured
+  if (
+    !process.env.SANITY_PROJECT_ID ||
+    process.env.SANITY_PROJECT_ID === 'placeholder'
+  ) {
+    return []
+  }
+
+  try {
+    const pages = await client.fetch(ALL_PAGES_QUERY)
+
+    return pages
+      .map((page: { _type: string; slug?: { current?: string | null } }) => {
+        if (page._type === PageTypeName.HomePage) {
+          return { slug: [] as string[] }
+        }
+
+        const current = page.slug?.current
+        if (!current) {
+          return null
+        }
+
+        return {
+          slug: current === '/' ? [] : current.split('/'),
+        }
+      })
+      .filter(
+        (value: { slug: string[] } | null): value is { slug: string[] } =>
+          value !== null
+      )
+  } catch (error) {
+    console.warn('Failed to fetch pages for static generation:', error)
+    return []
+  }
 }
