@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node ../../scripts/generate-studio-env.js -- sanity dev",
+    "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",
-    "build:local": "node ../../scripts/generate-studio-env.js -- sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy"
   },

@@ -2,13 +2,11 @@ import { RenderTemplate } from '@/components/hoc/RenderTemplate'
 import { client, previewClient } from '@/sanity/client'
 import { PageTypeName } from '@portfolio/types/base'
 import { notFound } from 'next/navigation'
+import { PAGE_BY_SLUG_QUERY, ALL_PAGES_QUERY } from '@/sanity/queries/base'
+
 import { draftMode } from 'next/headers'
 import Link from 'next/link'
-import {
-  PAGE_BY_SLUG_QUERY,
-  ALL_PAGES_QUERY,
-  HOMEPAGE_QUERY,
-} from '@/sanity/queries/base'
+
 interface PageProps {
   params: Promise<{
     slug?: string[]
@@ -17,14 +15,8 @@ interface PageProps {
 
 async function getPage(slug: string, isDraft: boolean) {
   const sanityClient = isDraft ? previewClient : client
-
   const page = await sanityClient.fetch(PAGE_BY_SLUG_QUERY, { slug })
-
-  if (page || slug !== '/') {
-    return page
-  }
-
-  return sanityClient.fetch(HOMEPAGE_QUERY)
+  return page
 }
 
 export default async function Page({ params }: PageProps) {
@@ -34,7 +26,6 @@ export default async function Page({ params }: PageProps) {
   const isDraft = draft.isEnabled
 
   const page = await getPage(slug, isDraft)
-
   if (!page) {
     notFound()
   }
@@ -55,20 +46,12 @@ export default async function Page({ params }: PageProps) {
           </p>
         </div>
       )}
-      <RenderTemplate page={page} />
+      {/* <RenderTemplate page={page} /> */}
     </main>
   )
 }
 
 export async function generateStaticParams() {
-  // Skip static generation if Sanity credentials aren't configured
-  if (
-    !process.env.SANITY_PROJECT_ID ||
-    process.env.SANITY_PROJECT_ID === 'placeholder'
-  ) {
-    return []
-  }
-
   try {
     const pages = await client.fetch(ALL_PAGES_QUERY)
 
