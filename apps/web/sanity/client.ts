@@ -12,13 +12,17 @@ if (!dataset) {
   throw new Error('Missing SANITY_DATASET environment variable')
 }
 
+if (!token) {
+  throw new Error('Missing SANITY_API_READ_TOKEN environment variable')
+}
+
 export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2024-01-01',
   useCdn: process.env.NODE_ENV === 'production',
   perspective: 'published',
-  ...(token ? { token } : {}),
+  token,
 })
 
 export const previewClient = createClient({
@@ -27,5 +31,5 @@ export const previewClient = createClient({
   apiVersion: '2024-01-01',
   useCdn: false,
   perspective: 'previewDrafts',
-  ...(token ? { token } : {}),
+  token,
 })

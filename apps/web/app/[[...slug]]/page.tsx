@@ -1,22 +1,16 @@
+import PreviewBanner from '@/components/organisms/PreviewBanner/PreviewBanner'
 import { RenderTemplate } from '@/components/hoc/RenderTemplate'
-import { client, previewClient } from '@/sanity/client'
-import { PageTypeName } from '@portfolio/types/base'
+import { ALL_PAGES_QUERY } from '@/sanity/queries/base'
+import { CmsPages } from '@portfolio/types/pages'
 import { notFound } from 'next/navigation'
-import { PAGE_BY_SLUG_QUERY, ALL_PAGES_QUERY } from '@/sanity/queries/base'
-
+import { client } from '@/sanity/client'
 import { draftMode } from 'next/headers'
-import Link from 'next/link'
+import getPage from '@/utils/get-page'
 
 interface PageProps {
   params: Promise<{
     slug?: string[]
   }>
-}
-
-async function getPage(slug: string, isDraft: boolean) {
-  const sanityClient = isDraft ? previewClient : client
-  const page = await sanityClient.fetch(PAGE_BY_SLUG_QUERY, { slug })
-  return page
 }
 
 export default async function Page({ params }: PageProps) {
@@ -26,27 +20,15 @@ export default async function Page({ params }: PageProps) {
   const isDraft = draft.isEnabled
 
   const page = await getPage(slug, isDraft)
+
   if (!page) {
     notFound()
   }
 
   return (
     <main className="container mx-auto px-4 py-8">
-      {isDraft && (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
-          <p className="font-bold">Draft Mode</p>
-          <p>
-            You are viewing draft content.{' '}
-            <Link
-              href="/api/disable-draft"
-              className="underline hover:text-yellow-800"
-            >
-              Exit draft mode
-            </Link>
-          </p>
-        </div>
-      )}
-      {/* <RenderTemplate page={page} /> */}
+      {isDraft && <PreviewBanner />}
+      <RenderTemplate page={page} />
     </main>
   )
 }
@@ -55,25 +37,11 @@ export async function generateStaticParams() {
   try {
     const pages = await client.fetch(ALL_PAGES_QUERY)
 
-    return pages
-      .map((page: { _type: string; slug?: { current?: string | null } }) => {
-        if (page._type === PageTypeName.HomePage) {
-          return { slug: [] as string[] }
-        }
-
-        const current = page.slug?.current
-        if (!current) {
-          return null
-        }
-
-        return {
-          slug: current === '/' ? [] : current.split('/'),
-        }
-      })
-      .filter(
-        (value: { slug: string[] } | null): value is { slug: string[] } =>
-          value !== null
-      )
+    return pages.map((page: CmsPages) => {
+      return {
+        slug: page.slug?.current === '/' ? [] : page.slug?.current.split('/'),
+      }
+    })
   } catch (error) {
     console.warn('Failed to fetch pages for static generation:', error)
     return []
