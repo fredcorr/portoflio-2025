@@ -3,21 +3,62 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --color-background: #f9f9f9;
+  --color-foreground: #171717;
+  --color-black: #000000;
+  --color-gray-50: #f9f9f9;
+  --color-gray-100: #ededed;
+  --color-gray-200: #525252;
+  --color-primary-50: #f8f8f8;
+  --color-primary-75: #dedede;
+  --color-primary-100: #858585;
+  --color-primary-200: #424242;
+  --color-primary-300: #282828;
+  --color-primary-400: #1f1e1e;
+  --color-primary-500: #151414;
+  --color-primary-600: #0a0909;
+  --color-primary-700: #030303;
+  --color-status-success: #29ae29;
+  --color-status-warning: #ffc62a;
+  --color-status-error: #ed2a2a;
+  --color-accent-orange: #ed7615;
+  --color-accent-lavender: #6e3cf5;
+  --color-accent-sussie: #38e1f1;
+  --color-accent-blue-jeans: #0082ff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  color-scheme: dark;
+  --color-background: #09090b;
+  --color-foreground: #f5f5f5;
+  --color-black: #f5f5f5;
+  --color-gray-50: #111013;
+  --color-gray-100: #1c1b1f;
+  --color-gray-200: #d4d4d8;
+  --color-primary-50: #111111;
+  --color-primary-75: #1b1b1d;
+  --color-primary-100: #2a2a2e;
+  --color-primary-200: #393942;
+  --color-primary-300: #464655;
+  --color-primary-400: #58586c;
+  --color-primary-500: #bcbce0;
+  --color-primary-600: #e2e2f4;
+  --color-primary-700: #f4f4fd;
+  --color-status-success: #59d659;
+  --color-status-warning: #ffd966;
+  --color-status-error: #ff6b6b;
+  --color-accent-orange: #ff9f4d;
+  --color-accent-lavender: #9b7cff;
+  --color-accent-sussie: #65f1ff;
+  --color-accent-blue-jeans: #4ca1ff;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--color-foreground);
+  background: var(--color-background);
   font-family: Arial, Helvetica, sans-serif;
+  transition: color 150ms ease, background-color 150ms ease;
 }
 
 @layer utilities {

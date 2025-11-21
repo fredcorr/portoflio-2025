@@ -26,7 +26,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto">
       {isDraft && <PreviewBanner />}
       <RenderTemplate page={page} />
     </main>
