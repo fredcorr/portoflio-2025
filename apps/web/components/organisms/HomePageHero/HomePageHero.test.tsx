@@ -4,7 +4,9 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { ComponentTypeName } from '@portfolio/types/base'
 import { HomePageHero } from './HomePageHero'
 
-const createHero = (overrides: Partial<Parameters<typeof HomePageHero>[0]> = {}) => ({
+const createHero = (
+  overrides: Partial<Parameters<typeof HomePageHero>[0]> = {}
+) => ({
   _type: ComponentTypeName.HomePageHero,
   title: 'Websites & Branding',
   subtitle:

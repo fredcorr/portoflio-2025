@@ -1,5 +1,6 @@
 import { ComponentTypeName } from '../base'
 import type { SanityComponentBase } from './base-component'
+import type { ComponentHeading } from './title'
 
 export interface FaqItem {
   question?: string
@@ -8,6 +9,6 @@ export interface FaqItem {
 
 export interface FaqsComponent
   extends SanityComponentBase<ComponentTypeName.Faqs> {
-  title?: string
+  title?: ComponentHeading
   questions?: FaqItem[]
 }

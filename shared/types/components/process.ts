@@ -1,5 +1,6 @@
 import { ComponentTypeName } from '../base'
 import type { SanityComponentBase } from './base-component'
+import type { ComponentHeading } from './title'
 
 export interface ProcessStep {
   title?: string
@@ -8,7 +9,7 @@ export interface ProcessStep {
 
 export interface ProcessComponent
   extends SanityComponentBase<ComponentTypeName.Process> {
-  title?: string
+  title?: ComponentHeading
   subtitle?: string
   steps?: ProcessStep[]
 }

@@ -19,6 +19,8 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@portfolio/types/*": ["../../shared/types/*"],
+      "@portfolio/utils/*": ["../../shared/utils/*"],
+      "@portfolio/utils": ["../../shared/utils"],
       "@schemas/*": ["./schemas/*"],
       "@components/atoms/*": ["./schemas/components/atoms/*"],
       "@components/molecules/*": ["./schemas/components/molecules/*"],

@@ -1,6 +1,7 @@
 import { ComponentTypeName } from '../base'
 import type { SanityImage } from '../sanity'
 import type { SanityComponentBase } from './base-component'
+import type { ComponentHeading } from './title'
 
 export interface ToolSetItem {
   title?: string
@@ -10,6 +11,6 @@ export interface ToolSetItem {
 
 export interface ToolSetComponent
   extends SanityComponentBase<ComponentTypeName.ToolSet> {
-  title?: string
+  title?: ComponentHeading
   tools?: ToolSetItem[]
 }

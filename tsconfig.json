@@ -13,7 +13,9 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@portfolio/types": ["./shared/types"]
+      "@portfolio/types": ["./shared/types"],
+      "@portfolio/utils/*": ["./shared/utils/*"],
+      "@portfolio/utils": ["./shared/utils"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next"]

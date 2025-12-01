@@ -29,7 +29,7 @@ export const basePageFields = groq`
 `
 
 export const titleFields = (prefix: string) => groq`
-  {
+ ${prefix} {
     "heading": ${prefix}_heading,
     "headingLevel": ${prefix}_headingLevel
   }

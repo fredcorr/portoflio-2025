@@ -69,9 +69,7 @@ export const ThemeToggle = () => {
   }, [theme, isMounted])
 
   const handleToggle = () => {
-    setTheme((current) =>
-      current === Theme.Light ? Theme.Dark : Theme.Light
-    )
+    setTheme(current => (current === Theme.Light ? Theme.Dark : Theme.Light))
   }
 
   const isDark = theme === Theme.Dark

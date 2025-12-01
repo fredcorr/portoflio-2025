@@ -1,5 +1,6 @@
 import { ComponentTypeName } from '../base'
 import type { SanityComponentBase } from './base-component'
+import type { ComponentHeading } from './title'
 
 export interface CollaborateHighlightItem {
   title?: string
@@ -9,6 +10,6 @@ export interface CollaborateHighlightItem {
 
 export interface CollaborateHighlightsComponent
   extends SanityComponentBase<ComponentTypeName.CollaborateHighlights> {
-  title?: string
+  title?: ComponentHeading
   highlights?: CollaborateHighlightItem[]
 }

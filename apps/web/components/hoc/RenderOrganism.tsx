@@ -1,5 +1,6 @@
 import { ComponentTypeName } from '@portfolio/types/base'
 import type { PageComponent } from '@portfolio/types/pages'
+import ProjectListing from '../organisms/ProjectListing/ProjectListing'
 import {
   AboutPageHero,
   AnimatedStrapline,
@@ -12,7 +13,6 @@ import {
   ImageGallery,
   ImageGrid,
   Process,
-  ProjectListing,
   Stats,
   Testimonials,
   ToolSet,

@@ -7,6 +7,8 @@ import { client } from '@/sanity/client'
 import { draftMode } from 'next/headers'
 import getPage from '@/utils/get-page'
 
+export const revalidate = 10
+
 interface PageProps {
   params: Promise<{
     slug?: string[]

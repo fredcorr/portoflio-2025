@@ -25,11 +25,16 @@ export type { HomePageHeroComponent } from './home-page-hero'
 export type { ImageGalleryComponent } from './image-gallery'
 export type { ImageGridComponent } from './image-grid'
 export type { ProcessComponent } from './process'
-export type { ProjectListingComponent } from './project-listing'
+export type {
+  ProjectListingComponent,
+  ProjectListingProject,
+  ProjectListingTitle,
+} from './project-listing'
 export type { StatsComponent } from './stats'
 export type { TestimonialsComponent } from './testimonials'
 export type { ToolSetComponent } from './tool-set'
 export type { SanityComponentBase } from './base-component'
+export type { ComponentHeading } from './title'
 
 export type Components =
   | HomePageHeroComponent

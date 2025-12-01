@@ -1,6 +1,7 @@
 import { ComponentTypeName } from '../base'
 import type { PortableTextValue } from '../studio'
 import type { SanityComponentBase } from './base-component'
+import type { ComponentHeading } from './title'
 
 export type FormFieldType = 'input' | 'select' | 'checkbox' | 'textarea' | 'radio'
 
@@ -23,7 +24,7 @@ export interface FormMessage {
 
 export interface FormComponent
   extends SanityComponentBase<ComponentTypeName.Form> {
-  title?: string
+  title?: ComponentHeading
   subtitle?: PortableTextValue
   formFields?: FormFieldItem[]
   success?: FormMessage

@@ -21,7 +21,9 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@portfolio/types/*": ["../../shared/types/*"]
+      "@portfolio/types/*": ["../../shared/types/*"],
+      "@portfolio/utils/*": ["../../shared/utils/*"],
+      "@portfolio/utils": ["../../shared/utils"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
