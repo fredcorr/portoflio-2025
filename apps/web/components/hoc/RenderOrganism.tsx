@@ -1,11 +1,11 @@
 import { ComponentTypeName } from '@portfolio/types/base'
 import type { PageComponent } from '@portfolio/types/pages'
 import ProjectListing from '../organisms/ProjectListing/ProjectListing'
+import Cards from '../organisms/Cards/Cards'
 import {
   AboutPageHero,
   AnimatedStrapline,
   BlockText,
-  Cards,
   CollaborateHighlights,
   Faqs,
   Form,

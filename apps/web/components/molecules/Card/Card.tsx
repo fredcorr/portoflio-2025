@@ -146,13 +146,13 @@ const Card = ({
             {title}
           </p>
 
-          {subtitleBlocks.length ? (
+          {subtitleBlocks.length && (
             <RichText
               value={subtitleBlocks}
               size={subtitleSize ?? RichTextSize.Lg}
               className="text-black/70"
             />
-          ) : null}
+          )}
         </div>
       </article>
     </ConditionalWrapper>

@@ -1,7 +1,7 @@
 export { AboutPageHero } from './AboutPageHero/AboutPageHero'
 export { AnimatedStrapline } from './AnimatedStrapline/AnimatedStrapline'
 export { BlockText } from './BlockText/BlockText'
-export { Cards } from './Cards/Cards'
+export * from './Cards/Cards'
 export { CollaborateHighlights } from './CollaborateHighlights/CollaborateHighlights'
 export { Faqs } from './Faqs/Faqs'
 export { Form } from './Form/Form'
