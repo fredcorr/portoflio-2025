@@ -4,8 +4,6 @@ import type { PortableTextBlock } from "@portabletext/react";
 import type { SanityComponentBase } from "./base-component";
 import type { ComponentHeading } from "./title";
 
-export interface ProjectListingTitle extends ComponentHeading {}
-
 export interface ProjectListingProject
   extends Pick<
     ProjectPageDocument,

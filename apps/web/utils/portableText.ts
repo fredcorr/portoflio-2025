@@ -1,11 +1,7 @@
 import type { PortableTextBlock } from '@portabletext/react'
 
-export const normalizePortableText = (
-  value?: PortableTextBlock[] | string
-): PortableTextBlock[] => {
+export const normalizePortableText = (value?: string): PortableTextBlock[] => {
   if (!value) return []
-  if (typeof value !== 'string') return value
-
   const key = value.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'text'
 
   return [

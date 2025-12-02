@@ -9,12 +9,14 @@ export enum RichTextSize {
   Md = 'md',
   Lg = 'lg',
   Xl = 'xl',
+  XXl = 'xxl',
 }
 
 const sizeClassMap: Record<RichTextSize, string> = {
   [RichTextSize.Md]: 'text-body-md',
   [RichTextSize.Lg]: 'text-body-lg',
   [RichTextSize.Xl]: 'text-body-xl',
+  [RichTextSize.XXl]: 'text-heading-4',
 }
 
 const buildBaseComponents = (size: RichTextSize): PortableTextComponents => ({
