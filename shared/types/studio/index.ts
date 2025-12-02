@@ -1,11 +1,11 @@
-export type PortableTextChild = {
+export interface PortableTextChild {
   _type?: string
   text?: string
 }
 
-export type PortableTextBlock = {
+export interface PortableTextBlock {
   _type?: string
   children?: PortableTextChild[]
 }
 
-export type PortableTextValue = PortableTextBlock[]
+export interface PortableTextValue extends Array<PortableTextBlock> {}

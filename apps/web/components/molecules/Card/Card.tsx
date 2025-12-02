@@ -40,7 +40,7 @@ const contentSpacingMap: Record<CardSpacing, string> = {
   [CardSpacing.Roomy]: 'gap-4',
 }
 
-export interface ProjectCardProps {
+export interface CardProps {
   title: string
   subtitle?: PortableTextBlock[] | string
   subtitleSize?: RichTextSize
@@ -69,7 +69,7 @@ const Card = ({
   iconName,
   index,
   className,
-}: ProjectCardProps) => {
+}: CardProps) => {
   const formattedIndex = formatIndex(index)
   const hasIconRow = iconName || formattedIndex
   const iconRowClass =

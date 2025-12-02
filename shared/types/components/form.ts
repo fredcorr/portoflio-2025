@@ -3,7 +3,20 @@ import type { PortableTextValue } from '../studio'
 import type { SanityComponentBase } from './base-component'
 import type { ComponentHeading } from './title'
 
-export type FormFieldType = 'input' | 'select' | 'checkbox' | 'textarea' | 'radio'
+export enum FormFieldType {
+  Input = 'input',
+  Select = 'select',
+  Checkbox = 'checkbox',
+  Textarea = 'textarea',
+  Radio = 'radio',
+}
+
+export enum FormValidationType {
+  None = 'none',
+  Email = 'email',
+  Date = 'date',
+  Regex = 'regex',
+}
 
 export interface FormFieldItem {
   label?: string
@@ -12,7 +25,7 @@ export interface FormFieldItem {
   errorMessage?: string
   required?: boolean
   validation?: {
-    type?: 'none' | 'email' | 'date' | 'regex'
+    type?: FormValidationType
     pattern?: string
   }
 }

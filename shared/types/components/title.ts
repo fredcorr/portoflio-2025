@@ -1,4 +1,4 @@
-export type ComponentHeading = {
+export interface ComponentHeading {
   heading?: string
   headingLevel?: number
 }

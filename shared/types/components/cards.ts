@@ -4,6 +4,7 @@ import type { SanityComponentBase } from "./base-component";
 import type { ComponentHeading } from "./title";
 
 export interface CardItem {
+  _key: string;
   title?: string;
   subtitle?: string;
 }

@@ -47,7 +47,7 @@ const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
         <div className="md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {items!.map((item, index) => (
             <Card
-              key={item.title || index}
+              key={item._key}
               title={`• ${item.title || `Card ${index + 1}`}`}
               subtitle={item.subtitle}
               subtitleSize={RichTextSize.Md}
