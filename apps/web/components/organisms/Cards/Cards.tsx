@@ -1,15 +1,18 @@
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import type { CardsComponent } from '@portfolio/types/components'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import { makeComponentId } from '@/utils/makeComponentId'
 import Card from '@/components/molecules/Card/Card'
 import { cn } from '@/utils/cn'
 import React from 'react'
+import type { CardsComponent } from '@portfolio/types/components'
 
-const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
+interface CardsProps extends CardsComponent {}
+
+const Cards = ({ _id, _key, title, subtitle, items }: CardsProps) => {
   const headingId = makeComponentId({ value: _id || _key, prefix: 'cards' })
   const hasItems = Array.isArray(items) && items.length > 0
+  const itemsList = hasItems ? items : []
 
   return (
     <ComponentLayout
@@ -45,13 +48,13 @@ const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
 
       {hasItems && (
         <div className="md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {items!.map((item, index) => (
+          {itemsList.map((item, index) => (
             <Card
               key={item._key}
               title={`• ${item.title || `Card ${index + 1}`}`}
               subtitle={item.subtitle}
               subtitleSize={RichTextSize.Md}
-              className="h-full max-w-480 pd-0"
+              className="h-full max-w-[480px]"
             />
           ))}
         </div>

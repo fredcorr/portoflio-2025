@@ -61,11 +61,27 @@ body {
   color: var(--color-foreground);
   background: var(--color-background);
   font-family: Arial, Helvetica, sans-serif;
-  transition: color 150ms ease, background-color 150ms ease;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  @keyframes strapline-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-strapline {
+    animation: strapline-marquee 120s linear infinite;
+    will-change: transform;
   }
 }

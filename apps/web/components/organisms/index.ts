@@ -1,5 +1,5 @@
 export { AboutPageHero } from './AboutPageHero/AboutPageHero'
-export { AnimatedStrapline } from './AnimatedStrapline/AnimatedStrapline'
+export { default as AnimatedStrapline } from './AnimatedStrapline/AnimatedStrapline'
 export { BlockText } from './BlockText/BlockText'
 export * from './Cards/Cards'
 export { CollaborateHighlights } from './CollaborateHighlights/CollaborateHighlights'

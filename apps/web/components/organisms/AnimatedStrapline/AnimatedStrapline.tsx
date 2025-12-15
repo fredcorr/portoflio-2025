@@ -1,5 +1,68 @@
 import type { AnimatedStraplineComponent } from '@portfolio/types/components'
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
+import { buildStraplineLoop } from '@/utils/build-strapline-loop'
 
-export const AnimatedStrapline = (props: AnimatedStraplineComponent) => {
-  return <></>
+const DEFAULT_STRAPLINE_TEXT = 'Visual design for digital experiences'
+const STRAPLINE_REPEAT_COUNT = 4
+
+export interface AnimatedStraplineProps extends AnimatedStraplineComponent {}
+
+const AnimatedStrapline = ({ strapline }: AnimatedStraplineProps) => {
+  const straplineText = strapline?.trim() || DEFAULT_STRAPLINE_TEXT
+  const straplineLoop = buildStraplineLoop(straplineText, {
+    repeat: STRAPLINE_REPEAT_COUNT,
+  })
+  const baseSegments = straplineLoop.length ? straplineLoop : [straplineText]
+  const marqueeSegments = [...baseSegments, ...baseSegments]
+  const bleedStyle = {
+    marginLeft: 'calc(50% - 50vw)',
+    marginRight: 'calc(50% - 50vw)',
+  }
+
+  return (
+    <ComponentLayout
+      aria-label="Animated strapline"
+      className="!bg-transparent text-white !py-0 dark:text-white"
+      contentClassName="gap-y-0 px-0"
+      fullBleed
+      overflowHidden={false}
+    >
+      <div className="md:col-span-12">
+        <span className="sr-only">{straplineText}</span>
+        <div
+          className="relative overflow-hidden py-12 md:py-14"
+          style={bleedStyle}
+        >
+          <div
+            className="pointer-events-none absolute inset-0 bg-neutral-950 dark:bg-neutral-950"
+            aria-hidden="true"
+          />
+          <div className="relative px-4 md:px-6 lg:px-8">
+            <div
+              className="flex w-max items-center gap-8 whitespace-nowrap animate-strapline motion-reduce:animate-none"
+              aria-hidden="true"
+            >
+              {marqueeSegments.map((text, index) => (
+                <span
+                  key={`strapline-segment-${index}`}
+                  className="inline-flex items-center gap-6 py-4 font-heading text-display-xl font-semibold leading-[1.1] tracking-tight text-white"
+                >
+                  <span>{text}</span>
+                  <span
+                    aria-hidden="true"
+                    className="text-4xl font-semibold leading-none text-white/70 dark:text-white/60"
+                  >
+                    •
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ComponentLayout>
+  )
 }
+
+export default AnimatedStrapline
+export { AnimatedStrapline, DEFAULT_STRAPLINE_TEXT }
