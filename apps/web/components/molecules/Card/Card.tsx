@@ -51,6 +51,8 @@ export interface CardProps {
   iconName?: IconName
   index?: number
   className?: string
+  iconWrapperClassName?: string
+  iconClassName?: string
 }
 
 const formatIndex = (index?: number): string | undefined => {
@@ -69,6 +71,8 @@ const Card = ({
   iconName,
   index,
   className,
+  iconWrapperClassName,
+  iconClassName,
 }: CardProps) => {
   const formattedIndex = formatIndex(index)
   const hasIconRow = iconName || formattedIndex
@@ -120,11 +124,18 @@ const Card = ({
           {hasIconRow && (
             <div className={cn('flex items-start gap-3', iconRowClass)}>
               {iconName && (
-                <Icon
-                  name={iconName}
-                  className="size-6 text-black"
-                  title={`${title} icon`}
-                />
+                <span
+                  className={cn(
+                    'inline-flex items-center justify-center',
+                    iconWrapperClassName
+                  )}
+                >
+                  <Icon
+                    name={iconName}
+                    className={cn('size-6 text-black', iconClassName)}
+                    title={`${title} icon`}
+                  />
+                </span>
               )}
               {formattedIndex && (
                 <span
