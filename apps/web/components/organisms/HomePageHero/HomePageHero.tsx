@@ -1,17 +1,6 @@
 import type { HomePageHeroComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-
-const DEFAULT_CONTACT_EMAIL = 'hello@joey.co'
-
-const getContactEmail = () => {
-  const envEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL
-
-  if (typeof envEmail === 'string' && envEmail.trim()) {
-    return envEmail.trim()
-  }
-
-  return DEFAULT_CONTACT_EMAIL
-}
+import { getContactEmail } from '@/utils/get-contact-email'
 
 export const HomePageHero = ({
   title,

@@ -4,7 +4,7 @@ import { pageComponentFields } from '../components'
 
 export const aboutPageFields = groq`
   ${basePageFields},
-  aboutComponents[] {
+  pageComponents[] {
     _key,
     ${pageComponentFields}
   }

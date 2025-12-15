@@ -1,4 +1,5 @@
 export { cn } from './cn'
 export { normalizePortableText } from './portableText'
 export { makeComponentId } from './makeComponentId'
+export { getContactEmail, DEFAULT_CONTACT_EMAIL } from './get-contact-email'
 export { buildStraplineLoop } from './build-strapline-loop'

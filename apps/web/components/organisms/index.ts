@@ -1,4 +1,4 @@
-export { AboutPageHero } from './AboutPageHero/AboutPageHero'
+export { default as AboutPageHero } from './AboutPageHero/AboutPageHero'
 export { default as AnimatedStrapline } from './AnimatedStrapline/AnimatedStrapline'
 export { BlockText } from './BlockText/BlockText'
 export * from './Cards/Cards'
