@@ -51,18 +51,22 @@ const Testimonials = ({
               disableOnInteraction: false,
             }}
             pagination={
-              testimonialsList.length > 1 ? { clickable: true } : undefined
+              testimonialsList.length > 1 && {
+                clickable: true,
+                renderBullet: (_, className) =>
+                  `<span style="border-radius:0" class="${className} relative mx-2 block h-5 w-5 rotate-45 overflow-hidden border border-black/40 bg-transparent opacity-100 transition-colors duration-200 hover:border-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:border-foreground/50 dark:hover:border-foreground dark:focus-visible:outline-foreground after:absolute after:inset-0 after:block after:bg-black after:origin-center after:transition-transform after:duration-300 after:scale-0 after:content-[''] after:rounded-none dark:after:bg-foreground [&.swiper-pagination-bullet-active]:after:scale-100 !rounded-none"></span>`,
+              }
             }
             slidesPerView={1}
-            className="pb-6"
-          >
+            className="pb-10 [&_.swiper-pagination]:mt-10 [&_.swiper-pagination]:flex [&_.swiper-pagination]:justify-center [&_.swiper-pagination]:gap-4"
+            >
             {testimonialsList.map(({ _key, subtitle, ...testimonial }) => {
               const quote = normalizePortableText(subtitle || '')
 
               return (
                 <SwiperSlide key={_key}>
                   <article
-                    className="flex flex-col gap-6 p-2 transition md:flex-row md:items-end"
+                    className="flex flex-col gap-y-[81px] p-2 transition md:flex-row md:items-end md:gap-x-[81px] md:gap-y-0"
                     aria-labelledby={`${_key}-title`}
                   >
                     {quote.length > 0 ? (
