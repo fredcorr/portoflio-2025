@@ -40,7 +40,7 @@ const contentSpacingMap: Record<CardSpacing, string> = {
   [CardSpacing.Roomy]: 'gap-4',
 }
 
-export interface CardProps {
+export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   title: string
   subtitle?: PortableTextBlock[] | string
   subtitleSize?: RichTextSize
@@ -73,6 +73,7 @@ const Card = ({
   className,
   iconWrapperClassName,
   iconClassName,
+  ...props
 }: CardProps) => {
   const formattedIndex = formatIndex(index)
   const hasIconRow = iconName || formattedIndex
@@ -95,6 +96,7 @@ const Card = ({
             'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black'
           )}
           aria-label={`View ${title}`}
+          {...props}
         >
           {children}
         </Link>
@@ -106,6 +108,7 @@ const Card = ({
           articleSpacingMap[spacing],
           className
         )}
+        {...(!Boolean(href) && { ...props })}
       >
         {image?.asset.url && (
           <Image
@@ -157,7 +160,7 @@ const Card = ({
             {title}
           </p>
 
-          {subtitleBlocks.length && (
+          {subtitleBlocks.length > 0 && (
             <RichText
               value={subtitleBlocks}
               size={subtitleSize ?? RichTextSize.Lg}

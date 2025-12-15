@@ -6,7 +6,7 @@ export interface CollaborateHighlightItem {
   title?: string;
   subtitle?: string;
   icon?: string;
-  _key?: string;
+  _key: string;
 }
 
 export interface CollaborateHighlightsComponent
