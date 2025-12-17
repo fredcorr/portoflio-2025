@@ -11,7 +11,7 @@ test('renders heading and FAQ items when provided', () => {
 
   assert.match(markup, /data-organism="faqs"/)
   assert.match(markup, /FAQs about Branding/)
-  assert.match(markup, /<details/)
+  assert.match(markup, /<button/)
   assert.match(markup, /Do you offer logo design as a separate service\\?/)
 })
 

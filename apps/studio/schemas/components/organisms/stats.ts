@@ -24,15 +24,18 @@ const Stats = defineType({
   title: 'Stats',
   type: 'object',
   fields: [
-    List({
-      name: 'items',
-      title: 'Stats items',
-      description: 'List of statistics displayed as cards.',
-      of: [statCard.field],
-      options: {
-        layout: 'grid',
+    List(
+      {
+        name: 'items',
+        title: 'Stats items',
+        description: 'List of statistics displayed as cards.',
+        of: [statCard.field],
+        options: {
+          layout: 'grid',
+        },
       },
-    }),
+      4
+    ),
   ],
   preview: {
     select: {
