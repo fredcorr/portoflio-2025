@@ -1,0 +1,66 @@
+'use client'
+
+import React from 'react'
+import type { FormComponent } from '@portfolio/types/components'
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
+import { Heading } from '@/components/atoms/Heading/Heading'
+import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
+import Form from '@/components/molecules/Form/Form'
+import { makeComponentId } from '@/utils/makeComponentId'
+import { normalizePortableText } from '@/utils/portableText'
+
+export interface GetInTouchProps extends FormComponent {}
+
+const GetInTouch = ({
+  _id,
+  _key,
+  title,
+  subtitle,
+  formFields,
+  success,
+  error,
+}: GetInTouchProps) => {
+  const headingId = makeComponentId({
+    value: _id || _key,
+    prefix: 'get-in-touch',
+  })
+  const subtitleBlocks = normalizePortableText(subtitle as string | undefined)
+
+  return (
+    <ComponentLayout
+      aria-labelledby={headingId}
+      className="text-black dark:text-foreground"
+      contentClassName="gap-y-12 lg:gap-y-18"
+    >
+      <div className="md:col-span-12 flex flex-col items-center gap-4 text-center">
+        {title?.heading && (
+          <Heading
+            id={headingId}
+            level={title.headingLevel}
+            className="max-w-3xl font-heading text-heading-1 font-semibold leading-[1.1] tracking-tight"
+          >
+            {title.heading}
+          </Heading>
+        )}
+        {subtitleBlocks.length > 0 && (
+          <RichText
+            value={subtitleBlocks}
+            size={RichTextSize.Xl}
+            className="max-w-2xl text-center text-black/80 dark:text-foreground/80"
+          />
+        )}
+      </div>
+
+      <Form
+        fields={formFields}
+        submitLabel="Submit"
+        success={success}
+        error={error}
+        className="max-w-2xl md:col-span-12 flex justify-center justify-self-center"
+      />
+    </ComponentLayout>
+  )
+}
+
+export default GetInTouch
+export { GetInTouch }

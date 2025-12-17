@@ -10,8 +10,8 @@ export type BaseDocumentFieldsConfig = {
   }
 }
 
-// Common field properties that can be safely spread across different field types
-// Note: "validation" and "options" are excluded because each field type has its own specific signatures
+// Common field properties that can be safely spread across different field types.
+// Note: "validation" and "options" are excluded because each field type has its own specific signatures.
 export type CommonFieldProps = Pick<
   FieldDefinition,
   'name' | 'title' | 'description' | 'hidden' | 'fieldset'

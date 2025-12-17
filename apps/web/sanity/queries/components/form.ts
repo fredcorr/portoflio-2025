@@ -19,6 +19,10 @@ export const formFields = groq`
     "validation": formField_validation{
       "type": type,
       "pattern": pattern
+    },
+    "options": formField_options[]{
+      "label": label,
+      "value": value
     }
   },
   "success": ${successMessage},

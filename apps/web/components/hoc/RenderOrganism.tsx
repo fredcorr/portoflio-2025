@@ -9,7 +9,7 @@ import {
   BlockText,
   CollaborateHighlights,
   Faqs,
-  Form,
+  GetInTouch,
   HomePageHero,
   ImageGallery,
   ImageGrid,
@@ -55,7 +55,7 @@ export const RenderOrganism = ({ component }: RenderOrganismProps) => {
     case ComponentTypeName.ToolSet:
       return <ToolSet {...component} />
     case ComponentTypeName.Form:
-      return <Form {...component} />
+      return <GetInTouch {...component} />
     case ComponentTypeName.AnimatedStrapline:
       return <AnimatedStrapline {...component} />
     default:

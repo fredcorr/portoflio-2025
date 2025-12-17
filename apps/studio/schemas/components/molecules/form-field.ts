@@ -1,4 +1,5 @@
 import { defineField } from 'sanity'
+import List from '@components/atoms/list'
 import String from '@components/atoms/string'
 import Toggle from '@components/atoms/toggle'
 import { prefixedName } from '@utils/prefixed-name'
@@ -15,6 +16,7 @@ export type FormFieldNames = {
   errorMessage: string
   required: string
   validation: string
+  options: string
 }
 
 export const createFormField = (config: FormFieldConfig) => {
@@ -25,6 +27,7 @@ export const createFormField = (config: FormFieldConfig) => {
     errorMessage: prefixedName(config.name, 'errorMessage'),
     required: prefixedName(config.name, 'required'),
     validation: prefixedName(config.name, 'validation'),
+    options: prefixedName(config.name, 'options'),
   }
 
   const field = defineField({
@@ -40,6 +43,7 @@ export const createFormField = (config: FormFieldConfig) => {
         name: names.label,
         title: 'Label',
         description: 'Label displayed for the form field.',
+        validation: Rule => Rule.required(),
       }),
       String({
         name: names.placeholder,
@@ -61,6 +65,24 @@ export const createFormField = (config: FormFieldConfig) => {
           layout: 'dropdown',
         },
         initialValue: 'input',
+      }),
+      List({
+        name: names.options,
+        title: 'Options',
+        description: 'Choices for select or radio fields.',
+        of: [
+          defineField({
+            name: 'option',
+            title: 'Option',
+            type: 'object',
+            fields: [
+              String({ name: 'label', title: 'Label' }),
+              String({ name: 'value', title: 'Value' }),
+            ],
+          }),
+        ],
+        hidden: ({ parent }) =>
+          parent?.[names.type] !== 'select' && parent?.[names.type] !== 'radio',
       }),
       String({
         name: names.errorMessage,

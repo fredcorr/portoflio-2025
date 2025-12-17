@@ -4,7 +4,7 @@ import { pageComponentFields } from '../components'
 
 export const contactPageFields = groq`
   ${basePageFields},
-  contactComponents[] {
+  pageComponents[] {
     _key,
     ${pageComponentFields}
   }
