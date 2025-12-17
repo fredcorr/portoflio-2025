@@ -1,14 +1,16 @@
 import type { ProjectPageDocument } from '@portfolio/types/pages'
 import { RenderOrganism } from '@/components/hoc/RenderOrganism'
+import ProjectIntro from '@/components/organisms/ProjectIntro/ProjectIntro'
 
-export function ProjectTemplate({
-  title,
-  projectHero,
-  projectComponents,
-}: ProjectPageDocument) {
+export function ProjectTemplate(props: ProjectPageDocument) {
   return (
     <>
-      {projectComponents?.map(component => {
+      <ProjectIntro
+        slug={props.slug?.current}
+        title={props.title}
+        description={props.seoDescription}
+      />
+      {props.projectComponents?.map(component => {
         return <RenderOrganism key={component._key} component={component} />
       })}
     </>

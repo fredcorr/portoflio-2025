@@ -38,7 +38,7 @@ const ImageGallery = ({
   return (
     <ComponentLayout
       aria-labelledby={(hasHeading && headingId) || undefined}
-      className="py-[72px] px-4 md:px-8 lg:px-[112px]"
+      {...(hasHeading && { 'aria-label': headingId })}
       contentClassName="gap-y-12 md:gap-y-12"
     >
       {(hasHeading || hasSubtitle) && (

@@ -1,0 +1,53 @@
+import React from 'react'
+import type { ProjectIntroProps as ProjectIntroSharedProps } from '@portfolio/types/components'
+
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
+import Breadcrumbs from '@/components/molecules/Breadcrumbs/Breadcrumbs'
+import { makeComponentId } from '@/utils/makeComponentId'
+import { cn } from '@/utils/cn'
+
+export interface ProjectIntroProps extends ProjectIntroSharedProps {
+  className?: string
+}
+
+const ProjectIntro = ({
+  slug,
+  title,
+  description,
+  breadcrumbs,
+  className,
+}: ProjectIntroProps) => {
+  const heading = title?.trim()
+  const body = description?.trim()
+  const headingId =
+    heading && makeComponentId({ value: heading, prefix: 'project-intro' })
+  const hasBreadcrumbs =
+    Boolean(slug) || Boolean(breadcrumbs && breadcrumbs.length)
+
+  return (
+    <ComponentLayout
+      aria-labelledby={headingId}
+      className={cn('text-black dark:text-foreground', className)}
+      contentClassName="gap-y-6 md:gap-y-8"
+      data-organism="project-intro"
+    >
+      {hasBreadcrumbs && <Breadcrumbs className="md:col-span-12" slug={slug} />}
+      {heading && (
+        <h1
+          id={headingId}
+          className="md:col-span-12 max-w-4xl font-display text-heading-1 font-medium tracking-tight"
+        >
+          {heading}
+        </h1>
+      )}
+      {body && (
+        <p className="md:col-span-12 max-w-4xl font-body text-body-xl text-black/80 dark:text-foreground/80">
+          {body}
+        </p>
+      )}
+    </ComponentLayout>
+  )
+}
+
+export default ProjectIntro
+export { ProjectIntro }
