@@ -40,6 +40,7 @@ export type {
   TestimonialCard,
 } from './testimonials'
 export type { ToolSetComponent } from './tool-set'
+export type { ToolSetItem } from './tool-set'
 export type { SanityComponentBase } from './base-component'
 export type { ComponentHeading } from './title'
 export type { ProjectIntroProps } from './project-intro'

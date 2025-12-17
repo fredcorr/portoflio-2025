@@ -1,7 +1,26 @@
-import test from 'node:test'
 import assert from 'node:assert/strict'
-import { ToolSet } from './ToolSet'
+import test from 'node:test'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 
-test('ToolSet component exports a function', () => {
-  assert.equal(typeof ToolSet, 'function')
+import { toolSetMock } from '@/mocks/organisms/tool-set'
+import ToolSet from './ToolSet'
+
+test('renders heading and tools when provided', () => {
+  const markup = renderToStaticMarkup(<ToolSet {...toolSetMock} />)
+
+  assert.match(markup, /data-organism=\"tool-set\"/)
+  assert.match(markup, /Our tools of choice/)
+  assert.match(markup, /Figma/)
+  assert.match(markup, /Slack/)
+  assert.match(markup, /Linear/)
+  assert.match(markup, /Notion/)
+})
+
+test('returns null when title and tools are missing', () => {
+  const markup = renderToStaticMarkup(
+    <ToolSet _type={toolSetMock._type} title={undefined} tools={undefined} />
+  )
+
+  assert.equal(markup, '')
 })
