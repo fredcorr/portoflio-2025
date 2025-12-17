@@ -6,6 +6,7 @@ const title = titleFields('title')
 export const blockTextFields = groq`
   ${baseComponentFields},
   "title": ${title},
-  "body": body,
-  "splitLayout": splitLayout
+  isHeadingLarge,
+  body,
+  splitLayout
 `

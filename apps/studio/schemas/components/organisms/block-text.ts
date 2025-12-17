@@ -22,6 +22,12 @@ const BlockText = defineType({
       description: 'Rich text content for this block.',
     }),
     Toggle({
+      name: 'isHeadingLarge',
+      title: 'Large heading',
+      description:
+        'Toggle to enable the large heading style (Figma Variant2/Variant3).',
+    }),
+    Toggle({
       name: 'splitLayout',
       title: 'Split layout',
       description:

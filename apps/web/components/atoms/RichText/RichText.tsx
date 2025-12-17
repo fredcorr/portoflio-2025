@@ -23,7 +23,7 @@ const buildBaseComponents = (size: RichTextSize): PortableTextComponents => ({
   block: {
     normal: ({ children }) => (
       <p
-        className={`font-body ${sizeClassMap[size]} leading-relaxed text-black/70 dark:text-foreground/80`}
+        className={`font-body ${sizeClassMap[size]} leading-relaxed text-black/70 dark:text-foreground/80 mb-6 last:mb-0`}
       >
         {children}
       </p>
