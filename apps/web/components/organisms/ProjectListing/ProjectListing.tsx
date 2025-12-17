@@ -93,8 +93,8 @@ const ProjectListing = ({
             {projects.map(project => (
               <Card
                 key={project._id}
-                title={project.title || ''}
-                subtitle={project.seoDescription}
+                title={project.clientName || ''}
+                subtitle={project.title}
                 href={project.slug?.current}
                 image={project.seoImage || project.projectHero}
                 subtitleSize={RichTextSize.Lg}

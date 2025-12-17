@@ -10,6 +10,8 @@ const projectFields = groq`
   _key,
   slug,
   seoDescription,
+  clientName,
+  projectTags,
   "projectHero": projectHero{
     ${imageFields}
   },

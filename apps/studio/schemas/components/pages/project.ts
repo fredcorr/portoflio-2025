@@ -5,6 +5,8 @@ import { PageTypeName } from '@portfolio/types/base'
 import Media from '@components/atoms/media'
 import { componentsByPageType } from '..'
 import { defineType } from 'sanity'
+import StringField from '../atoms/string'
+import List from '../atoms/list'
 
 const Project = defineType({
   name: PageTypeName.ProjectPage,
@@ -20,18 +22,29 @@ const Project = defineType({
         initialValue: 'Project',
       },
     }).all,
+    StringField({
+      name: 'clientName',
+      title: 'Client Name',
+      description: 'The name of the client for whom the project was completed.',
+    }),
     Media({
       name: 'projectHero',
       title: 'Hero',
       description: 'Image or video to display as the project thumbnail.',
+    }),
+    List({
+      name: 'projectTags',
+      title: 'Project Tags',
+      description: 'Tags associated with the project.',
+      of: [{ type: 'string' }],
     }),
     componentsByPageType(PageTypeName.ProjectPage),
     ...seoFields.all,
   ],
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'seoDescription',
+      title: 'clientName',
+      subtitle: 'title',
       media: 'seoImage',
     },
     prepare(selection) {

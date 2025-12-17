@@ -1,6 +1,7 @@
-import type { StructureBuilder } from 'sanity/structure'
+import type { StructureBuilder, StructureResolverContext } from 'sanity/structure'
 import { PageTypeName } from '@portfolio/types/base'
 import { LuLayers } from 'react-icons/lu'
+import { firstValueFrom } from 'rxjs'
 
 export const PAGE_STRUCTURE_TYPES = new Set<string>([
   PageTypeName.Page as string,
@@ -9,7 +10,7 @@ export const PAGE_STRUCTURE_TYPES = new Set<string>([
   PageTypeName.ContactPage as string,
 ])
 
-const PagesItem = (S: StructureBuilder) =>
+const PagesItem = (S: StructureBuilder, context: StructureResolverContext) =>
   S.listItem()
     .title('Pages')
     .id('pages')
@@ -21,14 +22,19 @@ const PagesItem = (S: StructureBuilder) =>
         .params({
           types: Array.from(PAGE_STRUCTURE_TYPES),
         })
-        .child((documentId, context) =>
-          S.document()
-            .documentId(documentId)
-            .schemaType(
-              (context as { schemaType?: string }).schemaType ??
-                PageTypeName.Page
+        .child(async documentId => {
+          try {
+            const schemaType = await firstValueFrom(
+              context.documentStore.resolveTypeForDocument(documentId)
             )
-        )
+
+            return S.document().schemaType(schemaType).documentId(documentId)
+          } catch {
+            return S.document()
+              .schemaType(PageTypeName.Page)
+              .documentId(documentId)
+          }
+        })
     )
 
 export default PagesItem

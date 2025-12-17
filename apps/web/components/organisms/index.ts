@@ -6,7 +6,7 @@ export { default as CollaborateHighlights } from './CollaborateHighlights/Collab
 export { Faqs } from './Faqs/Faqs'
 export { default as GetInTouch } from './GetInTouch/GetInTouch'
 export { HomePageHero } from './HomePageHero/HomePageHero'
-export { ImageGallery } from './ImageGallery/ImageGallery'
+export { default as ImageGallery } from './ImageGallery/ImageGallery'
 export { ImageGrid } from './ImageGrid/ImageGrid'
 export { Process } from './Process/Process'
 export * from './ProjectListing/ProjectListing'

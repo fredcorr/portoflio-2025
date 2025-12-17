@@ -1,4 +1,4 @@
-import type { StructureBuilder } from 'sanity/structure'
+import type { StructureBuilder, StructureResolverContext } from 'sanity/structure'
 import HomepageItem from './structure-items/homepage'
 import PagesItem, { PAGE_STRUCTURE_TYPES } from './structure-items/pages'
 import SettingsItem from './structure-items/settings'
@@ -9,14 +9,14 @@ const EXCLUDED_TYPES = new Set<string>([
   ...Array.from(PAGE_STRUCTURE_TYPES),
 ])
 
-const structure = (S: StructureBuilder) =>
+const structure = (S: StructureBuilder, context: StructureResolverContext) =>
   S.list()
     .title('Content')
     .items([
       SettingsItem(S),
       S.divider(),
       HomepageItem(S),
-      PagesItem(S),
+      PagesItem(S, context),
       ...S.documentTypeListItems().filter(
         item => !EXCLUDED_TYPES.has(String(item.getId()))
       ),
