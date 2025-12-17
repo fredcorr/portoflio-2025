@@ -1,6 +1,6 @@
 import { pageDocumentFields, basePageFields } from './pages'
 import { PageTypeName } from '@portfolio/types/base'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 
 const PAGE_TYPES = [
   PageTypeName.HomePage,

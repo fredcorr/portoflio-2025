@@ -1,4 +1,4 @@
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { baseComponentFields, messageFields, titleFields } from '../fragments'
 
 const title = titleFields('title')

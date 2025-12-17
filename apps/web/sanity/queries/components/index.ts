@@ -1,5 +1,5 @@
 import { ComponentTypeName } from '@portfolio/types/base'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { aboutPageHeroFields } from './about-page-hero'
 import { animatedStraplineFields } from './animated-strapline'
 import { blockTextFields } from './block-text'

@@ -1,4 +1,4 @@
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { baseComponentFields } from '../fragments'
 
 export const homepageHeroFields = groq`

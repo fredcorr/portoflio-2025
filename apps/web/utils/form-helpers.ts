@@ -4,7 +4,7 @@ import {
   FormFieldType,
   FormValidationType,
 } from '@portfolio/types/components/form'
-import camelCase from 'lodash/camelCase'
+import camelCase from '@/utils/camel-case'
 
 export const buildInitialValues = (
   fields?: FormFieldItem[]

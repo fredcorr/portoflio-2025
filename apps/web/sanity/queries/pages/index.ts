@@ -1,5 +1,5 @@
 import { PageTypeName } from '@portfolio/types/base'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { aboutPageFields } from './about-page'
 import { contactPageFields } from './contact-page'
 import { homePageFields } from './home-page'

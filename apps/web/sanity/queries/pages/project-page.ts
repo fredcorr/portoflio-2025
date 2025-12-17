@@ -1,4 +1,4 @@
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { basePageFields, imageFields } from '../fragments'
 import { pageComponentFields } from '../components'
 

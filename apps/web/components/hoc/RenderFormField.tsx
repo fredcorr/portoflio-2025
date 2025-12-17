@@ -8,7 +8,7 @@ import InputField from '@/components/atoms/Input/Input'
 import SelectField from '@/components/atoms/Select/Select'
 import TextAreaField from '@/components/atoms/TextArea/TextArea'
 import CheckboxField from '@/components/atoms/Checkbox/Checkbox'
-import camelCase from 'lodash/camelCase'
+import camelCase from '@/utils/camel-case'
 
 export interface RenderFormFieldProps {
   field: FormFieldItem
