@@ -1,7 +1,23 @@
-import test from 'node:test'
 import assert from 'node:assert/strict'
-import { Stats } from './Stats'
+import test from 'node:test'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 
-test('Stats component exports a function', () => {
-  assert.equal(typeof Stats, 'function')
+import { statsMock } from '@/mocks/organisms/stats'
+import Stats from './Stats'
+
+test('renders stats items when provided', () => {
+  const markup = renderToStaticMarkup(<Stats {...statsMock} />)
+
+  assert.match(markup, /data-organism=\"stats\"/)
+  assert.match(markup, /15\+/)
+  assert.match(markup, /Launched Brands/)
+  assert.match(markup, /50M\+/)
+  assert.match(markup, /Views Per Month/)
+})
+
+test('returns null when items are missing', () => {
+  const markup = renderToStaticMarkup(<Stats _type={statsMock._type} />)
+
+  assert.equal(markup, '')
 })

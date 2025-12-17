@@ -1,5 +1,68 @@
+import React from 'react'
 import type { StatsComponent } from '@portfolio/types/components'
 
-export const Stats = (props: StatsComponent) => {
-  return <></>
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
+import AnimatedStatValue from '@/components/molecules/AnimatedStatValue/AnimatedStatValue'
+import { cn } from '@/utils/cn'
+
+// Figma annotations:
+// - Stats component (node-id: 3595:2418)
+// - Note: "Ideally we want to animate this numbers" (handled by AnimatedStatValue)
+
+export interface StatsProps extends StatsComponent {
+  className?: string
 }
+
+const Stats = ({ items, className }: StatsProps) => {
+  const hasItems = Boolean(items && items.length)
+
+  if (!hasItems) {
+    return null
+  }
+
+  return (
+    <ComponentLayout
+      className={cn(
+        'text-black dark:text-foreground lg:px-[112px] lg:py-[72px]',
+        className
+      )}
+      contentClassName="gap-y-10"
+      data-organism="stats"
+      data-figma-node-id="3595:2418"
+    >
+      {!!hasItems && (
+        <ul className="md:col-span-12 flex flex-col items-start md:items-center justify-center gap-10 text-left sm:flex-row sm:flex-wrap sm:gap-x-20 sm:gap-y-12 md:flex-nowrap md:gap-x-[141px]">
+          {items?.map((item, index) => {
+            const value = item.title?.trim()
+            const label = item.subtitle?.trim()
+
+            if (!value && !label) {
+              return null
+            }
+
+            return (
+              <li
+                key={item._key ?? `stat-${index}`}
+                className="flex min-w-0 flex-col items-start gap-4"
+              >
+                {value && (
+                  <p className="font-heading text-heading-1 font-medium leading-[1.1] tracking-tight">
+                    <AnimatedStatValue value={value} />
+                  </p>
+                )}
+                {label && (
+                  <p className="font-body text-body-xl font-normal leading-[1.4] tracking-tight text-black/80 dark:text-foreground/80">
+                    {label}
+                  </p>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </ComponentLayout>
+  )
+}
+
+export default Stats
+export { Stats }

@@ -33,6 +33,7 @@ export type {
   ProjectListingProject,
 } from './project-listing'
 export type { StatsComponent } from './stats'
+export type { StatsItem } from './stats'
 export type {
   TestimonialsComponent,
   TestimonialAuthor,
