@@ -2,7 +2,7 @@ import React from 'react'
 
 export interface UseResizeObserverOptions<T extends Element> {
   element: T | null
-  onResize: (entry: ResizeObserverEntry) => void
+  onResize: () => void
   disabled?: boolean
 }
 
@@ -29,17 +29,16 @@ export const useResizeObserver = <T extends Element>({
     let rafId: number | undefined
     let timeoutId: number | undefined
 
-    const schedule = (entry: ResizeObserverEntry) => {
+    const schedule = () => {
       rafId && window.cancelAnimationFrame(rafId)
       rafId = window.requestAnimationFrame(() => {
-        onResizeRef.current(entry)
+        onResizeRef.current()
       })
     }
 
     if (typeof ResizeObserver !== 'undefined') {
-      const observer = new ResizeObserver(entries => {
-        const entry = entries[0]
-        entry && schedule(entry)
+      const observer = new ResizeObserver(() => {
+        schedule()
       })
 
       observer.observe(element)
@@ -53,7 +52,7 @@ export const useResizeObserver = <T extends Element>({
     const handleResize = () => {
       timeoutId && window.clearTimeout(timeoutId)
       timeoutId = window.setTimeout(() => {
-        onResizeRef.current({ target: element } as ResizeObserverEntry)
+        onResizeRef.current()
       }, 150)
     }
 

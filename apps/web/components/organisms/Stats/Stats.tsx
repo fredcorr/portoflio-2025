@@ -3,17 +3,12 @@ import type { StatsComponent } from '@portfolio/types/components'
 
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import AnimatedStatValue from '@/components/molecules/AnimatedStatValue/AnimatedStatValue'
-import { cn } from '@/utils/cn'
 
 // Figma annotations:
 // - Stats component (node-id: 3595:2418)
 // - Note: "Ideally we want to animate this numbers" (handled by AnimatedStatValue)
 
-export interface StatsProps extends StatsComponent {
-  className?: string
-}
-
-const Stats = ({ items, className }: StatsProps) => {
+const Stats = ({ items }: StatsComponent) => {
   const hasItems = Boolean(items && items.length)
 
   if (!hasItems) {
@@ -22,10 +17,7 @@ const Stats = ({ items, className }: StatsProps) => {
 
   return (
     <ComponentLayout
-      className={cn(
-        'text-black dark:text-foreground lg:px-[112px] lg:py-[72px]',
-        className
-      )}
+      className="text-black dark:text-foreground lg:px-[112px] lg:py-[72px]"
       contentClassName="gap-y-10"
       data-organism="stats"
       data-figma-node-id="3595:2418"

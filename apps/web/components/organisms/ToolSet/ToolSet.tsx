@@ -5,9 +5,8 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import ToolCard from '@/components/molecules/ToolCard/ToolCard'
 import { makeComponentId } from '@/utils/makeComponentId'
-export interface ToolSetProps extends ToolSetComponent {}
 
-const ToolSet = ({ _id, _key, title, tools }: ToolSetProps) => {
+const ToolSet = ({ _id, _key, title, tools }: ToolSetComponent) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
   const hasTools = Boolean(tools && tools.length)

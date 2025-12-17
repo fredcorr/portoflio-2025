@@ -3,8 +3,7 @@
 import React, { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
 
-export interface InputFieldProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   error?: string
   required?: boolean

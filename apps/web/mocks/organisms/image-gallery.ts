@@ -23,7 +23,7 @@ export const imageGalleryMock: ImageGalleryComponent = {
     {
       _type: 'image',
       asset: {
-        url: 'https://cdn.sanity.io/images/demo/demo/abc123-1200x900.jpg',
+        url: '/gallery-1.jpg',
         metadata: {
           dimensions: { width: 1200, height: 900 },
         },
@@ -33,7 +33,7 @@ export const imageGalleryMock: ImageGalleryComponent = {
     {
       _type: 'image',
       asset: {
-        url: 'https://cdn.sanity.io/images/demo/demo/def456-1200x900.jpg',
+        url: '/gallery-2.jpg',
         metadata: {
           dimensions: { width: 1200, height: 900 },
         },

@@ -9,8 +9,6 @@ import Form from '@/components/molecules/Form/Form'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { normalizePortableText } from '@/utils/portableText'
 
-export interface GetInTouchProps extends FormComponent {}
-
 const GetInTouch = ({
   _id,
   _key,
@@ -19,7 +17,7 @@ const GetInTouch = ({
   formFields,
   success,
   error,
-}: GetInTouchProps) => {
+}: FormComponent) => {
   const headingId = makeComponentId({
     value: _id || _key,
     prefix: 'get-in-touch',

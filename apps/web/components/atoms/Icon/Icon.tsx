@@ -22,7 +22,7 @@ export interface IconProps {
   className?: string
 }
 
-export const Icon = ({ name, title, className }: IconProps) => {
+export const Icon = ({ name, className }: IconProps) => {
   const Component = iconMap[name]
 
   if (!Component) {
@@ -30,11 +30,7 @@ export const Icon = ({ name, title, className }: IconProps) => {
   }
 
   return (
-    <Component
-      className={cn('inline-block', className)}
-      title={title}
-      data-icon={name}
-    />
+    <Component className={cn('inline-block', className)} data-icon={name} />
   )
 }
 

@@ -12,15 +12,13 @@ import { makeComponentId } from '@/utils/makeComponentId'
 // - ImageGallery component (node-id: 3591:2302)
 // - Variants: "Default" (2-up tiles) and "Variant2" (single tile)
 
-export interface ImageGalleryProps extends ImageGalleryComponent {}
-
 const ImageGallery = ({
   _id,
   _key,
   title,
   subtitle,
   images,
-}: ImageGalleryProps) => {
+}: ImageGalleryComponent) => {
   const galleryImages = (Array.isArray(images) && images) || []
   const galleryImagesWithUrl = galleryImages.filter(image =>
     Boolean(image.asset?.url)
@@ -98,6 +96,12 @@ const ImageGallery = ({
               </div>
             )
           })}
+        </div>
+      )}
+
+      {galleryImagesWithUrl.length === 0 && (
+        <div className="md:col-span-12 rounded-3xl border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-foreground/20 dark:bg-background dark:text-foreground/70">
+          Images will appear here once they are published.
         </div>
       )}
     </ComponentLayout>

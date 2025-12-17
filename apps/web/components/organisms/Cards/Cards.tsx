@@ -7,9 +7,7 @@ import { cn } from '@/utils/cn'
 import React from 'react'
 import type { CardsComponent } from '@portfolio/types/components'
 
-interface CardsProps extends CardsComponent {}
-
-const Cards = ({ _id, _key, title, subtitle, items }: CardsProps) => {
+const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
   const headingId = makeComponentId({ value: _id || _key, prefix: 'cards' })
   const hasItems = Array.isArray(items) && items.length > 0
   const itemsList = hasItems ? items : []
@@ -50,7 +48,7 @@ const Cards = ({ _id, _key, title, subtitle, items }: CardsProps) => {
         <div className="md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {itemsList.map((item, index) => (
             <Card
-              key={item._key}
+              key={item._key ?? `card-${index}`}
               title={`• ${item.title || `Card ${index + 1}`}`}
               subtitle={item.subtitle}
               subtitleSize={RichTextSize.Md}

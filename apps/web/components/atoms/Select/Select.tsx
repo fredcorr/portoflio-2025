@@ -8,8 +8,7 @@ export interface SelectOption {
   value: string
 }
 
-export interface SelectFieldProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string
   options: SelectOption[]
   error?: string

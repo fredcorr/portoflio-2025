@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import type { BreadcrumbItem } from '@portfolio/types/components'
 
 import { cn } from '@/utils/cn'
 import slugToBreadcrumbs from '@/utils/slug-to-breadcrumbs'

@@ -42,9 +42,7 @@ const richTextBlock = (text: string): PortableTextBlock[] => [
     _type: 'block',
     style: 'normal',
     markDefs: [],
-    children: [
-      { _key: `${text}-span`, _type: 'span', text, marks: [] },
-    ],
+    children: [{ _key: `${text}-span`, _type: 'span', text, marks: [] }],
   },
 ]
 

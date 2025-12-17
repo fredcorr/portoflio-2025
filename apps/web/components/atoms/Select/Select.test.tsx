@@ -22,11 +22,7 @@ test('renders select with placeholder label', () => {
 
 test('shows error text when provided', () => {
   const markup = renderToStaticMarkup(
-    <Select
-      label="Choose one"
-      options={options}
-      error="Selection required"
-    />
+    <Select label="Choose one" options={options} error="Selection required" />
   )
 
   assert.match(markup, /Selection required/)

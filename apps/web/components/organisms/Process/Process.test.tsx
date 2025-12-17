@@ -19,9 +19,7 @@ test('renders heading and all steps with numbering', () => {
 })
 
 test('renders empty state when no steps provided', () => {
-  const markup = renderToStaticMarkup(
-    <Process {...processMock} steps={[]} />
-  )
+  const markup = renderToStaticMarkup(<Process {...processMock} steps={[]} />)
 
   assert.match(markup, /Process steps will appear here once they are published/)
 })

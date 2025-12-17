@@ -26,15 +26,18 @@ export const cardsMock: CardsComponent = {
   ],
   items: [
     {
+      _key: 'capability-1',
       title: 'Product Design',
       subtitle:
         'End-to-end flows, information architecture, and research-led UX.',
     },
     {
+      _key: 'capability-2',
       title: 'Visual Systems',
       subtitle: 'Design systems, component libraries, and accessible patterns.',
     },
     {
+      _key: 'capability-3',
       title: 'Brand Craft',
       subtitle: 'Identity, art direction, and motion to tell cohesive stories.',
     },

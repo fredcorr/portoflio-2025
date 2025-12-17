@@ -12,9 +12,7 @@ import { cn } from '@/utils/cn'
 // - FAQ list with left title + right card (node-id: 3594:2406)
 // - Accordion state uses native <details>/<summary>
 
-export interface FaqsProps extends FaqsComponent {}
-
-const Faqs = ({ _id, _key, title, questions }: FaqsProps) => {
+const Faqs = ({ _id, _key, title, questions }: FaqsComponent) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
   const hasQuestions = Boolean(questions && questions.length)

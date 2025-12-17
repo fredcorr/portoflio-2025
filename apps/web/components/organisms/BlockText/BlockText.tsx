@@ -7,16 +7,6 @@ import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
 
-// Figma annotations:
-// - BlockText component (node-id: 3591:2334)
-// - Variants: "Default" (split, smaller heading), "Variant2" (stacked, larger heading), "Variant3" (split, larger heading)
-// - Studio mapping:
-//   - `splitLayout` controls split vs stacked layout
-//   - `isHeadingLarge` controls heading style (Figma Variant2/Variant3)
-//   - `title.headingLevel` controls the semantic heading tag
-
-export interface BlockTextProps extends BlockTextComponent {}
-
 const BlockText = ({
   _id,
   _key,
@@ -24,7 +14,7 @@ const BlockText = ({
   body,
   isHeadingLarge,
   splitLayout,
-}: BlockTextProps) => {
+}: BlockTextComponent) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
   const hasBody = Boolean(body && body.length)

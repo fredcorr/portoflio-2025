@@ -6,7 +6,7 @@ import type { PortableTextBlock } from '@portabletext/react'
 
 import { IconName } from '@/components/atoms/Icon/Icon'
 import { RichTextSize } from '@/components/atoms/RichText/RichText'
-import ProjectCard, { CardSpacing, CardTitleSize } from './Card'
+import Card, { CardSpacing, CardTitleSize } from './Card'
 
 const block = (text: string): PortableTextBlock[] => [
   {
@@ -27,14 +27,14 @@ const block = (text: string): PortableTextBlock[] => [
 
 test('renders image, icon, index, title, and subtitle', () => {
   const markup = renderToStaticMarkup(
-    <ProjectCard
+    <Card
       title="Test Project"
       subtitle={block('Details go here')}
       href="/projects/test"
       image={{
         _type: 'image',
         asset: {
-          url: 'https://example.com/image.jpg',
+          url: '/test-image.jpg',
           metadata: { dimensions: { width: 800, height: 600 } },
         },
         alt: 'Alt text',
@@ -54,7 +54,7 @@ test('renders image, icon, index, title, and subtitle', () => {
 
 test('respects sizing and spacing variants', () => {
   const markup = renderToStaticMarkup(
-    <ProjectCard
+    <Card
       title="Sized Project"
       subtitle={block('Sized body')}
       spacing={CardSpacing.Roomy}
@@ -68,15 +68,15 @@ test('respects sizing and spacing variants', () => {
   assert.match(markup, /gap-6/)
 })
 
-test('renders placeholder when image is missing', () => {
-  const markup = renderToStaticMarkup(<ProjectCard title="No Image Card" />)
+test('does not render an image when one is not provided', () => {
+  const markup = renderToStaticMarkup(<Card title="No Image Card" />)
 
-  assert.match(markup, /Image coming soon/)
+  assert.doesNotMatch(markup, /<img/)
 })
 
 test('renders string subtitles as plain text', () => {
   const markup = renderToStaticMarkup(
-    <ProjectCard title="String Subtitle" subtitle="Plain text subtitle" />
+    <Card title="String Subtitle" subtitle="Plain text subtitle" />
   )
 
   assert.match(markup, /Plain text subtitle/)

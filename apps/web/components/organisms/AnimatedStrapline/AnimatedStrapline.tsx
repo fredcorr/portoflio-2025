@@ -5,9 +5,7 @@ import { buildStraplineLoop } from '@/utils/build-strapline-loop'
 const DEFAULT_STRAPLINE_TEXT = 'Visual design for digital experiences'
 const STRAPLINE_REPEAT_COUNT = 4
 
-export interface AnimatedStraplineProps extends AnimatedStraplineComponent {}
-
-const AnimatedStrapline = ({ strapline }: AnimatedStraplineProps) => {
+const AnimatedStrapline = ({ strapline }: AnimatedStraplineComponent) => {
   const straplineText = strapline?.trim() || DEFAULT_STRAPLINE_TEXT
   const straplineLoop = buildStraplineLoop(straplineText, {
     repeat: STRAPLINE_REPEAT_COUNT,

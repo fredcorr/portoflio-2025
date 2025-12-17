@@ -59,7 +59,7 @@ const Testimonials = ({
             }
             slidesPerView={1}
             className="pb-10 [&_.swiper-pagination]:mt-10 [&_.swiper-pagination]:flex [&_.swiper-pagination]:justify-center [&_.swiper-pagination]:gap-4"
-            >
+          >
             {testimonialsList.map(({ _key, subtitle, ...testimonial }) => {
               const quote = normalizePortableText(subtitle || '')
 

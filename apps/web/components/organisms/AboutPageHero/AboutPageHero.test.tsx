@@ -8,9 +8,7 @@ import { aboutPageHeroMock } from '@/mocks/organisms/about-page-hero'
 import { DEFAULT_CONTACT_EMAIL } from '@/utils/get-contact-email'
 
 test('renders heading, body, image, and CTA', () => {
-  const markup = renderToStaticMarkup(
-    <AboutPageHero {...aboutPageHeroMock} />
-  )
+  const markup = renderToStaticMarkup(<AboutPageHero {...aboutPageHeroMock} />)
 
   assert.match(markup, /Hey,\s*I&apos;m Fede/)
   assert.match(markup, /Embarking on a journey of growth and education/)
@@ -23,9 +21,7 @@ test('uses environment contact email when provided', () => {
   const original = process.env.NEXT_PUBLIC_CONTACT_EMAIL
   process.env.NEXT_PUBLIC_CONTACT_EMAIL = 'team@example.com'
 
-  const markup = renderToStaticMarkup(
-    <AboutPageHero {...aboutPageHeroMock} />
-  )
+  const markup = renderToStaticMarkup(<AboutPageHero {...aboutPageHeroMock} />)
 
   assert.match(markup, /mailto:team@example\.com/)
   assert.match(markup, /team@example\.com/)

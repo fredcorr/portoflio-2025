@@ -34,10 +34,6 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
   const buttonId = `${baseId}-trigger`
   const contentId = `${baseId}-content`
 
-  if (!hasQuestion && !hasAnswer) {
-    return null
-  }
-
   const updateContentHeight = React.useCallback(() => {
     contentElement && setContentHeight(contentElement.scrollHeight)
   }, [contentElement])

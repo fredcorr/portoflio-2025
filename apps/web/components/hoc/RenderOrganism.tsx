@@ -12,7 +12,6 @@ import {
   GetInTouch,
   HomePageHero,
   ImageGallery,
-  ImageGrid,
   Process,
   Stats,
   ToolSet,
@@ -46,8 +45,6 @@ export const RenderOrganism = ({ component }: RenderOrganismProps) => {
       return <Process {...component} />
     case ComponentTypeName.ImageGallery:
       return <ImageGallery {...component} />
-    case ComponentTypeName.ImageGrid:
-      return <ImageGrid {...component} />
     case ComponentTypeName.Stats:
       return <Stats {...component} />
     case ComponentTypeName.Faqs:
