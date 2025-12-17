@@ -3,7 +3,7 @@ export { default as AnimatedStrapline } from './AnimatedStrapline/AnimatedStrapl
 export { default as BlockText } from './BlockText/BlockText'
 export * from './Cards/Cards'
 export { default as CollaborateHighlights } from './CollaborateHighlights/CollaborateHighlights'
-export { Faqs } from './Faqs/Faqs'
+export { default as Faqs } from './Faqs/Faqs'
 export { default as GetInTouch } from './GetInTouch/GetInTouch'
 export { HomePageHero } from './HomePageHero/HomePageHero'
 export { default as ImageGallery } from './ImageGallery/ImageGallery'

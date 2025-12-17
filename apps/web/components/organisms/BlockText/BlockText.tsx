@@ -15,9 +15,7 @@ import { cn } from '@/utils/cn'
 //   - `isHeadingLarge` controls heading style (Figma Variant2/Variant3)
 //   - `title.headingLevel` controls the semantic heading tag
 
-export interface BlockTextProps extends BlockTextComponent {
-  className?: string
-}
+export interface BlockTextProps extends BlockTextComponent {}
 
 const BlockText = ({
   _id,
@@ -26,7 +24,6 @@ const BlockText = ({
   body,
   isHeadingLarge,
   splitLayout,
-  className,
 }: BlockTextProps) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
@@ -54,7 +51,7 @@ const BlockText = ({
   return (
     <ComponentLayout
       {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
-      className={cn('text-black dark:text-foreground', className)}
+      className={'text-black dark:text-foreground'}
       contentClassName={cn(
         'gap-y-8 md:gap-y-10',
         isSplitLayout && 'md:gap-x-10'

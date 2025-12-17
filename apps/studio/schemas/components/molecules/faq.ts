@@ -1,6 +1,8 @@
 import { defineField } from 'sanity'
 import String from '@components/atoms/string'
+import Block from '@components/atoms/block'
 import { prefixedName } from '@utils/prefixed-name'
+import { extractPlainText } from '@utils/extract-plain-text'
 
 type PreviewValue = {
   select: Record<string, string>
@@ -38,21 +40,19 @@ export const createFaqField = (config: FaqFieldConfig): FaqFieldResult => {
     description: 'The question title.',
   })
 
-  const answerField = String({
-    name: names.answer,
-    title: 'Answer',
-    description: 'The answer to the question.',
-  })
-
   const defaultPreview: PreviewValue = {
     select: {
       title: names.question,
       subtitle: names.answer,
     },
     prepare(selection) {
+      const subtitle = extractPlainText(
+        selection.subtitle as Parameters<typeof extractPlainText>[0]
+      )
+
       return {
         title: (selection.title as string | undefined) || 'Question',
-        subtitle: (selection.subtitle as string | undefined) || 'Answer',
+        subtitle: (subtitle && subtitle) || 'Answer',
       }
     },
   }
@@ -65,7 +65,14 @@ export const createFaqField = (config: FaqFieldConfig): FaqFieldResult => {
     name: config.name,
     title: config.title ?? 'Question',
     type: 'object',
-    fields: [questionField, answerField],
+    fields: [
+      questionField,
+      Block({
+        name: names.answer,
+        title: 'Answer',
+        description: 'The answer to the question.',
+      }),
+    ],
     preview,
   })
 
