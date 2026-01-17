@@ -3,11 +3,11 @@ import { redirect } from 'next/navigation'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const redirect_to = searchParams.get('redirect') || '/'
+  const rawSlug = searchParams.get('slug')
+  const slug = rawSlug?.replace(/^\/+/, '') || ''
 
-  // Disable Draft Mode
   const draft = await draftMode()
   draft.disable()
 
-  redirect(redirect_to)
+  redirect(slug ? `/${slug}` : '/')
 }

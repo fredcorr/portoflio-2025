@@ -34,7 +34,7 @@ cp .env.example .env.local
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_READ_TOKEN=your_read_token
-SANITY_PREVIEW_SECRET=your_secret_here
+SANITY_STUDIO_PREVIEW_SECRET=your_secret_here
 ```
 
 3. Install dependencies:
@@ -125,7 +125,7 @@ Required environment variables:
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your Sanity project ID |
 | `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset name (e.g., production) |
 | `SANITY_API_READ_TOKEN` | Sanity read token for preview mode |
-| `SANITY_PREVIEW_SECRET` | Secret key for draft mode authentication |
+| `SANITY_STUDIO_PREVIEW_SECRET` | Secret key for draft mode authentication |
 
 ## Learn More
 

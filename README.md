@@ -56,7 +56,7 @@ cp .env.example .env
 SANITY_PROJECT_ID=your-actual-project-id
 SANITY_DATASET=production
 SANITY_API_READ_TOKEN=your-read-token
-SANITY_PREVIEW_SECRET=your-secret-string
+SANITY_STUDIO_PREVIEW_SECRET=your-secret-string
 SANITY_STUDIO_HOST=your-studio.sanity.studio
 ```
 
@@ -276,7 +276,7 @@ SANITY_DATASET=production
 
 # Required for web app only
 SANITY_API_READ_TOKEN=your-read-token
-SANITY_PREVIEW_SECRET=your-preview-secret
+SANITY_STUDIO_PREVIEW_SECRET=your-preview-secret
 
 # Required for studio only
 SANITY_STUDIO_HOST=your-production-studio-url
