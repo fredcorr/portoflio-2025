@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/utils/cn'
-import slugToBreadcrumbs from '@/utils/slug-to-breadcrumbs'
+import slugToBreadcrumbs from '@/utils/slug'
 
 export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLElement> {
   slug?: string | null

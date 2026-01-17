@@ -62,4 +62,13 @@ export const slugToBreadcrumbs = (slug?: string | null): BreadcrumbItem[] => {
   })
 }
 
+export const buildPageUrl = (siteUrl: string, slug?: string) => {
+  if (!slug || slug === '/') {
+    return siteUrl
+  }
+
+  const normalizedSlug = slug.replace(/^\/+/, '')
+  return `${siteUrl}/${normalizedSlug}`
+}
+
 export default slugToBreadcrumbs

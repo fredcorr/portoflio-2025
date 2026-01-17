@@ -1,24 +1,12 @@
 import type { MetadataRoute } from 'next'
-import type { BasePageDocument } from '@portfolio/types/pages'
 import { client } from '@/sanity/client'
 import { SITEMAP_PAGES_QUERY } from '@/sanity/queries/base'
+import { getSiteUrl } from '@/utils/get-site-url'
+import { buildPageUrl } from '@/utils/slug'
 
 export const revalidate = 60 * 60 * 24 * 7
 
-type SitemapPage = Pick<BasePageDocument, 'slug'> & { updateDate?: string }
-
-const getSiteUrl = () => {
-  const envUrl = process.env.SITE_URL
-  if (envUrl) {
-    return envUrl.replace(/\/$/, '')
-  }
-
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`
-  }
-
-  return 'http://localhost:3000'
-}
+type SitemapPage = { slug?: { current?: string }; updateDate?: string }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl()
@@ -30,11 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter(page => page.slug?.current)
       .map(page => {
         const slug = page.slug?.current ?? '/'
-        const url =
-          slug === '/' ? siteUrl : `${siteUrl}/${slug.replace(/^\//, '')}`
 
         return {
-          url,
+          url: buildPageUrl(siteUrl, slug),
           lastModified: page.updateDate,
         }
       })
