@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ProjectIntroProps as ProjectIntroSharedProps } from '@portfolio/types/components'
-
+import Image from '@/components/atoms/Image/Image'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import Breadcrumbs from '@/components/molecules/Breadcrumbs/Breadcrumbs'
 import { makeComponentId } from '@/utils/makeComponentId'
@@ -16,6 +16,7 @@ const ProjectIntro = ({
   description,
   breadcrumbs,
   className,
+  heroImage,
 }: ProjectIntroProps) => {
   const heading = title?.trim()
   const body = description?.trim()
@@ -44,6 +45,17 @@ const ProjectIntro = ({
         <p className="md:col-span-12 max-w-4xl font-body text-body-xl text-black/80 dark:text-foreground/80">
           {body}
         </p>
+      )}
+      {!!heroImage?.asset.url && (
+        <div className="md:col-span-12">
+          <Image
+            src={heroImage.asset.url}
+            alt={heroImage.alt || ''}
+            width={heroImage.asset.metadata?.dimensions?.width || 1200}
+            height={heroImage.asset.metadata?.dimensions?.height || 1024}
+            className="transition duration-300 group-hover:scale-[1.01]"
+          />
+        </div>
       )}
     </ComponentLayout>
   )

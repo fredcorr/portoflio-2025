@@ -9,6 +9,7 @@ export function ProjectTemplate(props: ProjectPageDocument) {
         slug={props.slug?.current}
         title={props.title}
         description={props.seoDescription}
+        heroImage={props.projectHero}
       />
       {props.projectComponents?.map(component => {
         return <RenderOrganism key={component._key} component={component} />

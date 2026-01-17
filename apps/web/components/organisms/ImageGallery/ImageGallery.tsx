@@ -76,7 +76,7 @@ const ImageGallery = ({
 
             return (
               <div
-                key={(src && src) || `${_key || _id || 'image'}-${index}`}
+                key={_id || _key}
                 className={cn('min-w-0', isLastOddItem && 'lg:col-span-2')}
               >
                 {src && (
