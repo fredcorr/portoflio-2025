@@ -65,7 +65,10 @@ export const createCardField = (config: CardFieldConfig): CardFieldResult => {
     description: 'Supporting copy that appears beneath the title.',
   })
 
-  const optionalFieldFactories: Record<OptionalFieldKey, ReturnType<typeof defineField>> = {
+  const optionalFieldFactories: Record<
+    OptionalFieldKey,
+    ReturnType<typeof defineField>
+  > = {
     image: Media({
       name: names.image,
       title: 'Image',
@@ -74,12 +77,8 @@ export const createCardField = (config: CardFieldConfig): CardFieldResult => {
     icon: defineField({
       name: names.icon,
       title: 'Icon',
-      type: 'string',
+      type: 'lucide-icon',
       description: 'Optional icon to accompany the card content.',
-      options: {
-        list: Array.from(CARD_ICON_OPTIONS),
-        layout: 'dropdown',
-      },
     }),
     author: defineField({
       name: names.author,
@@ -105,7 +104,10 @@ export const createCardField = (config: CardFieldConfig): CardFieldResult => {
   }
 
   const includeSet = new Set(config.include ?? [])
-  const selectedOptionalFields = Array.from(includeSet, key => optionalFieldFactories[key])
+  const selectedOptionalFields = Array.from(
+    includeSet,
+    key => optionalFieldFactories[key]
+  )
 
   const fields = [titleField, subtitleField, ...selectedOptionalFields]
 
@@ -115,8 +117,10 @@ export const createCardField = (config: CardFieldConfig): CardFieldResult => {
       subtitle: names.subtitle,
     },
     prepare(selection) {
-      const title = (selection.title as string | undefined) || config.title || 'Card'
-      const subtitle = (selection.subtitle as string | undefined) || 'Card subtitle'
+      const title =
+        (selection.title as string | undefined) || config.title || 'Card'
+      const subtitle =
+        (selection.subtitle as string | undefined) || 'Card subtitle'
       return { title, subtitle }
     },
   }

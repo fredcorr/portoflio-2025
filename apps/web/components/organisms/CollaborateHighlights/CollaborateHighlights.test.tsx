@@ -15,7 +15,7 @@ test('renders heading and highlight items', () => {
   assert.match(markup, /Client-Centric/)
   assert.match(markup, /Tailored Solutions/)
   assert.match(markup, /Creative Innovation/)
-  assert.match(markup, /data-icon="sparkle"/)
+  assert.match(markup, /data-icon="sparkles"/)
 })
 
 test('renders empty state when no highlights provided', () => {

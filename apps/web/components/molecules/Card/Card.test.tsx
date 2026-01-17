@@ -4,7 +4,6 @@ import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { PortableTextBlock } from '@portabletext/react'
 
-import { IconName } from '@/components/atoms/Icon/Icon'
 import { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Card, { CardSpacing, CardTitleSize } from './Card'
 
@@ -39,14 +38,14 @@ test('renders image, icon, index, title, and subtitle', () => {
         },
         alt: 'Alt text',
       }}
-      iconName={IconName.Sparkle}
+      iconName="sparkles"
       index={0}
     />
   )
 
   assert.match(markup, /href="\/projects\/test"/)
   assert.match(markup, /alt="Alt text"/)
-  assert.match(markup, /data-icon="sparkle"/)
+  assert.match(markup, /data-icon="sparkles"/)
   assert.match(markup, />01</)
   assert.match(markup, /Test Project/)
   assert.match(markup, /Details go here/)
