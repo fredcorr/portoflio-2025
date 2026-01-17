@@ -18,6 +18,13 @@ export const ALL_PAGES_QUERY = groq`
   }
   `
 
+export const SITEMAP_PAGES_QUERY = groq`
+*[_type in [${PAGE_TYPE_FILTER}]]{
+  slug,
+  "updateDate": coalesce(_updatedAt, _createdAt)
+}
+`
+
 export const PAGE_BY_SLUG_QUERY = groq`
   *[_type in [${PAGE_TYPE_FILTER}] && slug.current == $slug ][0]{
     ${pageDocumentFields}

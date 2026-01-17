@@ -4,6 +4,7 @@
   "globalEnv": [
     "ALLOW_CRAWLERS",
     "NEXT_PUBLIC_CONTACT_EMAIL",
+    "SITE_URL",
     "SANITY_PROJECT_ID",
     "SANITY_DATASET",
     "SANITY_API_READ_TOKEN",
