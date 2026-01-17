@@ -10,6 +10,7 @@
     "deploy-graphql": "sanity graphql deploy"
   },
   "dependencies": {
+    "@fredcorr/sanity-plugin-lucide-icon-picker": "github:fredcorr/sanity-plugin-lucide-icon-picker",
     "@sanity/ui": "^3.1.10",
     "@sanity/vision": "^4.10.2",
     "dotenv-cli": "^10.0.0",
@@ -17,7 +18,6 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "sanity": "^4.10.2",
-    "@fredcorr/sanity-plugin-lucide-icon-picker": "github:fredcorr/sanity-plugin-lucide-icon-picker",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {

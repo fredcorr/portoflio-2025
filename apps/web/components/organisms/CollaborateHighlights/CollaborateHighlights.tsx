@@ -2,7 +2,6 @@ import type { CollaborateHighlightsComponent } from '@portfolio/types/components
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { Heading } from '@/components/atoms/Heading/Heading'
-import { IconName } from '@/components/atoms/Icon/Icon'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { CardSpacing } from '@/components/molecules/Card/Card'
 import Card from '@/components/molecules/Card/Card'
@@ -37,16 +36,16 @@ const CollaborateHighlights = ({
       {highlights && highlights.length > 0 ? (
         <div className="md:col-span-12 grid grid-cols-1 gap-10 md:grid-cols-3 lg:gap-14">
           {highlights.map(
-            ({ title: itemTitle, subtitle, _key: itemKey }, index) => (
+            ({ title: itemTitle, subtitle, _key: itemKey, icon }, index) => (
               <Card
                 key={itemKey || `${index}-${itemTitle}`}
                 title={itemTitle ?? ''}
                 subtitle={subtitle}
                 subtitleSize={RichTextSize.Md}
                 spacing={CardSpacing.Compact}
-                iconName={IconName.Sparkle}
+                iconName={icon}
                 iconWrapperClassName="size-12 rounded-full bg-black text-white dark:bg-black"
-                iconClassName="size-5 text-white"
+                iconClassName="size-7 text-white"
                 className="h-full bg-transparent shadow-none hover:translate-y-0 !rounded-none"
               />
             )
