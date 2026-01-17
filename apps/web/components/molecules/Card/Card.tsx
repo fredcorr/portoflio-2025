@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import Image from '@/components/atoms/Image/Image'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
-import Icon from '@/components/atoms/Icon/Icon'
+import Icon, { IconName } from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
 import { normalizePortableText } from '@/utils/portableText'
 import { ConditionalWrapper } from '@/components/hoc/ConditionalWrapper'
@@ -48,7 +48,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   spacing?: CardSpacing
   href?: string
   image?: SanityImage
-  iconName?: string
+  iconName?: IconName
   index?: number
   className?: string
   iconWrapperClassName?: string

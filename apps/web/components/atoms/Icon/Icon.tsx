@@ -1,30 +1,29 @@
 import React from 'react'
-import { icons } from 'lucide-react'
 
+import ArrowUpRight from '@/components/svgs/ArrowUpRight'
+import Sparkle from '@/components/svgs/Sparkle'
 import { cn } from '@/utils/cn'
 
-type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>
+type IconComponent = (props: React.SVGProps<SVGSVGElement>) => JSX.Element
 
-const normalizeLucideName = (name: string) =>
-  name
-    .split(/[-_\s]+/)
-    .filter(Boolean)
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('')
+export enum IconName {
+  ArrowUpRight = 'arrow-up-right',
+  Sparkle = 'sparkle',
+}
 
-const getLucideIcon = (name: string) => {
-  const lucideIcons = icons as Record<string, IconComponent>
-  return lucideIcons[name] ?? lucideIcons[normalizeLucideName(name)]
+const iconMap: Record<IconName, IconComponent> = {
+  [IconName.ArrowUpRight]: ArrowUpRight,
+  [IconName.Sparkle]: Sparkle,
 }
 
 export interface IconProps {
-  name: string
+  name: IconName
   title?: string
   className?: string
 }
 
-export const Icon = ({ name, className, title }: IconProps) => {
-  const Component = getLucideIcon(String(name ?? ''))
+export const Icon = ({ name, className }: IconProps) => {
+  const Component = iconMap[name]
 
   if (!Component) {
     return null

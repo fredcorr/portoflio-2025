@@ -4,7 +4,6 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
-import { lucideIconPicker } from 'sanity-plugin-lucide-icon-picker'
 
 if (!process.env.SANITY_STUDIO_PROJECT_ID) {
   throw new Error('Missing SANITY_STUDIO_PROJECT_ID environment variable')
@@ -25,7 +24,6 @@ export default defineConfig({
     structureTool({
       structure: (S, context) => structure(S, context),
     }),
-    lucideIconPicker(),
     visionTool(),
   ],
 

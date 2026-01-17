@@ -17,7 +17,6 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "sanity": "^4.10.2",
-    "sanity-plugin-lucide-icon-picker": "^1.0.3",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Image from '@/components/atoms/Image/Image'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { getContactEmail } from '@/utils/get-contact-email'
-import Icon from '@/components/atoms/Icon/Icon'
+import Icon, { IconName } from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
 
 const AboutPageHero = ({
@@ -80,7 +80,11 @@ const AboutPageHero = ({
             )}
           >
             <span>{contactEmail}</span>
-            <Icon name="arrow-up-right" className="size-5" title="Email" />
+            <Icon
+              name={IconName.ArrowUpRight}
+              className="size-5"
+              title="Email"
+            />
           </a>
         )}
       </div>
