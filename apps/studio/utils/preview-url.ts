@@ -35,7 +35,6 @@ export const resolvePreviewSlug = (document?: PreviewDocument) => {
 
 export const getPreviewUrl = (document?: PreviewDocument) => {
   const secret = process.env.SANITY_STUDIO_PREVIEW_SECRET
-  console.log(secret)
 
   if (!secret) {
     return null
