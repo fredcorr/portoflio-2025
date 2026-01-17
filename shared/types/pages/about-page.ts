@@ -3,5 +3,5 @@ import type { BasePageDocument, PageComponent } from "./base";
 
 export interface AboutPageDocument extends BasePageDocument {
   _type: PageTypeName.AboutPage;
-  pageComponents?: PageComponent[];
+  aboutComponents?: PageComponent[];
 }

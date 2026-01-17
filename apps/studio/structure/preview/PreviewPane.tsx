@@ -1,10 +1,24 @@
 import { Card, Flex, Text } from '@sanity/ui'
 import type { UserViewComponent } from 'sanity/structure'
+import { usePaneRouter } from 'sanity/structure'
 import { getPreviewUrl } from '@utils/preview-url'
+import { useEffect, useRef } from 'react'
 
 const PreviewPane: UserViewComponent = ({ document }) => {
   const doc = document.displayed
   const previewUrl = getPreviewUrl(doc)
+  const { duplicateCurrent, hasGroupSiblings } = usePaneRouter()
+  const hasSplit = useRef(false)
+
+  useEffect(() => {
+    if (hasSplit.current || hasGroupSiblings) {
+      hasSplit.current = true
+      return
+    }
+
+    duplicateCurrent({ params: { view: 'editor' } })
+    hasSplit.current = true
+  }, [duplicateCurrent, hasGroupSiblings])
 
   if (!previewUrl) {
     return (

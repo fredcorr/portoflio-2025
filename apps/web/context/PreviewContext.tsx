@@ -1,10 +1,10 @@
 'use client'
 
 import { LiveQueryProvider, useLiveQuery } from '@sanity/preview-kit'
-import type { QueryParams } from '@sanity/client'
+import type { QueryParams } from '@sanity/preview-kit/client'
 import { useEffect, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@sanity/client'
+import { createClient } from '@sanity/preview-kit/client'
 
 interface PreviewContextProps<T> {
   projectId: string
