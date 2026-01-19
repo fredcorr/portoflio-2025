@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
+import { lucideIconPicker } from '@fredcorr/sanity-plugin-lucide-icon-picker'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 
@@ -24,6 +25,7 @@ export default defineConfig({
     structureTool({
       structure: (S, context) => structure(S, context),
     }),
+    lucideIconPicker(),
     visionTool(),
   ],
 
