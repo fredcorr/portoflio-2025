@@ -56,10 +56,7 @@ export async function POST(request: Request) {
   }
 
   if (!recaptchaToken) {
-    return Response.json(
-      { error: 'Missing reCAPTCHA token.' },
-      { status: 400 }
-    )
+    return Response.json({ error: 'Missing reCAPTCHA token.' }, { status: 400 })
   }
 
   const verificationResponse = await fetch(RECAPTCHA_VERIFY_ENDPOINT, {
@@ -71,9 +68,7 @@ export async function POST(request: Request) {
     }).toString(),
   })
 
-  const verificationData = await verificationResponse
-    .json()
-    .catch(() => null)
+  const verificationData = await verificationResponse.json().catch(() => null)
 
   if (!verificationResponse.ok || !verificationData?.success) {
     return Response.json(
@@ -93,10 +88,7 @@ export async function POST(request: Request) {
     typeof verificationData.score === 'number' &&
     verificationData.score < RECAPTCHA_MIN_SCORE
   ) {
-    return Response.json(
-      { error: 'reCAPTCHA score too low.' },
-      { status: 400 }
-    )
+    return Response.json({ error: 'reCAPTCHA score too low.' }, { status: 400 })
   }
 
   const normalized: Record<string, string | string[]> = {}
