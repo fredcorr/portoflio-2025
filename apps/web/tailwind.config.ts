@@ -43,8 +43,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ['"Labil Grotesk"', 'Inter', 'sans-serif'],
-        display: ['"Labil Grotesk"', 'Inter', 'sans-serif'],
+        heading: ['var(--font-play)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-play)', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
         body: ['Roboto', 'Inter', 'system-ui', 'sans-serif'],
         accent: ['Acworth', 'Inter', 'sans-serif'],
