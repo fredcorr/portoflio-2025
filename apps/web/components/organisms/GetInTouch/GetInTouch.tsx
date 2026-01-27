@@ -6,6 +6,7 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Form from '@/components/molecules/Form/Form'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { normalizePortableText } from '@/utils/portableText'
 
@@ -23,6 +24,10 @@ const GetInTouch = ({
     prefix: 'get-in-touch',
   })
   const subtitleBlocks = normalizePortableText(subtitle as string | undefined)
+  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+  const recaptchaConfig = recaptchaSiteKey
+    ? { action: 'contact_form' }
+    : undefined
 
   return (
     <ComponentLayout
@@ -49,13 +54,30 @@ const GetInTouch = ({
         )}
       </div>
 
-      <Form
-        fields={formFields}
-        submitLabel="Submit"
-        success={success}
-        error={error}
-        className="max-w-2xl md:col-span-12 flex justify-center justify-self-center"
-      />
+      {recaptchaSiteKey ? (
+        <GoogleReCaptchaProvider
+          reCaptchaKey={recaptchaSiteKey}
+          scriptProps={{ async: true, defer: true, appendTo: 'head' }}
+        >
+          <Form
+            fields={formFields}
+            submitLabel="Submit"
+            success={success}
+            error={error}
+            recaptcha={recaptchaConfig}
+            className="max-w-2xl md:col-span-12 flex justify-center justify-self-center"
+          />
+        </GoogleReCaptchaProvider>
+      ) : (
+        <Form
+          fields={formFields}
+          submitLabel="Submit"
+          success={success}
+          error={error}
+          recaptcha={recaptchaConfig}
+          className="max-w-2xl md:col-span-12 flex justify-center justify-self-center"
+        />
+      )}
     </ComponentLayout>
   )
 }

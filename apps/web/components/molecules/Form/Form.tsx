@@ -7,6 +7,7 @@ import type {
   FormComponent,
   FormFieldItem,
 } from '@portfolio/types/components/form'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import Modal from '@/components/molecules/Modal/Modal'
 import RenderFormField from '@/components/hoc/RenderFormField'
 import { cn } from '@/utils'
@@ -18,6 +19,9 @@ export interface FormProps {
   success?: FormComponent['success']
   error?: FormComponent['error']
   className?: string
+  recaptcha?: {
+    action: string
+  }
 }
 
 type FormValues = Record<string, unknown>
@@ -28,7 +32,9 @@ export const Form = ({
   success,
   error,
   className,
+  recaptcha,
 }: FormProps) => {
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const resolverSchema = buildValidationSchema(fields)
 
   const {
@@ -47,11 +53,30 @@ export const Form = ({
 
   const onSubmit = async (values: FormValues) => {
     try {
-      // Replace with real submission in production
-      await new Promise(resolve => setTimeout(resolve, 300))
-      setStatus('success')
-      console.log(values)
+      let payload: FormValues = values
 
+      if (recaptcha) {
+        if (!executeRecaptcha) {
+          throw new Error('reCAPTCHA is unavailable.')
+        }
+        const token = await executeRecaptcha(recaptcha.action)
+        payload = { ...values, recaptchaToken: token }
+      }
+
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null)
+        const message =
+          payload?.error || payload?.message || 'Submission failed.'
+        throw new Error(message)
+      }
+
+      setStatus('success')
       reset()
     } catch (err) {
       console.error('Form submission failed', err)
