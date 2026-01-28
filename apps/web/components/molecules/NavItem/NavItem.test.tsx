@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+
+import { navItemMock } from '@/mocks/molecules/nav-item'
+import NavItem, { NavItemLayout } from './NavItem'
+
+test('renders label, count, and active state', () => {
+  const markup = renderToStaticMarkup(<NavItem {...navItemMock} />)
+
+  assert.match(markup, /data-molecule="nav-item"/)
+  assert.match(markup, /Projects/)
+  assert.match(markup, />8</)
+  assert.match(markup, /aria-current="page"/)
+})
+
+test('hides count when item is not projects', () => {
+  const markup = renderToStaticMarkup(
+    <NavItem
+      item={{
+        _id: 'contact-page',
+        title: 'Contact',
+        slug: {
+          _type: 'slug',
+          current: '/contact',
+        },
+      }}
+      currentPath="/contact"
+      projectCount={12}
+      layout={NavItemLayout.Row}
+      isOpen={false}
+      index={1}
+    />
+  )
+
+  assert.doesNotMatch(markup, />12</)
+})

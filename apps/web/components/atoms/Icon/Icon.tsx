@@ -31,7 +31,14 @@ export const Icon = ({ name, className, title }: IconProps) => {
   }
 
   return (
-    <Component className={cn('inline-block', className)} data-icon={name} />
+    <Component
+      className={cn('inline-block', className)}
+      data-icon={name}
+      aria-hidden={title ? undefined : true}
+      role={title ? 'img' : undefined}
+    >
+      {title && <title>{title}</title>}
+    </Component>
   )
 }
 

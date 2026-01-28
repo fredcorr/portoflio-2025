@@ -75,7 +75,10 @@ export const ThemeToggle = () => {
   const isDark = theme === Theme.Dark
 
   return (
-    <div className="pointer-events-none fixed bottom-6 right-6 z-50 flex items-center justify-end">
+    <div
+      id="theme-toggle"
+      className="pointer-events-none fixed bottom-6 right-6 z-50 flex items-center justify-end"
+    >
       <button
         type="button"
         onClick={handleToggle}

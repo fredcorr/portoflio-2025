@@ -15,6 +15,7 @@ import type { TestimonialsComponent } from './testimonials'
 import type { ToolSetComponent } from './tool-set'
 import type { ProjectIntroProps } from './project-intro'
 import type { BreadcrumbItem } from './breadcrumbs'
+import type { NavigationData, NavigationItem } from './navigation'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -45,6 +46,8 @@ export type { SanityComponentBase } from './base-component'
 export type { ComponentHeading } from './title'
 export type { ProjectIntroProps } from './project-intro'
 export type { BreadcrumbItem } from './breadcrumbs'
+export type { NavigationData } from './navigation'
+export type { NavigationItem } from './navigation'
 
 export type Components =
   | HomePageHeroComponent

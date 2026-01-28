@@ -1,0 +1,212 @@
+'use client'
+
+import React from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import type { NavigationItem } from '@portfolio/types/components'
+
+import Logo from '@/components/atoms/Logo/Logo'
+import Icon from '@/components/atoms/Icon/Icon'
+import NavItem, { NavItemLayout } from '@/components/molecules/NavItem/NavItem'
+import { cn } from '@/utils/cn'
+import useFocusTrap from '@/utils/use-focus-trap'
+import useLockScroll from '@/utils/use-lock-scroll'
+
+export interface NavigationProps {
+  items: NavigationItem[]
+  projectCount?: number
+  className?: string
+}
+
+const Navigation = ({ items, projectCount, className }: NavigationProps) => {
+  const pathname = usePathname()
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [isHidden, setIsHidden] = React.useState(false)
+  const [currentPath, setCurrentPath] = React.useState('')
+  const lastScrollYRef = React.useRef(0)
+  const lastTickRef = React.useRef(0)
+  const menuRef = React.useRef<HTMLDivElement | null>(null)
+  const menuId = React.useId()
+
+  React.useEffect(() => {
+    pathname && setCurrentPath(pathname)
+  }, [pathname])
+
+  const handleToggle = React.useCallback(() => {
+    setIsOpen(previous => !previous)
+  }, [])
+
+  const handleNavigate = React.useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
+  React.useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
+  useLockScroll(isOpen)
+  useFocusTrap({
+    active: isOpen,
+    containerRef: menuRef,
+    onDeactivate: handleNavigate,
+  })
+
+  const handleScroll = React.useCallback(() => {
+    const now = Date.now()
+    const lastTick = lastTickRef.current
+    const shouldRun = now - lastTick > 120
+
+    shouldRun && (lastTickRef.current = now)
+    shouldRun &&
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY
+        const lastScrollY = lastScrollYRef.current
+        const isScrollingDown = currentScrollY > lastScrollY
+        const shouldHide = isScrollingDown && currentScrollY > 80
+
+        setIsHidden(shouldHide)
+        lastScrollYRef.current = currentScrollY
+      })
+  }, [])
+
+  React.useEffect(() => {
+    lastScrollYRef.current = window.scrollY
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
+
+  let buttonLabel = 'Open navigation menu'
+  isOpen && (buttonLabel = 'Close navigation menu')
+
+  return (
+    <header
+      data-organism="navigation"
+      data-development="Sticky navigation that stays visible when not scrolling."
+      className={cn(
+        'sticky top-0 z-50 px-4 transition-[transform,opacity] duration-300 md:px-6',
+        'rounded-bl-[32px] rounded-br-[32px] bg-surface-1 text-black shadow-[inset_0px_-6px_10px_rgba(0,0,0,0.07)] dark:text-foreground dark:shadow-[inset_0px_-6px_10px_rgba(255,255,255,0.07)] md:shadow-[inset_0px_-6px_10px_rgba(0,0,0,0.07)] md:dark:shadow-[inset_0px_-6px_10px_rgba(255,255,255,0.07)]',
+        isHidden && '-translate-y-24 pointer-events-none opacity-0',
+        className
+      )}
+    >
+      <div
+        aria-hidden={!isOpen}
+        className={cn(
+          'fixed inset-0 z-30 bg-black/15 opacity-0 transition-opacity duration-300 motion-reduce:transition-none md:hidden',
+          'dark:bg-white/5',
+          isOpen && 'pointer-events-auto opacity-100',
+          !isOpen && 'pointer-events-none'
+        )}
+        onClick={handleNavigate}
+      />
+      <nav className="relative mx-auto w-full max-w-[1440px]">
+        <div
+          className={cn(
+            'relative z-50 flex items-center justify-between px-4 py-4 transition-shadow',
+            'md:px-0 md:py-[1.29rem]',
+            isOpen && 'rounded-b-none',
+            'dark:text-foreground'
+          )}
+        >
+          <Link
+            href="/"
+            aria-label="Go to homepage"
+            className="inline-flex items-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white"
+          >
+            <Logo className="h-[2.7rem] text-[#000000] dark:text-white" />
+          </Link>
+
+          <div className="hidden items-center md:flex">
+            <ul className="flex items-center gap-3 text-black dark:text-foreground">
+              {items.map((item, index) => (
+                <NavItem
+                  key={item._id}
+                  item={item}
+                  currentPath={currentPath}
+                  projectCount={projectCount}
+                  layout={NavItemLayout.Row}
+                  isOpen={isOpen}
+                  index={index}
+                  onNavigate={handleNavigate}
+                />
+              ))}
+            </ul>
+          </div>
+
+          <button
+            type="button"
+            aria-label={buttonLabel}
+            aria-expanded={isOpen}
+            aria-controls={menuId}
+            onClick={handleToggle}
+            className={cn(
+              'relative inline-flex size-10 items-center justify-center rounded-full bg-black text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black md:hidden',
+              'dark:bg-white dark:text-surface-1'
+            )}
+          >
+            <span className="relative size-6">
+              <Icon
+                name="menu"
+                className={cn(
+                  'absolute inset-0 size-6 transition-all duration-300',
+                  !isOpen && 'opacity-100 rotate-0 scale-100',
+                  isOpen && 'opacity-0 -rotate-90 scale-75'
+                )}
+                title="Open menu"
+              />
+              <Icon
+                name="x"
+                className={cn(
+                  'absolute inset-0 size-6 transition-all duration-300',
+                  isOpen && 'opacity-100 rotate-0 scale-100',
+                  !isOpen && 'opacity-0 rotate-90 scale-75'
+                )}
+                title="Close menu"
+              />
+            </span>
+          </button>
+        </div>
+
+        <div
+          id={menuId}
+          role="dialog"
+          aria-modal="true"
+          data-development="Menu opens on click with staggered item transitions."
+          ref={menuRef}
+          aria-hidden={!isOpen}
+          tabIndex={-1}
+          className={cn(
+            'fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-surface-1 transition-[opacity,transform] duration-300 motion-reduce:transition-none md:hidden',
+            isOpen && 'opacity-100',
+            !isOpen && 'pointer-events-none opacity-0 -translate-y-2'
+          )}
+        >
+          <div className="flex min-h-screen w-full flex-col items-center justify-center px-4 py-8 pb-[calc(2rem+env(safe-area-inset-bottom))]">
+            <button type="button" onClick={handleNavigate} className="sr-only">
+              Close navigation menu
+            </button>
+            <ul className="flex w-full flex-col items-center gap-4 text-center text-black dark:text-foreground">
+              {items.map((item, index) => (
+                <NavItem
+                  key={item._id}
+                  item={item}
+                  currentPath={currentPath}
+                  projectCount={projectCount}
+                  layout={NavItemLayout.Column}
+                  isOpen={isOpen}
+                  index={index}
+                  onNavigate={handleNavigate}
+                />
+              ))}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+  )
+}
+
+export default Navigation

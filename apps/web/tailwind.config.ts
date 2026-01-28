@@ -13,6 +13,10 @@ const config: Config = {
         background: 'var(--color-background)',
         foreground: 'var(--color-foreground)',
         black: 'var(--color-black)',
+        surface: {
+          1: 'var(--color-surface-1)',
+          2: 'var(--color-surface-2)',
+        },
         gray: {
           50: 'var(--color-gray-50)',
           100: 'var(--color-gray-100)',
