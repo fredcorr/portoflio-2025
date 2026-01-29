@@ -72,15 +72,13 @@ export default async function Page({ params }: PageProps) {
   const content = (
     <>
       {breadcrumbSchema && (
-        <Head>
-          <Script
-            id="breadcrumb-ld-json"
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(breadcrumbSchema),
-            }}
-          />
-        </Head>
+        <Script
+          id="breadcrumb-ld-json"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema),
+          }}
+        />
       )}
       {isDraft && <PreviewBanner />}
       <RenderTemplate page={page} />
