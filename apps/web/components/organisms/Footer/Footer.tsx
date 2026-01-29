@@ -58,8 +58,7 @@ const Footer: React.FC<FooterProps> = ({ email, socialLinks, className }) => {
           >
             {socialLinks?.map((link, index) => {
               const href = getLinkHref(link)
-              const label =
-                link?.name || link?.internal_ref?.title || link?.url
+              const label = link?.name || link?.internal_ref?.title || link?.url
               const linkKey =
                 link?.internal_ref?._id ||
                 link?.url ||

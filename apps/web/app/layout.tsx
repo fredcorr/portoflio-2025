@@ -5,7 +5,6 @@ import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
 import { Footer, Navigation } from '@/components/organisms'
 import SettingsProvider from '@/context/settings-context'
 import getSettings from '@/utils/get-settings'
-import { log } from 'node:console'
 
 export const metadata: Metadata = {
   title: 'Portfolio 2025',
@@ -41,10 +40,7 @@ export default async function RootLayout({
           >
             {children}
           </main>
-          <Footer
-            email={settings?.email}
-            socialLinks={settings?.socialLinks}
-          />
+          <Footer email={settings?.email} socialLinks={settings?.socialLinks} />
           <ThemeToggle />
         </SettingsProvider>
       </body>

@@ -44,14 +44,17 @@ const NavItem = ({
   const hasCount = Boolean(showCount)
   const isActive = currentPath === href
   let transitionDelay = '0ms'
-  isOpen &&
-    typeof index === 'number' &&
-    Number.isFinite(index) &&
-    (transitionDelay = `${index * 60}ms`)
+  if (isOpen && typeof index === 'number' && Number.isFinite(index)) {
+    transitionDelay = `${index * 60}ms`
+  }
   let ariaCurrent: 'page' | undefined
-  isActive && (ariaCurrent = 'page')
+  if (isActive && Boolean(label)) {
+    ariaCurrent = 'page'
+  }
   let ariaLabel = label
-  hasCount && (ariaLabel = `${label} (${projectCount})`)
+  if (hasCount && typeof projectCount === 'number') {
+    ariaLabel = `${label} (${projectCount})`
+  }
   const shouldRender = Boolean(label)
   const style = transitionDelay && { transitionDelay }
 

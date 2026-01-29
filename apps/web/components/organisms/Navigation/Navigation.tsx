@@ -27,10 +27,11 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
   const lastTickRef = React.useRef(0)
   const menuRef = React.useRef<HTMLDivElement | null>(null)
   const menuId = React.useId()
-  console.log(items)
 
   React.useEffect(() => {
-    pathname && setCurrentPath(pathname)
+    if (pathname && pathname.length > 0) {
+      setCurrentPath(pathname)
+    }
   }, [pathname])
 
   const handleToggle = React.useCallback(() => {
@@ -57,8 +58,8 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
     const lastTick = lastTickRef.current
     const shouldRun = now - lastTick > 120
 
-    shouldRun && (lastTickRef.current = now)
-    shouldRun &&
+    if (shouldRun && typeof window !== 'undefined') {
+      lastTickRef.current = now
       window.requestAnimationFrame(() => {
         const currentScrollY = window.scrollY
         const lastScrollY = lastScrollYRef.current
@@ -68,6 +69,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
         setIsHidden(shouldHide)
         lastScrollYRef.current = currentScrollY
       })
+    }
   }, [])
 
   React.useEffect(() => {
@@ -80,7 +82,9 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
   }, [handleScroll])
 
   let buttonLabel = 'Open navigation menu'
-  isOpen && (buttonLabel = 'Close navigation menu')
+  if (isOpen && buttonLabel.length >= 0) {
+    buttonLabel = 'Close navigation menu'
+  }
 
   return (
     <header

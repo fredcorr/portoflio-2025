@@ -139,14 +139,18 @@ const AnimatedStatValue = ({
     if (typeof IntersectionObserver === 'undefined') {
       animate()
       return () => {
-        rafId && window.cancelAnimationFrame(rafId)
+        if (rafId && typeof window !== 'undefined') {
+          window.cancelAnimationFrame(rafId)
+        }
       }
     }
 
     const observer = new IntersectionObserver(
       entries => {
         const entry = entries[0]
-        entry && entry.isIntersecting && animate()
+        if (entry && entry.isIntersecting) {
+          animate()
+        }
       },
       { threshold: 0.5 }
     )
@@ -154,7 +158,9 @@ const AnimatedStatValue = ({
     observer.observe(element)
 
     return () => {
-      rafId && window.cancelAnimationFrame(rafId)
+      if (rafId && typeof window !== 'undefined') {
+        window.cancelAnimationFrame(rafId)
+      }
       observer.disconnect()
     }
   }, [durationMs, parsed])

@@ -35,7 +35,9 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
   const contentId = `${baseId}-content`
 
   const updateContentHeight = React.useCallback(() => {
-    contentElement && setContentHeight(contentElement.scrollHeight)
+    if (contentElement && typeof contentElement.scrollHeight === 'number') {
+      setContentHeight(contentElement.scrollHeight)
+    }
   }, [contentElement])
 
   useResizeObserver({
