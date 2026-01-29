@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Play } from 'next/font/google'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
-import { Navigation } from '@/components/organisms'
+import { Footer, Navigation } from '@/components/organisms'
 import SettingsProvider from '@/context/settings-context'
 import getSettings from '@/utils/get-settings'
 import { log } from 'node:console'
@@ -41,6 +41,10 @@ export default async function RootLayout({
           >
             {children}
           </main>
+          <Footer
+            email={settings?.email}
+            socialLinks={settings?.socialLinks}
+          />
           <ThemeToggle />
         </SettingsProvider>
       </body>

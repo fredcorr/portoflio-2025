@@ -16,6 +16,8 @@ import type { ToolSetComponent } from './tool-set'
 import type { ProjectIntroProps } from './project-intro'
 import type { BreadcrumbItem } from './breadcrumbs'
 import type { NavigationData, NavigationItem } from './navigation'
+import type { LinkInternalReference, LinkItem } from './link'
+import type { FooterProps } from './footer'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -48,6 +50,8 @@ export type { ProjectIntroProps } from './project-intro'
 export type { BreadcrumbItem } from './breadcrumbs'
 export type { NavigationData } from './navigation'
 export type { NavigationItem } from './navigation'
+export type { LinkInternalReference, LinkItem } from './link'
+export type { FooterProps } from './footer'
 
 export type Components =
   | HomePageHeroComponent
