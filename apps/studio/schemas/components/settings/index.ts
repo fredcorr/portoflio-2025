@@ -4,6 +4,7 @@ import { GlobalItemsType } from '@portfolio/types/base'
 import String from '@components/atoms/string'
 import Link from '@components/atoms/link'
 import List from '@components/atoms/list'
+import NavigationReference from '@components/atoms/navigation-reference'
 
 const SettingsSchema = defineType({
   name: GlobalItemsType.Settings,
@@ -14,6 +15,18 @@ const SettingsSchema = defineType({
       name: 'email',
       title: 'Email',
       description: 'Public contact email address displayed across the site.',
+    }),
+    List({
+      name: 'navigationItems',
+      title: 'Navigation items',
+      description: 'Pick pages flagged to show in the primary navigation.',
+      of: [
+        NavigationReference({
+          name: 'navigationItem',
+          title: 'Navigation item',
+          description: 'References a page with “Show in navigation” enabled.',
+        }),
+      ],
     }),
     List({
       name: 'socialLinks',

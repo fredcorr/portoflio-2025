@@ -14,6 +14,7 @@ import { getPageHeroImage } from '@/utils/get-page-hero-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
 import PreviewContext from '@/context/PreviewContext'
 import { sanityConfig } from '@/sanity/config'
+import Head from 'next/head'
 
 export const revalidate = 10
 
@@ -71,18 +72,18 @@ export default async function Page({ params }: PageProps) {
   const content = (
     <>
       {breadcrumbSchema && (
-        <Script
-          id="breadcrumb-ld-json"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbSchema),
-          }}
-        />
+        <Head>
+          <Script
+            id="breadcrumb-ld-json"
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(breadcrumbSchema),
+            }}
+          />
+        </Head>
       )}
-      <main className="container mx-auto">
-        {isDraft && <PreviewBanner />}
-        <RenderTemplate page={page} />
-      </main>
+      {isDraft && <PreviewBanner />}
+      <RenderTemplate page={page} />
     </>
   )
 

@@ -3,7 +3,9 @@ import { Play } from 'next/font/google'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
 import { Navigation } from '@/components/organisms'
-import getNavigation from '@/utils/get-navigation'
+import SettingsProvider from '@/context/settings-context'
+import getSettings from '@/utils/get-settings'
+import { log } from 'node:console'
 
 export const metadata: Metadata = {
   title: 'Portfolio 2025',
@@ -22,25 +24,25 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const navigation = await getNavigation()
-  const items = navigation?.items ?? []
-  const shouldRenderNavigation = items.length > 0
+  const { settings, projectCount } = await getSettings()
+  const items = settings?.navigationItems ?? []
 
   return (
     <html lang="en">
       <body
         className={`${play.variable} min-h-screen bg-background text-foreground antialiased transition-colors duration-150`}
+        suppressHydrationWarning
       >
-        {shouldRenderNavigation && (
-          <Navigation items={items} projectCount={navigation?.projectCount} />
-        )}
-        <main
-          id="main-content"
-          className="min-h-screen w-full xl:mx-auto xl:max-w-8xl"
-        >
-          {children}
-        </main>
-        <ThemeToggle />
+        <SettingsProvider initialSettings={settings}>
+          <Navigation items={items} projectCount={projectCount} />
+          <main
+            id="main-content"
+            className="min-h-screen w-full xl:mx-auto xl:max-w-8xl container mx-auto"
+          >
+            {children}
+          </main>
+          <ThemeToggle />
+        </SettingsProvider>
       </body>
     </html>
   )

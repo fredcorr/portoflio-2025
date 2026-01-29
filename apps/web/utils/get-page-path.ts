@@ -1,12 +1,12 @@
 import type { SanitySlug } from '@portfolio/types/sanity'
 
 export interface GetPagePathOptions {
-  slug?: SanitySlug | null
+  slug?: string | null
   fallback?: string
 }
 
 const getPagePath = ({ slug, fallback = '/' }: GetPagePathOptions) => {
-  const current = slug?.current?.trim()
+  const current = slug?.trim()
 
   if (!current || current === '/') {
     return fallback

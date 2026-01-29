@@ -1,9 +1,12 @@
-import type { BasePageDocument } from '../pages/base'
+import { PageTypeName } from "../base";
+import { SanitySlug } from "../sanity";
 
-export interface NavigationItem
-  extends Pick<BasePageDocument, '_id' | 'title' | 'slug'> {}
-
-export interface NavigationData {
-  items: NavigationItem[]
-  projectCount?: number
+export interface NavigationItem {
+  showInNavigation: boolean;
+  slug: SanitySlug;
+  title: string;
+  _id: string;
+  _type: PageTypeName;
 }
+
+export interface NavigationData {}

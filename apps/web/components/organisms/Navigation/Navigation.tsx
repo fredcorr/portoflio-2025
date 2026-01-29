@@ -27,6 +27,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
   const lastTickRef = React.useRef(0)
   const menuRef = React.useRef<HTMLDivElement | null>(null)
   const menuId = React.useId()
+  console.log(items)
 
   React.useEffect(() => {
     pathname && setCurrentPath(pathname)
