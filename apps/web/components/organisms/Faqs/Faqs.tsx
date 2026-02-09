@@ -54,7 +54,7 @@ const Faqs = ({ _id, _key, title, questions }: FaqsComponent) => {
         <div
           className={cn(
             cardColumnClassName,
-            'min-w-0 divide-y divide-black/10 rounded-[32px] bg-gray-50 p-6 dark:divide-foreground/20 dark:bg-background md:p-10'
+            'min-w-0 divide-y divide-black/10 rounded-[32px] p-6 md:p-0'
           )}
         >
           {questions.map((item, index) => (
@@ -62,6 +62,7 @@ const Faqs = ({ _id, _key, title, questions }: FaqsComponent) => {
               key={item._key ?? `faq-${index}`}
               question={item.question}
               answer={item.answer}
+              {...(index === 0 && { className: '[&>button]:pt-0' })}
             />
           ))}
         </div>

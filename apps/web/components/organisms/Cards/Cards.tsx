@@ -25,7 +25,7 @@ const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
               <Heading
                 id={headingId}
                 level={title.headingLevel}
-                className="font-heading text-heading-2 font-semibold leading-[1.1] tracking-tight"
+                className="font-heading text-heading-2 leading-[1.1] tracking-tight"
               >
                 {title.heading}
               </Heading>
@@ -51,8 +51,8 @@ const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
               key={item._key ?? `card-${index}`}
               title={`• ${item.title || `Card ${index + 1}`}`}
               subtitle={item.subtitle}
-              subtitleSize={RichTextSize.Md}
-              className="h-full max-w-[480px]"
+              subtitleSize={RichTextSize.Lg}
+              className="h-full pr-4"
             />
           ))}
         </div>

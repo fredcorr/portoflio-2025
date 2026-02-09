@@ -38,7 +38,7 @@ const AboutPageHero = ({
             <Heading
               id={headingId}
               level={headingLevel}
-              className="font-heading text-display-2xl font-semibold leading-[0.95] tracking-tight whitespace-pre-line"
+              className="font-heading text-display-2xl leading-[0.95] tracking-tight whitespace-pre-line"
             >
               {headline}
             </Heading>

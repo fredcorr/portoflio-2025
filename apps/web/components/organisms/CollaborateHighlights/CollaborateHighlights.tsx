@@ -27,7 +27,7 @@ const CollaborateHighlights = ({
         <Heading
           id={headingId}
           level={title.headingLevel}
-          className="md:col-span-6 font-heading text-heading-1 font-semibold leading-[1.1] tracking-tight whitespace-pre-line"
+          className="md:col-span-6 font-heading text-heading-1 leading-[1.1] tracking-tight whitespace-pre-line"
         >
           {title.heading}
         </Heading>
@@ -44,8 +44,8 @@ const CollaborateHighlights = ({
                 subtitleSize={RichTextSize.Md}
                 spacing={CardSpacing.Compact}
                 iconName={icon}
-                iconWrapperClassName="size-12 rounded-full bg-black text-white dark:bg-black"
-                iconClassName="size-7 text-white"
+                iconWrapperClassName="size-12 rounded-full bg-black text-background"
+                iconClassName="size-7 text-background"
                 className="h-full bg-transparent shadow-none hover:translate-y-0 !rounded-none"
               />
             )

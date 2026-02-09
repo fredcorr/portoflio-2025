@@ -26,8 +26,7 @@ const ToolCard = ({ title, subtitle, image, className }: ToolCardProps) => {
   return (
     <li
       className={cn(
-        'flex h-[146px] w-full items-center justify-center rounded-[16px] bg-gray-50 p-2 dark:bg-gray-100',
-        'sm:w-[280px]',
+        'flex h-[146px] items-center justify-center rounded-[16px] bg-gray-50 p-2 dark:bg-gray-100',
         className
       )}
       data-molecule="tool-card"

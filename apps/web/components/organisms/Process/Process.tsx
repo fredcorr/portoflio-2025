@@ -27,7 +27,7 @@ const Process = ({ _id, _key, title, steps }: ProcessComponent) => {
         <Heading
           id={headingId}
           level={title.headingLevel}
-          className="md:col-span-12 font-heading text-heading-2 font-semibold leading-[1.2] tracking-tight"
+          className="md:col-span-12 font-heading text-heading-2 leading-[1.2] tracking-tight"
         >
           {title.heading}
         </Heading>
@@ -42,7 +42,7 @@ const Process = ({ _id, _key, title, steps }: ProcessComponent) => {
             const isRightColumn = index % 2 === 1
             return (
               <Card
-                key={_key}
+                key={step._key}
                 title={`${formatStepNumber(index)} ${step.title}`}
                 titleSize={CardTitleSize.Small}
                 subtitle={step.subtitle}

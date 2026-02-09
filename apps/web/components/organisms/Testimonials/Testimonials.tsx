@@ -33,7 +33,7 @@ const Testimonials = ({
           <Heading
             id={headingId}
             level={title?.headingLevel}
-            className="font-heading text-heading-1 font-semibold leading-[1.1] tracking-tight mb-0"
+            className="font-heading text-heading-1 leading-[1.1] tracking-tight mb-0"
           >
             {title?.heading}
           </Heading>
@@ -66,7 +66,7 @@ const Testimonials = ({
               return (
                 <SwiperSlide key={_key}>
                   <article
-                    className="flex flex-col gap-y-[81px] p-2 transition md:flex-row md:items-end md:gap-x-[81px] md:gap-y-0"
+                    className="flex flex-col gap-y-8 p-2 transition lg:flex-row lg:items-end lg:gap-x-[81px] lg:gap-y-0"
                     aria-labelledby={`${_key}-title`}
                   >
                     {quote.length > 0 ? (
@@ -74,7 +74,7 @@ const Testimonials = ({
                         <RichText value={quote} size={RichTextSize.XXl} />
                       </blockquote>
                     ) : null}
-                    <div className="flex w-full flex-col items-start gap-3 md:w-auto md:items-end">
+                    <div className="flex w-full flex-col items-start gap-3 lg:w-auto lg:items-end">
                       {!!testimonial.title && (
                         <Heading
                           id={`${_key}-title`}

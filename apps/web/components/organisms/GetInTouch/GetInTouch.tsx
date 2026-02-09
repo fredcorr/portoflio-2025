@@ -40,7 +40,7 @@ const GetInTouch = ({
           <Heading
             id={headingId}
             level={title.headingLevel}
-            className="max-w-3xl font-heading text-heading-1 font-semibold leading-[1.1] tracking-tight"
+            className="max-w-3xl font-heading text-heading-1 leading-[1.1] tracking-tight"
           >
             {title.heading}
           </Heading>

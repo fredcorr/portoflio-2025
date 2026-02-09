@@ -22,7 +22,7 @@ const ToolSet = ({ _id, _key, title, tools }: ToolSetComponent) => {
   return (
     <ComponentLayout
       {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
-      className={'text-black dark:text-foreground lg:px-[112px] lg:py-[72px]'}
+      className={'text-black dark:text-foreground'}
       contentClassName="gap-y-10"
       data-organism="tool-set"
       data-figma-node-id="3595:2419"
@@ -38,13 +38,14 @@ const ToolSet = ({ _id, _key, title, tools }: ToolSetComponent) => {
       )}
 
       {hasTools && tools && (
-        <ul className="md:col-span-12 flex flex-wrap justify-center items-center gap-8">
+        <ul className="md:col-span-12 flex flex-wrap items-stretch gap-8">
           {tools.map((tool, index) => (
             <ToolCard
               key={tool._key ?? `tool-${index}`}
               title={tool.title}
               subtitle={tool.subtitle}
               image={tool.image}
+              className="flex-1 basis-[calc(50%-16px)] lg:basis-[calc(25%-24px)]"
             />
           ))}
         </ul>

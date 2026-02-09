@@ -20,7 +20,7 @@ const AnimatedStrapline = ({ strapline }: AnimatedStraplineComponent) => {
   return (
     <ComponentLayout
       aria-label="Animated strapline"
-      className="!bg-transparent text-white !py-0 dark:text-white"
+      className="!bg-transparent text-background !py-0"
       contentClassName="gap-y-0 px-0"
       fullBleed
       overflowHidden={false}
@@ -32,7 +32,7 @@ const AnimatedStrapline = ({ strapline }: AnimatedStraplineComponent) => {
           style={bleedStyle}
         >
           <div
-            className="pointer-events-none absolute inset-0 bg-neutral-950 dark:bg-neutral-950"
+            className="pointer-events-none absolute inset-0 bg-black"
             aria-hidden="true"
           />
           <div className="relative px-4 md:px-6 lg:px-8">
@@ -43,12 +43,12 @@ const AnimatedStrapline = ({ strapline }: AnimatedStraplineComponent) => {
               {marqueeSegments.map((text, index) => (
                 <span
                   key={`strapline-segment-${index}`}
-                  className="inline-flex items-center gap-6 py-4 font-heading text-display-xl font-semibold leading-[1.1] tracking-tight text-white"
+                  className="inline-flex items-center gap-6 py-4 font-heading text-display-xl font-semibold leading-[1.1] tracking-tight text-background"
                 >
                   <span>{text}</span>
                   <span
                     aria-hidden="true"
-                    className="text-4xl font-semibold leading-none text-white/70 dark:text-white/60"
+                    className="text-4xl font-semibold leading-none text-background/70"
                   >
                     •
                   </span>

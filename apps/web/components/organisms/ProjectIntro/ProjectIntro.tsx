@@ -54,6 +54,7 @@ const ProjectIntro = ({
             width={heroImage.asset.metadata?.dimensions?.width || 1200}
             height={heroImage.asset.metadata?.dimensions?.height || 1024}
             className="transition duration-300 group-hover:scale-[1.01]"
+            wrapperClassName="w-full max-h-[60vh]"
           />
         </div>
       )}
