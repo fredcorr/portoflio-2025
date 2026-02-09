@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import { navItemMock } from '@/mocks/molecules/nav-item'
 import NavItem, { NavItemLayout } from './NavItem'
+import { PageTypeName } from '@portfolio/types/base'
 
 test('renders label, count, and active state', () => {
   const markup = renderToStaticMarkup(<NavItem {...navItemMock} />)
@@ -21,6 +22,8 @@ test('hides count when item is not projects', () => {
       item={{
         _id: 'contact-page',
         title: 'Contact',
+        showInNavigation: true,
+        _type: PageTypeName.ContactPage,
         slug: {
           _type: 'slug',
           current: '/contact',

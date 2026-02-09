@@ -2,11 +2,12 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { ComponentTypeName } from '@portfolio/types/base'
+import type { HomePageHeroComponent } from '@portfolio/types/components'
 import { HomePageHero } from './HomePageHero'
 
 const createHero = (
-  overrides: Partial<Parameters<typeof HomePageHero>[0]> = {}
-) => ({
+  overrides: Partial<HomePageHeroComponent> = {}
+): HomePageHeroComponent => ({
   _type: ComponentTypeName.HomePageHero,
   title: 'Websites & Branding',
   subtitle:

@@ -1,6 +1,7 @@
 import { PageTypeName } from '@portfolio/types/base'
 import { CmsPages } from '@portfolio/types/pages'
 import {
+  ArticleTemplate,
   ContactTemplate,
   ProjectTemplate,
   AboutTemplate,
@@ -22,6 +23,8 @@ export const RenderTemplate = ({ page }: RenderTemplateProps) => {
       return <AboutTemplate {...page} />
     case PageTypeName.ContactPage:
       return <ContactTemplate {...page} />
+    case PageTypeName.ArticlePage:
+      return <ArticleTemplate {...page} />
     case PageTypeName.Page:
       return <PageTemplate {...page} />
     default:

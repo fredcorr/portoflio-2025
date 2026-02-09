@@ -12,6 +12,7 @@ export const PAGE_STRUCTURE_TYPES = new Set<string>([
   PageTypeName.ProjectPage as string,
   PageTypeName.AboutPage as string,
   PageTypeName.ContactPage as string,
+  PageTypeName.ArticlePage as string,
 ])
 
 const PagesItem = (S: StructureBuilder, context: StructureResolverContext) =>

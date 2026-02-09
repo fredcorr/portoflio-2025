@@ -2,11 +2,14 @@ import { PageTypeName } from "../base";
 import { SanitySlug } from "../sanity";
 
 export interface NavigationItem {
-  showInNavigation: boolean;
+  showInNavigation?: boolean;
   slug: SanitySlug;
   title: string;
   _id: string;
-  _type: PageTypeName;
+  _type?: PageTypeName;
 }
 
-export interface NavigationData {}
+export interface NavigationData {
+  items: NavigationItem[]
+  projectCount?: number
+}

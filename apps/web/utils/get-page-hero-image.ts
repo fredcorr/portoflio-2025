@@ -7,5 +7,9 @@ export const getPageHeroImage = (page: CmsPages): SanityImage | undefined => {
     return page.projectHero
   }
 
+  if (page._type === PageTypeName.ArticlePage && page.heroImage) {
+    return page.heroImage
+  }
+
   return undefined
 }

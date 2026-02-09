@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 - Monorepo uses npm workspaces + Turborepo; run commands from the repo root.
-- `apps/web`: Next.js 15 (app router) with Tailwind; routes under `app/`, UI in `components/` (atoms/organisms/templates) with co-located tests.
+- `apps/web`: Next.js 15 (app router) with Tailwind; routes under `app/`, UI in `components/` (atoms/molecules/organisms) with co-located tests.
 - `apps/studio`: Sanity Studio; schemas and desk config live here.
 - `shared/types`: Canonical TypeScript models exposed via the `@portfolio/types` path alias. `shared/config/.prettierrc.json` holds shared formatting defaults.
 - Environment templates: `.env.example` at root; optional `apps/*/.env.example` when an app needs overrides.

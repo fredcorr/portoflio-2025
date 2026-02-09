@@ -3,6 +3,7 @@ import Project from './components/pages/project'
 import Page from './components/pages/page'
 import About from './components/pages/about'
 import Contact from './components/pages/contact'
+import Article from './components/pages/article'
 import HomePageHero from './components/organisms/homepage-hero'
 import ProjectListing from './components/organisms/project-listing'
 import Testimonial from './components/organisms/testimonials'
@@ -26,6 +27,7 @@ export const schemaTypes = [
   Page,
   About,
   Contact,
+  Article,
   Settings,
   ProjectListing,
   Testimonial,

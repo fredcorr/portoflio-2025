@@ -3,6 +3,7 @@ export enum PageTypeName {
   ProjectPage = "project",
   AboutPage = "about",
   ContactPage = "contact",
+  ArticlePage = "article",
   Page = "page",
 }
 

@@ -1,6 +1,7 @@
 import { PageTypeName } from '@portfolio/types/base'
 import groq from 'groq'
 import { aboutPageFields } from './about-page'
+import { articlePageFields } from './article-page'
 import { contactPageFields } from './contact-page'
 import { homePageFields } from './home-page'
 import { pageTypeFields } from './page'
@@ -9,6 +10,7 @@ import { basePageFields } from '../fragments'
 
 export {
   aboutPageFields,
+  articlePageFields,
   basePageFields,
   contactPageFields,
   homePageFields,
@@ -29,6 +31,9 @@ export const pageDocumentFields = groq`
     },
     _type == "${PageTypeName.ContactPage}" => {
       ${contactPageFields}
+    },
+    _type == "${PageTypeName.ArticlePage}" => {
+      ${articlePageFields}
     },
     _type == "${PageTypeName.Page}" => {
       ${pageTypeFields}

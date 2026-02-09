@@ -18,6 +18,8 @@ import type { BreadcrumbItem } from './breadcrumbs'
 import type { NavigationData, NavigationItem } from './navigation'
 import type { LinkInternalReference, LinkItem } from './link'
 import type { FooterProps } from './footer'
+import type { ArticleIntroProps } from './article-intro'
+import type { ArticleContentProps } from './article-content'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -52,6 +54,8 @@ export type { NavigationData } from './navigation'
 export type { NavigationItem } from './navigation'
 export type { LinkInternalReference, LinkItem } from './link'
 export type { FooterProps } from './footer'
+export type { ArticleIntroProps } from './article-intro'
+export type { ArticleContentProps } from './article-content'
 
 export type Components =
   | HomePageHeroComponent

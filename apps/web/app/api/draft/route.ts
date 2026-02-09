@@ -8,6 +8,7 @@ const PAGE_TYPES = [
   PageTypeName.ProjectPage,
   PageTypeName.AboutPage,
   PageTypeName.ContactPage,
+  PageTypeName.ArticlePage,
   PageTypeName.Page,
 ] as const
 

@@ -10,6 +10,7 @@ const PREVIEW_DOCUMENT_TYPES = new Set<string>([
   PageTypeName.ProjectPage as string,
   PageTypeName.AboutPage as string,
   PageTypeName.ContactPage as string,
+  PageTypeName.ArticlePage as string,
 ])
 
 const PreviewLayout = (props: DocumentLayoutProps) => {
