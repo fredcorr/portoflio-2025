@@ -2,6 +2,7 @@ import type { HomePageHeroComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
+import ThreeBackgroundTunnel from '@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'
 
 export const HomePageHero = ({
   title,
@@ -15,7 +16,6 @@ export const HomePageHero = ({
 
   return (
     <ComponentLayout
-      data-home-hero
       overflowHidden={false}
       className="!py-0 z-0"
       contentClassName="gap-0 px-0"
@@ -28,15 +28,17 @@ export const HomePageHero = ({
               className="pointer-events-none absolute left-1/2 -top-20 bottom-0 z-0 w-screen -translate-x-1/2 md:-top-24"
             >
               <div className="flex h-full w-full flex-col md:flex-row">
-                <div className="flex-1 bg-foreground" />
+                <div className="flex-1 bg-foreground">
+                  <ThreeBackgroundTunnel className="absolute inset-0" />
+                </div>
                 <div className="flex-1 bg-surface-1" />
               </div>
             </div>
 
             <div className="relative z-10" id="hero-content">
               <div className="grid min-h-screen grid-cols-1 grid-rows-2 items-stretch md:grid-cols-12 md:grid-rows-1">
-                <div className="flex h-full items-end justify-start pb-10 text-background md:col-span-6 md:items-center md:pb-0">
-                  <div className="max-w-xl">
+                <div className="relative flex h-full items-end justify-start overflow-hidden pb-10 md:col-span-6 md:items-center md:pb-0">
+                  <div className="relative z-10 max-w-xl text-background">
                     {headline && (
                       <h1 className="text-display-2xl lg:font-display md:text-[clamp(3rem,8vw,7rem)] leading-[0.95] tracking-tight">
                         {headline}

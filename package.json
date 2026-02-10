@@ -19,6 +19,7 @@
     "format:check": "turbo run format:check"
   },
   "devDependencies": {
+    "@types/three": "^0.182.0",
     "figma-developer-mcp": "^0.6.4",
     "prettier": "^3.3.3",
     "tsx": "^4.21.0",
