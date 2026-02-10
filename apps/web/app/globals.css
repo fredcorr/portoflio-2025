@@ -65,6 +65,7 @@ body {
   color: var(--color-foreground);
   background: var(--color-background);
   font-family: Arial, Helvetica, sans-serif;
+  isolation: isolate;
   transition:
     color 150ms ease,
     background-color 150ms ease;

@@ -19,6 +19,7 @@ export interface NavItemProps {
   index?: number
   onNavigate?: () => void
   className?: string
+  blendMode?: boolean
 }
 
 const NavItem = ({
@@ -30,6 +31,7 @@ const NavItem = ({
   index,
   onNavigate,
   className,
+  blendMode = false,
 }: NavItemProps) => {
   const isColumn = layout === NavItemLayout.Column
   const label = item.title?.trim() ?? ''
@@ -71,7 +73,10 @@ const NavItem = ({
           aria-current={ariaCurrent}
           aria-label={ariaLabel}
           className={cn(
-            'group inline-flex items-center gap-2 rounded-full px-3 py-2 font-body text-[20px] font-normal leading-[1.4] tracking-[-0.02em] text-black transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:text-foreground dark:focus-visible:outline-white',
+            'group inline-flex items-center gap-2 rounded-full px-3 py-2 font-body text-[20px] font-normal leading-[1.4] tracking-[-0.02em] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white',
+            blendMode
+              ? 'text-black dark:text-foreground md:text-current'
+              : 'text-black dark:text-foreground',
             isColumn && 'px-1',
             className
           )}
@@ -79,8 +84,8 @@ const NavItem = ({
           <span
             data-active={isActive}
             className={cn(
-              'relative inline-flex items-center',
-              'after:absolute after:-bottom-1 after:left-1/2 after:h-[1px] after:w-full after:-translate-x-1/2 after:bg-black after:opacity-0 after:transition-opacity after:duration-300 dark:after:bg-white',
+              'relative inline-flex items-center text-current after:bg-current',
+              'after:absolute after:-bottom-1 after:left-1/2 after:h-[1px] after:w-full after:-translate-x-1/2 after:opacity-0 after:transition-opacity after:duration-300',
               'group-hover:after:opacity-100 data-[active=true]:after:opacity-100'
             )}
           >
@@ -89,7 +94,12 @@ const NavItem = ({
           {hasCount && (
             <span
               data-development="Displays the total published project pages."
-              className="inline-flex size-4 items-center justify-center rounded-full bg-black text-[10px] font-semibold text-white"
+              className={cn(
+                'inline-flex size-4 items-center justify-center rounded-full text-[10px] font-semibold',
+                blendMode
+                  ? 'border border-current text-current bg-transparent'
+                  : 'bg-black text-white'
+              )}
             >
               {projectCount}
             </span>

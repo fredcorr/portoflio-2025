@@ -36,7 +36,7 @@ export default async function RootLayout({
           <Navigation items={items} projectCount={projectCount} />
           <main
             id="main-content"
-            className="min-h-screen w-full xl:mx-auto xl:max-w-8xl mx-auto"
+            className="mx-auto min-h-screen w-full bg-background pt-20 md:pt-24 xl:mx-auto xl:max-w-8xl"
           >
             {children}
           </main>

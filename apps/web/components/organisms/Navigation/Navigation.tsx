@@ -91,8 +91,8 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
       data-organism="navigation"
       data-development="Sticky navigation that stays visible when not scrolling."
       className={cn(
-        'sticky top-0 z-50 px-4 transition-[transform,opacity] duration-300 md:px-6',
-        'rounded-bl-[32px] rounded-br-[32px] bg-surface-1 text-black shadow-[inset_0px_-6px_10px_rgba(0,0,0,0.07)] dark:text-foreground dark:shadow-[inset_0px_-6px_10px_rgba(255,255,255,0.07)] md:shadow-[inset_0px_-6px_10px_rgba(0,0,0,0.07)] md:dark:shadow-[inset_0px_-6px_10px_rgba(255,255,255,0.07)]',
+        'fixed top-0 left-0 right-0 z-50 px-4 transition-[transform,opacity] duration-300 md:px-6 md:text-white',
+        !isOpen && 'mix-blend-difference text-white',
         isHidden && '-translate-y-24 pointer-events-none opacity-0',
         className
       )}
@@ -107,7 +107,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
         )}
         onClick={handleNavigate}
       />
-      <nav className="relative mx-auto w-full lg:px-6 max-w-[1440px]">
+      <nav className="relative mx-auto w-full lg:px-6 ">
         <div
           className={cn(
             'relative z-50 flex items-center justify-between py-4 transition-shadow',
@@ -119,13 +119,16 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
           <Link
             href="/"
             aria-label="Go to homepage"
-            className="inline-flex items-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white"
+            className={cn(
+              'inline-flex items-center rounded-full text-black dark:text-white md:text-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white',
+              !isOpen && 'text-current'
+            )}
           >
-            <Logo className="h-[2.7rem] text-[#000000] dark:text-white" />
+            <Logo className="h-[2.7rem] text-current" />
           </Link>
 
           <div className="hidden items-center md:flex">
-            <ul className="flex items-center gap-3 text-black dark:text-foreground">
+            <ul className="flex items-center gap-3">
               {items.map((item, index) => (
                 <NavItem
                   key={item._id}
@@ -136,6 +139,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
                   isOpen={isOpen}
                   index={index}
                   onNavigate={handleNavigate}
+                  blendMode
                 />
               ))}
             </ul>

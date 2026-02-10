@@ -18,7 +18,7 @@ export const ComponentLayout = ({
   return (
     <section
       className={cn(
-        'relative bg-background px-4 py-12 md:px-6 md:py-16 lg:max-w-[1440px] mx-auto',
+        'relative px-4 py-12 md:px-6 md:py-16 lg:max-w-[1440px] mx-auto',
         overflowHidden && 'overflow-hidden',
         fullBleed && '!px-0',
         className

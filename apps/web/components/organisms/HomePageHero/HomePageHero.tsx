@@ -21,7 +21,7 @@ export const HomePageHero = ({
     >
       <div className="md:col-span-12">
         <div className="relative  min-h-[70vh] md:min-h-screen">
-          <div className="pointer-events-none absolute inset-y-0 left-1/2 z-0 w-screen -translate-x-1/2">
+          <div className="pointer-events-none absolute left-1/2 -top-20 bottom-0 z-0 w-screen -translate-x-1/2 md:-top-24">
             <div className="flex h-full w-full flex-col md:flex-row">
               <div className="flex-1 bg-foreground" />
               <div className="flex-1 bg-surface-1" />
