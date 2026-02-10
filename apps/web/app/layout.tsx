@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Play } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
 import { Footer, Navigation } from '@/components/organisms'
@@ -42,6 +44,8 @@ export default async function RootLayout({
           </main>
           <Footer email={settings?.email} socialLinks={settings?.socialLinks} />
           <ThemeToggle />
+          <Analytics />
+          <SpeedInsights />
         </SettingsProvider>
       </body>
     </html>
