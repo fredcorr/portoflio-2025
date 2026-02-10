@@ -110,7 +110,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
       <nav className="relative mx-auto w-full lg:px-6 max-w-[1440px]">
         <div
           className={cn(
-            'relative z-50 flex items-center justify-between px-4 py-4 transition-shadow',
+            'relative z-50 flex items-center justify-between py-4 transition-shadow',
             'md:px-0 md:py-[1.29rem]',
             isOpen && 'rounded-b-none',
             'dark:text-foreground'
