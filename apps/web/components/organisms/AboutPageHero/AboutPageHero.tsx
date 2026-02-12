@@ -32,14 +32,14 @@ const AboutPageHero = ({
   return (
     <ComponentLayout
       aria-labelledby={headingId}
-      className="bg-foreground text-background md:-top-24 !py-0 z-0"
+      className="bg-foreground text-background !py-0 z-0"
       contentClassName="gap-0 px-0"
       overflowHidden={false}
     >
       <div className="md:col-span-12">
         <OverlapAnimation>
-          <div className="pointer-events-none absolute left-1/2 top-0 bottom-0 z-0 w-screen -translate-x-1/2">
-            <AboutBackgroundHelixPulseCascade className="absolute inset-0" />
+          <div className="pointer-events-none absolute left-1/2 h-full -top-24 bottom-0 z-0 w-screen -translate-x-1/2 before:absolute before:inset-0 before:content-[''] before:bg-foreground">
+            <AboutBackgroundHelixPulseCascade className="absolute inset-0 z-10" />
           </div>
           <div className="relative z-10">
             <div className="grid min-h-screen grid-cols-1 content-center gap-y-16 md:grid-cols-12 md:gap-y-20">
@@ -87,7 +87,7 @@ const AboutPageHero = ({
                   <RichText
                     value={body}
                     size={RichTextSize.Xl}
-                    className="space-y-4 text-background/80"
+                    className="space-y-4 text-background/80 md:pr-6"
                   />
                 )}
               </div>
