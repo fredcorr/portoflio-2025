@@ -8,21 +8,6 @@ export const aboutPageHeroMock: AboutPageHeroComponent = {
     heading: "Hey,\nI'm Fede",
     headingLevel: 1,
   },
-  image: {
-    _type: 'image',
-    alt: 'Portrait of Fede wearing a green sweater',
-    asset: {
-      _type: 'reference',
-      _ref: 'image-fede',
-      url: 'https://example.com/fede.jpg',
-      metadata: {
-        dimensions: {
-          width: 1000,
-          height: 1400,
-        },
-      },
-    },
-  },
   body: [
     {
       _key: 'body-1',
@@ -39,5 +24,24 @@ export const aboutPageHeroMock: AboutPageHeroComponent = {
       ],
     },
   ],
+  bodySecondary: [
+    {
+      _key: 'body-2',
+      _type: 'block',
+      style: 'normal',
+      markDefs: [],
+      children: [
+        {
+          _key: 'body-2-span',
+          _type: 'span',
+          text: 'Additionally, I am a dedicated video game enthusiast and enjoy mixing hip-hop and jazz while working.',
+          marks: [],
+        },
+      ],
+    },
+  ],
+  location: 'Buenos Aires, Argentina',
+  timezone: 'GMT-3',
+  languages: 'Italian & English',
   showCta: true,
 }

@@ -1,5 +1,6 @@
 import type { HomePageHeroComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
+import OverlapAnimation from '@/components/hoc/OverlapAnimation'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
 import ThreeBackgroundTunnel from '@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'
@@ -21,8 +22,7 @@ export const HomePageHero = ({
       contentClassName="gap-0 px-0"
     >
       <div className="md:col-span-12">
-        <div className="relative h-[200vh] -mb-[100vh]">
-          <div className="sticky top-0 min-h-screen">
+        <OverlapAnimation>
             <div
               id="hero-bg"
               className="pointer-events-none absolute left-1/2 -top-20 bottom-0 z-0 w-screen -translate-x-1/2 md:-top-24"
@@ -91,8 +91,7 @@ export const HomePageHero = ({
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+        </OverlapAnimation>
       </div>
     </ComponentLayout>
   )

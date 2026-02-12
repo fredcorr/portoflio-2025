@@ -7,12 +7,15 @@ import AboutPageHero from './AboutPageHero'
 import { aboutPageHeroMock } from '@/mocks/organisms/about-page-hero'
 import { DEFAULT_CONTACT_EMAIL } from '@/utils/get-contact-email'
 
-test('renders heading, body, image, and CTA', () => {
+test('renders heading, body, meta row, secondary body, and CTA', () => {
   const markup = renderToStaticMarkup(<AboutPageHero {...aboutPageHeroMock} />)
 
   assert.match(markup, /Hey,\s*I&apos;m Fede/)
   assert.match(markup, /Embarking on a journey of growth and education/)
-  assert.match(markup, /Portrait of Fede/)
+  assert.match(markup, /Buenos Aires, Argentina/)
+  assert.match(markup, /GMT-3/)
+  assert.match(markup, /Italian & English/)
+  assert.match(markup, /video game enthusiast/)
   assert.match(markup, /mailto:hello@joey\.co/)
   assert.match(markup, /data-icon="arrow-up-right"/)
 })

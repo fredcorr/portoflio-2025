@@ -10,31 +10,42 @@ import {
   resolveRingColor,
 } from '@/utils/three-helpers'
 
-interface ThreeBackgroundTunnelProps {
+interface AboutBackgroundHelixPulseCascadeProps {
   className?: string
   speed?: number
   ringCount?: number
   pixelRatioCap?: number
 }
 
-const ThreeBackgroundTunnel = ({
+type HelixRing = THREE.Mesh<THREE.RingGeometry, THREE.MeshBasicMaterial> & {
+  userData: {
+    initialRadius: number
+    angle: number
+    helix: 1 | 2
+    index: number
+  }
+}
+
+const AboutBackgroundHelixPulseCascade = ({
   className,
   speed,
   ringCount,
   pixelRatioCap,
-}: ThreeBackgroundTunnelProps) => {
+}: AboutBackgroundHelixPulseCascadeProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const settings = useMemo(() => {
-    // Compute runtime settings once per render, with a lighter profile on mobile.
     const isMobile = isMobileViewport()
+    const baseSpeed = speed ?? (isMobile ? 0.002 : 0.01)
     return {
-      isMobile,
       ringCount: ringCount ?? (isMobile ? 18 : 30),
       pixelRatioCap: pixelRatioCap ?? (isMobile ? 1.5 : 2),
-      speed: speed ?? (isMobile ? 0.02 : 0.03),
-      rotationSpeed: (speed ?? (isMobile ? 0.02 : 0.03)) * 0.07,
-      ringSpacing: 3,
+      speed: baseSpeed,
+      rotationSpeed: baseSpeed * 0.5,
+      ringSpacing: 2.5,
+      radius: 3,
+      pulseSpeed: 1.5,
+      pulseAmount: 0.35,
     }
   }, [ringCount, pixelRatioCap, speed])
 
@@ -42,7 +53,6 @@ const ThreeBackgroundTunnel = ({
     const container = containerRef.current
     if (!container) return
 
-    // Scene + camera + renderer setup (renderer attaches to the container).
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000)
     camera.position.z = 10
@@ -56,28 +66,56 @@ const ThreeBackgroundTunnel = ({
     renderer.domElement.style.height = '100%'
     container.appendChild(renderer.domElement)
 
-    // Build a shared ring geometry and individual materials for opacity control.
-    const geometry = new THREE.RingGeometry(2, 2.2, 6)
-    const rings: THREE.Mesh<THREE.RingGeometry, THREE.MeshBasicMaterial>[] = []
-    const ringColor = resolveRingColor()
+    const geometry = new THREE.RingGeometry(1.2, 1.35, 6)
+    const rings: HelixRing[] = []
+    const ringColor = resolveRingColor('--color-foreground')
 
     for (let i = 0; i < settings.ringCount; i += 1) {
-      const material = new THREE.MeshBasicMaterial({
+      const angle = (i / settings.ringCount) * Math.PI * 4
+
+      const material1 = new THREE.MeshBasicMaterial({
         color: ringColor,
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.15,
+        opacity: 0.12,
       })
-      const ring = new THREE.Mesh(geometry, material)
-      ring.position.z = -i * settings.ringSpacing
-      ring.rotation.z = (i * Math.PI) / 6
-      scene.add(ring)
-      rings.push(ring)
+      const ring1 = new THREE.Mesh(geometry, material1) as HelixRing
+      ring1.position.x = Math.cos(angle) * settings.radius
+      ring1.position.y = Math.sin(angle) * settings.radius
+      ring1.position.z = -i * settings.ringSpacing
+      ring1.rotation.z = angle
+      ring1.userData = {
+        initialRadius: settings.radius,
+        angle,
+        helix: 1,
+        index: i,
+      }
+      scene.add(ring1)
+      rings.push(ring1)
+
+      const material2 = new THREE.MeshBasicMaterial({
+        color: ringColor,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.12,
+      })
+      const ring2 = new THREE.Mesh(geometry, material2) as HelixRing
+      ring2.position.x = -Math.cos(angle) * settings.radius
+      ring2.position.y = -Math.sin(angle) * settings.radius
+      ring2.position.z = -i * settings.ringSpacing
+      ring2.rotation.z = -angle
+      ring2.userData = {
+        initialRadius: settings.radius,
+        angle,
+        helix: 2,
+        index: i,
+      }
+      scene.add(ring2)
+      rings.push(ring2)
     }
 
-    // Update ring color when theme changes (based on CSS variable).
     const updateRingColor = () => {
-      const nextColor = resolveRingColor()
+      const nextColor = resolveRingColor('--color-foreground')
       rings.forEach(ring => ring.material.color.setHex(nextColor))
     }
 
@@ -90,27 +128,47 @@ const ThreeBackgroundTunnel = ({
       renderer.render(scene, camera)
     }
 
-    // Animation loop: move rings forward, recycle them, and fade by distance.
     const animate = (time: number) => {
       if (!isVisible) return
       frameId = window.requestAnimationFrame(animate)
       const delta = lastTime ? (time - lastTime) / 16.67 : 1
       lastTime = time
 
+      const pulseTime = time * 0.001
+
       rings.forEach(ring => {
         ring.position.z += settings.speed * delta
-        ring.rotation.z += settings.rotationSpeed * delta
         if (ring.position.z > 10) {
           ring.position.z = -settings.ringCount * settings.ringSpacing
         }
+
+        const cascadeDelay = ring.userData.index * 0.25
+        const pulse =
+          Math.sin(pulseTime * settings.pulseSpeed + cascadeDelay) *
+            settings.pulseAmount +
+          1
+
+        const currentRadius = ring.userData.initialRadius * pulse
+        const currentAngle =
+          ring.userData.angle + pulseTime * settings.rotationSpeed
+
+        if (ring.userData.helix === 1) {
+          ring.position.x = Math.cos(currentAngle) * currentRadius
+          ring.position.y = Math.sin(currentAngle) * currentRadius
+        } else {
+          ring.position.x = -Math.cos(currentAngle) * currentRadius
+          ring.position.y = -Math.sin(currentAngle) * currentRadius
+        }
+
+        ring.scale.set(pulse, pulse, 1)
+
         const distance = Math.abs(ring.position.z)
-        ring.material.opacity = Math.max(0, 0.25 - distance * 0.01)
+        ring.material.opacity = Math.max(0, 0.22 - distance * 0.012)
       })
 
       renderFrame()
     }
 
-    // Keep renderer/camera sized to the container (not the window).
     const resize = () => {
       const { width, height } = container.getBoundingClientRect()
       if (!width || !height) return
@@ -125,7 +183,6 @@ const ThreeBackgroundTunnel = ({
     const resizeObserver = new ResizeObserver(resize)
     resizeObserver.observe(container)
 
-    // Pause animation when off-screen to save GPU/CPU.
     const intersectionObserver = new IntersectionObserver(
       entries => {
         const entry = entries[0]
@@ -147,7 +204,6 @@ const ThreeBackgroundTunnel = ({
     )
     intersectionObserver.observe(container)
 
-    // React to theme toggles (dark/light) by swapping ring color.
     const mutationObserver = new MutationObserver(updateRingColor)
     mutationObserver.observe(document.documentElement, {
       attributes: true,
@@ -160,7 +216,6 @@ const ThreeBackgroundTunnel = ({
       renderFrame()
     }
 
-    // Cleanup: stop RAF, disconnect observers, dispose GPU resources.
     return () => {
       if (frameId !== null) {
         cancelAnimationFrame(frameId)
@@ -184,4 +239,4 @@ const ThreeBackgroundTunnel = ({
   )
 }
 
-export default ThreeBackgroundTunnel
+export default AboutBackgroundHelixPulseCascade

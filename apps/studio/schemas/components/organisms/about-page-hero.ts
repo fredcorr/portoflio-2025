@@ -2,7 +2,6 @@ import { ComponentTypeName } from '@portfolio/types/base'
 import { defineType } from 'sanity'
 import { LuUserRound } from 'react-icons/lu'
 import Block from '@components/atoms/block'
-import Media from '@components/atoms/media'
 import Toggle from '@components/atoms/toggle'
 import { extractPlainText } from '@utils/extract-plain-text'
 import { createTitleField } from '@components/molecules/title'
@@ -17,16 +16,31 @@ const AboutPageHero = defineType({
   type: 'object',
   fields: [
     titleField.field,
-    Media({
-      name: 'image',
-      title: 'Image',
-      description: 'Visual supporting the hero content.',
-    }),
     Block({
       name: 'body',
       title: 'Body',
       description: 'Rich text body copy for the hero.',
     }),
+    Block({
+      name: 'bodySecondary',
+      title: 'Secondary body',
+      description: 'Secondary rich text body copy for the hero.',
+    }),
+    {
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+    },
+    {
+      name: 'timezone',
+      title: 'Timezone',
+      type: 'string',
+    },
+    {
+      name: 'languages',
+      title: 'Languages',
+      type: 'string',
+    },
     Toggle({
       name: 'showCta',
       title: 'Show call to action',
@@ -36,17 +50,21 @@ const AboutPageHero = defineType({
   preview: {
     select: {
       title: titleField.names.heading,
-      image: 'image',
       body: 'body',
+      bodySecondary: 'bodySecondary',
       showCta: 'showCta',
     },
-    prepare({ title, image, body, showCta }) {
+    prepare({ title, body, bodySecondary, showCta }) {
       const bodySummary = extractPlainText(body)
+      const secondarySummary = extractPlainText(bodySecondary)
 
       return {
         title: title || 'About Page Hero',
-        subtitle: bodySummary || (showCta ? 'CTA enabled' : 'CTA hidden'),
-        media: image || LuUserRound,
+        subtitle:
+          bodySummary ||
+          secondarySummary ||
+          (showCta ? 'CTA enabled' : 'CTA hidden'),
+        media: LuUserRound,
       }
     },
   },
