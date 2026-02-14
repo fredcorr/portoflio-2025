@@ -10,7 +10,10 @@ const DEFAULT_INERT_IDS = ['theme-toggle']
 
 const useLockScroll = (
   isLocked: boolean,
-  { mainId = DEFAULT_MAIN_ID, inertIds = DEFAULT_INERT_IDS }: UseLockScrollOptions = {}
+  {
+    mainId = DEFAULT_MAIN_ID,
+    inertIds = DEFAULT_INERT_IDS,
+  }: UseLockScrollOptions = {}
 ) => {
   const bodyStyleRef = React.useRef({
     overflow: '',
@@ -65,8 +68,7 @@ const useLockScroll = (
         body.style.overflow = 'hidden'
         body.style.touchAction = 'none'
         root.style.overscrollBehavior = 'none'
-        scrollbarWidth > 0 &&
-          (body.style.paddingRight = `${scrollbarWidth}px`)
+        scrollbarWidth > 0 && (body.style.paddingRight = `${scrollbarWidth}px`)
         toggleInert(true)
       })()
 

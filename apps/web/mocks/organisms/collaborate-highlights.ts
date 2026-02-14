@@ -19,7 +19,7 @@ export const collaborateHighlightsMock: CollaborateHighlightsComponent = {
       _key: 'tailored',
       title: 'Tailored Solutions',
       subtitle:
-        "We do not do one-size-fits-all. We craft solutions that are unique to your business, ensuring you stand out in your industry.",
+        'We do not do one-size-fits-all. We craft solutions that are unique to your business, ensuring you stand out in your industry.',
     },
     {
       _key: 'innovation',

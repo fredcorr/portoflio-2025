@@ -1,7 +1,11 @@
 import type { PortableTextBlock } from '@portabletext/react'
 import type { ArticleContentProps } from '@portfolio/types/components'
 
-const block = (text: string, style: string, key: string): PortableTextBlock => ({
+const block = (
+  text: string,
+  style: string,
+  key: string
+): PortableTextBlock => ({
   _key: key,
   _type: 'block',
   style,

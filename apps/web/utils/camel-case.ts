@@ -2,7 +2,10 @@ export interface CamelCaseOptions {
   preserveNumbers?: boolean
 }
 
-export const camelCase = (value: string, options?: CamelCaseOptions): string => {
+export const camelCase = (
+  value: string,
+  options?: CamelCaseOptions
+): string => {
   const input = value.trim()
   if (!input) return ''
 
