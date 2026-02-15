@@ -16,6 +16,7 @@ const Testimonials = ({
   title,
   testimonials,
   sectionId,
+  componentIndex,
 }: TestimonialsComponent) => {
   const testimonialsList = Array.isArray(testimonials) ? testimonials : []
   const headingId = makeComponentId({
@@ -26,6 +27,8 @@ const Testimonials = ({
   return (
     <ComponentLayout
       sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       aria-labelledby={headingId}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-12 lg:gap-y-10"

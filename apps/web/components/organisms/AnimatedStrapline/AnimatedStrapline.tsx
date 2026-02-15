@@ -7,7 +7,9 @@ const STRAPLINE_REPEAT_COUNT = 4
 
 const AnimatedStrapline = ({
   strapline,
+  _key,
   sectionId,
+  componentIndex,
 }: AnimatedStraplineComponent) => {
   const straplineText = strapline?.trim() || DEFAULT_STRAPLINE_TEXT
   const straplineLoop = buildStraplineLoop(straplineText, {
@@ -23,6 +25,8 @@ const AnimatedStrapline = ({
   return (
     <ComponentLayout
       sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       aria-label="Animated strapline"
       className="!bg-transparent text-background !py-0"
       contentClassName="gap-y-0 px-0"

@@ -7,4 +7,5 @@ export interface SanityComponentBase<
   _key?: string
   _id?: string
   sectionId?: string
+  componentIndex?: number
 }

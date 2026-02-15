@@ -19,6 +19,7 @@ const ImageGallery = ({
   subtitle,
   images,
   sectionId,
+  componentIndex,
 }: ImageGalleryComponent) => {
   const galleryImages = (Array.isArray(images) && images) || []
   const galleryImagesWithUrl = galleryImages.filter(image =>
@@ -37,6 +38,8 @@ const ImageGallery = ({
   return (
     <ComponentLayout
       sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       aria-labelledby={(hasHeading && headingId) || undefined}
       {...(hasHeading && { 'aria-label': headingId })}
       contentClassName="gap-y-12 md:gap-y-12"

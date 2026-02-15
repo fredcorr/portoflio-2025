@@ -13,7 +13,9 @@ export const HomePageHero = ({
   title,
   subtitle,
   getInTouchTitle,
+  _key,
   sectionId,
+  componentIndex,
   scrollTargetId,
 }: HomePageHeroProps) => {
   const headline = title?.trim()
@@ -25,6 +27,8 @@ export const HomePageHero = ({
   return (
     <ComponentLayout
       sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       overflowHidden={false}
       className="!py-0 z-0"
       contentClassName="gap-0 px-0"

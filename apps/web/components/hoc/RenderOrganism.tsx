@@ -1,6 +1,5 @@
 import { ComponentTypeName } from '@portfolio/types/base'
 import type { PageComponent } from '@portfolio/types/pages'
-import { getComponentSectionId } from '@/utils/get-component-section-id'
 import ProjectListing from '../organisms/ProjectListing/ProjectListing'
 import Cards from '../organisms/Cards/Cards'
 import Testimonials from '../organisms/Testimonials/Testimonials'
@@ -21,60 +20,57 @@ import {
 interface RenderOrganismProps {
   component?: PageComponent | null
   componentIndex: number
-  nextComponent?: PageComponent
+  nextSectionId?: string
 }
 
 export const RenderOrganism = ({
   component,
   componentIndex,
-  nextComponent,
+  nextSectionId,
 }: RenderOrganismProps) => {
   if (!component) {
     return null
   }
 
-  const sectionId = getComponentSectionId(component, componentIndex)
-  const componentWithSection = { ...component, sectionId }
+  const componentWithContext = {
+    ...component,
+    componentIndex,
+  }
 
   switch (component._type) {
-    case ComponentTypeName.HomePageHero: {
-      const nextSectionId = nextComponent
-        ? getComponentSectionId(nextComponent, componentIndex + 1)
-        : undefined
-
+    case ComponentTypeName.HomePageHero:
       return (
         <HomePageHero
-          {...componentWithSection}
+          {...componentWithContext}
           scrollTargetId={nextSectionId}
         />
       )
-    }
     case ComponentTypeName.ProjectListing:
-      return <ProjectListing {...componentWithSection} />
+      return <ProjectListing {...componentWithContext} />
     case ComponentTypeName.Testimonials:
-      return <Testimonials {...componentWithSection} />
+      return <Testimonials {...componentWithContext} />
     case ComponentTypeName.Cards:
-      return <Cards {...componentWithSection} />
+      return <Cards {...componentWithContext} />
     case ComponentTypeName.BlockText:
-      return <BlockText {...componentWithSection} />
+      return <BlockText {...componentWithContext} />
     case ComponentTypeName.AboutPageHero:
-      return <AboutPageHero {...componentWithSection} />
+      return <AboutPageHero {...componentWithContext} />
     case ComponentTypeName.CollaborateHighlights:
-      return <CollaborateHighlights {...componentWithSection} />
+      return <CollaborateHighlights {...componentWithContext} />
     case ComponentTypeName.Process:
-      return <Process {...componentWithSection} />
+      return <Process {...componentWithContext} />
     case ComponentTypeName.ImageGallery:
-      return <ImageGallery {...componentWithSection} />
+      return <ImageGallery {...componentWithContext} />
     case ComponentTypeName.Stats:
-      return <Stats {...componentWithSection} />
+      return <Stats {...componentWithContext} />
     case ComponentTypeName.Faqs:
-      return <Faqs {...componentWithSection} />
+      return <Faqs {...componentWithContext} />
     case ComponentTypeName.ToolSet:
-      return <ToolSet {...componentWithSection} />
+      return <ToolSet {...componentWithContext} />
     case ComponentTypeName.Form:
-      return <GetInTouch {...componentWithSection} />
+      return <GetInTouch {...componentWithContext} />
     case ComponentTypeName.AnimatedStrapline:
-      return <AnimatedStrapline {...componentWithSection} />
+      return <AnimatedStrapline {...componentWithContext} />
     default:
       return null
   }

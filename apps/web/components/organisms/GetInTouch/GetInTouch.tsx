@@ -19,6 +19,7 @@ const GetInTouch = ({
   success,
   error,
   sectionId,
+  componentIndex,
 }: FormComponent) => {
   const headingId = makeComponentId({
     value: _id || _key,
@@ -33,6 +34,8 @@ const GetInTouch = ({
   return (
     <ComponentLayout
       sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       aria-labelledby={headingId}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-12 lg:gap-y-18"

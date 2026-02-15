@@ -1,20 +1,29 @@
-import type { PageComponent } from '@portfolio/types/pages'
+interface ComponentSectionIdOptions {
+  sectionId?: string
+  componentKey?: string
+  componentIndex?: number
+}
 
-export const getComponentSectionId = (
-  component: PageComponent,
-  index: number
-) => {
-  const sectionId = component.sectionId?.trim()
+export const getComponentSectionId = ({
+  sectionId,
+  componentKey,
+  componentIndex,
+}: ComponentSectionIdOptions) => {
+  const normalizedSectionId = sectionId?.trim()
 
-  if (sectionId) {
-    return sectionId
+  if (normalizedSectionId) {
+    return normalizedSectionId
   }
 
-  const key = component._key?.trim()
+  const normalizedKey = componentKey?.trim()
 
-  if (key) {
-    return `section-${key}`
+  if (normalizedKey) {
+    return `section-${normalizedKey}`
   }
 
-  return `section-${index + 1}`
+  if (typeof componentIndex === 'number') {
+    return `section-${componentIndex + 1}`
+  }
+
+  return undefined
 }
