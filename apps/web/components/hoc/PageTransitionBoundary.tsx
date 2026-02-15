@@ -22,6 +22,21 @@ export const PageTransitionBoundary = ({
 }: PageTransitionBoundaryProps) => {
   const pathname = usePathname()
   const [shouldAnimate, setShouldAnimate] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)')
+    const handleMediaQueryChange = (event: MediaQueryListEvent) => {
+      setIsDesktop(event.matches)
+    }
+
+    setIsDesktop(mediaQuery.matches)
+    mediaQuery.addEventListener('change', handleMediaQueryChange)
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleMediaQueryChange)
+    }
+  }, [])
 
   useEffect(() => {
     const hasSeenTransition = window.sessionStorage.getItem(SESSION_KEY) === '1'
@@ -38,7 +53,10 @@ export const PageTransitionBoundary = ({
     <div className={cn('relative w-full', className)}>
       <div
         key={pathname}
-        className={cn('relative w-full', shouldAnimate && animationClassName)}
+        className={cn(
+          'relative w-full',
+          shouldAnimate && isDesktop && animationClassName
+        )}
       >
         {children}
       </div>

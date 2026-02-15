@@ -74,3 +74,10 @@ test('does not render modal content while idle', () => {
   assert.ok(!markup.includes('Success'))
   assert.ok(!markup.includes('Error'))
 })
+
+test('submit button keeps contrast in dark mode', () => {
+  const markup = renderToStaticMarkup(<Form fields={fields} />)
+
+  assert.match(markup, /dark:bg-white/)
+  assert.match(markup, /dark:text-black/)
+})
