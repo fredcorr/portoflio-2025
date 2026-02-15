@@ -113,7 +113,7 @@ export const Form = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-black px-6 py-3 font-heading text-body-lg font-semibold text-white transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-70"
+          className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-black px-6 py-3 font-heading text-body-lg font-semibold text-white transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:focus-visible:outline-white"
         >
           {isSubmitting ? 'Submitting...' : submitLabel}
         </button>
