@@ -32,12 +32,12 @@ export const RenderOrganism = ({
     return null
   }
 
-  const componentWithContext = {
+  const componentWithContext: PageComponent = {
     ...component,
     componentIndex,
   }
 
-  switch (component._type) {
+  switch (componentWithContext._type) {
     case ComponentTypeName.HomePageHero:
       return (
         <HomePageHero
