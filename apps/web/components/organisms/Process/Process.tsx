@@ -11,7 +11,7 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
 import React from 'react'
 
-const Process = ({ _id, _key, title, steps }: ProcessComponent) => {
+const Process = ({ _id, _key, title, steps, sectionId }: ProcessComponent) => {
   const headingId = makeComponentId({
     value: _id || _key,
     prefix: 'process',
@@ -19,6 +19,7 @@ const Process = ({ _id, _key, title, steps }: ProcessComponent) => {
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       aria-labelledby={headingId}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-12 lg:gap-y-16"

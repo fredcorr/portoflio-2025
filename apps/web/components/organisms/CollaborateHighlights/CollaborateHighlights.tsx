@@ -11,6 +11,7 @@ const CollaborateHighlights = ({
   _key,
   title,
   highlights,
+  sectionId,
 }: CollaborateHighlightsComponent) => {
   const headingId = makeComponentId({
     value: _id || _key,
@@ -19,6 +20,7 @@ const CollaborateHighlights = ({
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       aria-labelledby={headingId}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-12 lg:gap-y-14"

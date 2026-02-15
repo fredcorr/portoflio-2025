@@ -54,3 +54,17 @@ test('uses contact email from env when provided', () => {
     delete process.env.NEXT_PUBLIC_CONTACT_EMAIL
   }
 })
+
+test('uses provided next-section target for scroll cta', () => {
+  const markup = renderToStaticMarkup(
+    <HomePageHero {...createHero()} scrollTargetId="section-next" />
+  )
+
+  assert.match(markup, /href="#section-next"/)
+})
+
+test('falls back to main-content when next-section target is missing', () => {
+  const markup = renderToStaticMarkup(<HomePageHero {...createHero()} />)
+
+  assert.match(markup, /href="#main-content"/)
+})

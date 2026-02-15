@@ -6,7 +6,7 @@ import { Heading } from '@/components/atoms/Heading/Heading'
 import ToolCard from '@/components/molecules/ToolCard/ToolCard'
 import { makeComponentId } from '@/utils/makeComponentId'
 
-const ToolSet = ({ _id, _key, title, tools }: ToolSetComponent) => {
+const ToolSet = ({ _id, _key, title, tools, sectionId }: ToolSetComponent) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
   const hasTools = Boolean(tools && tools.length)
@@ -21,6 +21,7 @@ const ToolSet = ({ _id, _key, title, tools }: ToolSetComponent) => {
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
       className={'text-black dark:text-foreground'}
       contentClassName="gap-y-10"

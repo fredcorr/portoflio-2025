@@ -3,6 +3,7 @@ import Breadcrumbs from '@/components/molecules/Breadcrumbs/Breadcrumbs'
 import ArticleIntro from '@/components/organisms/ArticleIntro/ArticleIntro'
 import ArticleContent from '@/components/organisms/ArticleContent/ArticleContent'
 import { RenderOrganism } from '@/components/hoc/RenderOrganism'
+import { getComponentSectionId } from './component-section-id'
 import { formatDate } from '@/utils/format-date'
 import { getReadTimeLabel } from '@/utils/calculate-read-time'
 import { buildPageUrl } from '@/utils/slug'
@@ -38,8 +39,14 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
         shareUrl={shareUrl}
         shareTitle={title}
       />
-      {props.articleComponents?.map(component => {
-        return <RenderOrganism key={component._key} component={component} />
+      {props.articleComponents?.map((component, index) => {
+        return (
+          <RenderOrganism
+            key={component._key}
+            component={component}
+            sectionId={getComponentSectionId(component, index)}
+          />
+        )
       })}
     </section>
   )

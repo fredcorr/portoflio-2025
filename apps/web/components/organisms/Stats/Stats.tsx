@@ -8,7 +8,7 @@ import AnimatedStatValue from '@/components/molecules/AnimatedStatValue/Animated
 // - Stats component (node-id: 3595:2418)
 // - Note: "Ideally we want to animate this numbers" (handled by AnimatedStatValue)
 
-const Stats = ({ items }: StatsComponent) => {
+const Stats = ({ items, sectionId }: StatsComponent) => {
   const hasItems = Boolean(items && items.length)
 
   if (!hasItems) {
@@ -17,6 +17,7 @@ const Stats = ({ items }: StatsComponent) => {
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-10"
       data-organism="stats"

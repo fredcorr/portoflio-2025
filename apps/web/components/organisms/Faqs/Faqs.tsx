@@ -12,7 +12,7 @@ import { cn } from '@/utils/cn'
 // - FAQ list with left title + right card (node-id: 3594:2406)
 // - Accordion state uses native <details>/<summary>
 
-const Faqs = ({ _id, _key, title, questions }: FaqsComponent) => {
+const Faqs = ({ _id, _key, title, questions, sectionId }: FaqsComponent) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
   const hasQuestions = Boolean(questions && questions.length)
@@ -34,6 +34,7 @@ const Faqs = ({ _id, _key, title, questions }: FaqsComponent) => {
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
       className={'text-black dark:text-foreground'}
       contentClassName="gap-y-10"

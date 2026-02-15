@@ -5,6 +5,7 @@ interface ComponentLayoutProps extends HTMLAttributes<HTMLElement> {
   fullBleed?: boolean
   overflowHidden?: boolean
   contentClassName?: string
+  sectionId?: string
 }
 
 export const ComponentLayout = ({
@@ -13,6 +14,8 @@ export const ComponentLayout = ({
   children,
   fullBleed,
   overflowHidden = true,
+  sectionId,
+  id,
   ...props
 }: ComponentLayoutProps) => {
   return (
@@ -23,6 +26,7 @@ export const ComponentLayout = ({
         fullBleed && '!px-0',
         className
       )}
+      id={id ?? sectionId}
       {...props}
     >
       <div

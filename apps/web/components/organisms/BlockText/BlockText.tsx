@@ -14,6 +14,7 @@ const BlockText = ({
   body,
   isHeadingLarge,
   splitLayout,
+  sectionId,
 }: BlockTextComponent) => {
   const headingText = title?.heading
   const hasHeading = Boolean(headingText)
@@ -40,6 +41,7 @@ const BlockText = ({
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
       className={'text-black dark:text-foreground'}
       contentClassName={cn(

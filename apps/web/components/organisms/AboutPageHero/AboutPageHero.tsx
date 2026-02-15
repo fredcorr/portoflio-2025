@@ -19,6 +19,7 @@ const AboutPageHero = ({
   timezone,
   languages,
   showCta,
+  sectionId,
 }: AboutPageHeroComponent) => {
   const headingId = makeComponentId({
     value: _id || _key,
@@ -31,6 +32,7 @@ const AboutPageHero = ({
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
       aria-labelledby={headingId}
       className="bg-foreground text-background !py-0 z-0"
       contentClassName="gap-0 px-0"
