@@ -1,10 +1,12 @@
 import { defineConfig } from 'sanity'
+import { dashboardTool } from '@sanity/dashboard'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import { lucideIconPicker } from '@fredcorr/sanity-plugin-lucide-icon-picker'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
+import { dashboardWidgets } from './dashboard'
 
 if (!process.env.SANITY_STUDIO_PROJECT_ID) {
   throw new Error('Missing SANITY_STUDIO_PROJECT_ID environment variable')
@@ -22,6 +24,10 @@ export default defineConfig({
   dataset: process.env.SANITY_STUDIO_DATASET,
 
   plugins: [
+    dashboardTool({
+      // Surface deploy insights, QA lists, and quick links as the first landing page.
+      widgets: dashboardWidgets,
+    }),
     structureTool({
       structure: (S, context) => structure(S, context),
     }),

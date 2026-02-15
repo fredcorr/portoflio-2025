@@ -41,6 +41,26 @@ apps/studio/
 └── tsconfig.json     # TypeScript configuration
 ```
 
+## Dashboard
+
+The Studio now boots into the Dashboard tool powered by `@sanity/dashboard`. Widgets live under `apps/studio/dashboard/`:
+
+- **Content QA** document lists flag pages missing slugs/heroes.
+- **Project Stats** summarize published vs. draft content.
+- **Quick Links / Structure shortcuts** provide one-click access to the Desk and external resources.
+
+### Environment Variables
+
+The dashboard widgets use the same Sanity credentials already required for the Studio. No additional variables are necessary, though you can set `SANITY_STUDIO_REPO_URL`, `SANITY_STUDIO_MANAGE_URL`, or `SANITY_STUDIO_PLAYBOOK_URL` to customize the Quick Links widget.
+
+### Local Development
+
+1. Start the Studio:
+   ```bash
+   npm run dev:studio
+   ```
+2. Open [http://localhost:3333/dashboard](http://localhost:3333/dashboard) to view the widgets. The Desk tool remains available at `/desk`.
+
 ## Learn More
 
 - [Sanity Documentation](https://www.sanity.io/docs)

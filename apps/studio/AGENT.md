@@ -53,3 +53,4 @@ This workspace is a Sanity Studio project (schemas, GROQ, previews).
   - group related document types
   - avoid duplicating entries
 - Keep schema exports deterministic and maintainable
+- Dashboard widgets live in `apps/studio/dashboard` and the dashboard tool must remain the first plugin so Studio loads with operational context. Add new widgets there and keep them lightweight (fetch only what is required).
