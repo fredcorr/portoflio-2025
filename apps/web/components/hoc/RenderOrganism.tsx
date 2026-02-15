@@ -19,42 +19,58 @@ import {
 
 interface RenderOrganismProps {
   component?: PageComponent | null
+  componentIndex: number
+  nextSectionId?: string
 }
 
-export const RenderOrganism = ({ component }: RenderOrganismProps) => {
+export const RenderOrganism = ({
+  component,
+  componentIndex,
+  nextSectionId,
+}: RenderOrganismProps) => {
   if (!component) {
     return null
   }
 
-  switch (component._type) {
+  const componentWithContext: PageComponent = {
+    ...component,
+    componentIndex,
+  }
+
+  switch (componentWithContext._type) {
     case ComponentTypeName.HomePageHero:
-      return <HomePageHero {...component} />
+      return (
+        <HomePageHero
+          {...componentWithContext}
+          scrollTargetId={nextSectionId}
+        />
+      )
     case ComponentTypeName.ProjectListing:
-      return <ProjectListing {...component} />
+      return <ProjectListing {...componentWithContext} />
     case ComponentTypeName.Testimonials:
-      return <Testimonials {...component} />
+      return <Testimonials {...componentWithContext} />
     case ComponentTypeName.Cards:
-      return <Cards {...component} />
+      return <Cards {...componentWithContext} />
     case ComponentTypeName.BlockText:
-      return <BlockText {...component} />
+      return <BlockText {...componentWithContext} />
     case ComponentTypeName.AboutPageHero:
-      return <AboutPageHero {...component} />
+      return <AboutPageHero {...componentWithContext} />
     case ComponentTypeName.CollaborateHighlights:
-      return <CollaborateHighlights {...component} />
+      return <CollaborateHighlights {...componentWithContext} />
     case ComponentTypeName.Process:
-      return <Process {...component} />
+      return <Process {...componentWithContext} />
     case ComponentTypeName.ImageGallery:
-      return <ImageGallery {...component} />
+      return <ImageGallery {...componentWithContext} />
     case ComponentTypeName.Stats:
-      return <Stats {...component} />
+      return <Stats {...componentWithContext} />
     case ComponentTypeName.Faqs:
-      return <Faqs {...component} />
+      return <Faqs {...componentWithContext} />
     case ComponentTypeName.ToolSet:
-      return <ToolSet {...component} />
+      return <ToolSet {...componentWithContext} />
     case ComponentTypeName.Form:
-      return <GetInTouch {...component} />
+      return <GetInTouch {...componentWithContext} />
     case ComponentTypeName.AnimatedStrapline:
-      return <AnimatedStrapline {...component} />
+      return <AnimatedStrapline {...componentWithContext} />
     default:
       return null
   }

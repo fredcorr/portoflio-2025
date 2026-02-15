@@ -45,5 +45,6 @@ export const messageFields = (prefix: string) => groq`
 export const baseComponentFields = groq`
   "_key": _key,
   "_type": _type,
-  "_id": _id
+  "_id": _id,
+  "sectionId": sectionId
 `

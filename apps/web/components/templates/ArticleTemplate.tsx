@@ -38,8 +38,14 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
         shareUrl={shareUrl}
         shareTitle={title}
       />
-      {props.articleComponents?.map(component => {
-        return <RenderOrganism key={component._key} component={component} />
+      {props.articleComponents?.map((component, index) => {
+        return (
+          <RenderOrganism
+            key={component._key}
+            component={component}
+            componentIndex={index}
+          />
+        )
       })}
     </section>
   )

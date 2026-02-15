@@ -5,6 +5,7 @@ import List from '@components/atoms/list'
 import { createCardField } from '@components/molecules/card'
 import { formatItemCount } from '@utils/format-item-count'
 import { createTitleField } from '@components/molecules/title'
+import { componentFields } from '@schemas/compositions'
 
 const titleField = createTitleField({
   name: 'title',
@@ -36,6 +37,7 @@ const Testimonial = defineType({
   title: 'Testimonials',
   type: 'object',
   fields: [
+    ...componentFields.all,
     titleField.field,
     List({
       name: 'testimonials',

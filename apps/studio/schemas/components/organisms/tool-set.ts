@@ -5,6 +5,7 @@ import List from '@components/atoms/list'
 import { createCardField } from '@components/molecules/card'
 import { formatItemCount } from '@utils/format-item-count'
 import { createTitleField } from '@components/molecules/title'
+import { componentFields } from '@schemas/compositions'
 
 const toolCard = createCardField({
   name: 'tool',
@@ -35,6 +36,7 @@ const ToolSet = defineType({
   title: 'Tool Set',
   type: 'object',
   fields: [
+    ...componentFields.all,
     titleField.field,
     List({
       name: 'tools',

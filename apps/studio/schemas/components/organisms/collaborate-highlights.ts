@@ -5,6 +5,7 @@ import List from '@components/atoms/list'
 import { createCardField } from '@components/molecules/card'
 import { formatItemCount } from '@utils/format-item-count'
 import { createTitleField } from '@components/molecules/title'
+import { componentFields } from '@schemas/compositions'
 
 const highlightCard = createCardField({
   name: 'highlight',
@@ -30,6 +31,7 @@ const CollaborateHighlights = defineType({
   title: 'Collaborate Highlights',
   type: 'object',
   fields: [
+    ...componentFields.all,
     titleField.field,
     List({
       name: 'highlights',

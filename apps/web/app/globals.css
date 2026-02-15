@@ -71,6 +71,10 @@ body {
     background-color 150ms ease;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 
 @layer base {
   h1,
@@ -121,6 +125,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .animate-page-transition {
     animation: none !important;
   }

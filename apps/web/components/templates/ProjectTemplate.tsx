@@ -11,8 +11,14 @@ export function ProjectTemplate(props: ProjectPageDocument) {
         description={props.seoDescription}
         heroImage={props.projectHero}
       />
-      {props.projectComponents?.map(component => {
-        return <RenderOrganism key={component._key} component={component} />
+      {props.projectComponents?.map((component, index) => {
+        return (
+          <RenderOrganism
+            key={component._key}
+            component={component}
+            componentIndex={index}
+          />
+        )
       })}
     </>
   )

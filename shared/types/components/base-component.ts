@@ -6,4 +6,6 @@ export interface SanityComponentBase<
   _type: TType
   _key?: string
   _id?: string
+  sectionId?: string
+  componentIndex?: number
 }

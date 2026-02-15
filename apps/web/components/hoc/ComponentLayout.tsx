@@ -1,10 +1,14 @@
 import React, { HTMLAttributes } from 'react'
 import { cn } from '@/utils/cn'
+import { getComponentSectionId } from '@/utils/get-component-section-id'
 
 interface ComponentLayoutProps extends HTMLAttributes<HTMLElement> {
   fullBleed?: boolean
   overflowHidden?: boolean
   contentClassName?: string
+  sectionId?: string
+  componentKey?: string
+  componentIndex?: number
 }
 
 export const ComponentLayout = ({
@@ -13,8 +17,18 @@ export const ComponentLayout = ({
   children,
   fullBleed,
   overflowHidden = true,
+  sectionId,
+  componentKey,
+  componentIndex,
+  id,
   ...props
 }: ComponentLayoutProps) => {
+  const resolvedSectionId = getComponentSectionId({
+    sectionId,
+    componentKey,
+    componentIndex,
+  })
+
   return (
     <section
       className={cn(
@@ -23,6 +37,7 @@ export const ComponentLayout = ({
         fullBleed && '!px-0',
         className
       )}
+      id={id ?? resolvedSectionId}
       {...props}
     >
       <div

@@ -5,18 +5,30 @@ import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
 import ThreeBackgroundTunnel from '@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'
 
+interface HomePageHeroProps extends HomePageHeroComponent {
+  scrollTargetId?: string
+}
+
 export const HomePageHero = ({
   title,
   subtitle,
   getInTouchTitle,
-}: HomePageHeroComponent) => {
+  _key,
+  sectionId,
+  componentIndex,
+  scrollTargetId,
+}: HomePageHeroProps) => {
   const headline = title?.trim()
   const supportingCopy = subtitle?.trim()
   const contactLabel = getInTouchTitle?.trim()
   const contactEmail = getContactEmail()
+  const ctaTarget = scrollTargetId?.trim() || 'main-content'
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       overflowHidden={false}
       className="!py-0 z-0"
       contentClassName="gap-0 px-0"
@@ -49,9 +61,9 @@ export const HomePageHero = ({
                       Scroll
                     </span>
                     <a
-                      href="#main-content"
+                      href={`#${ctaTarget}`}
                       className="inline-flex size-8 items-center justify-center rounded-full border border-background/20 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
-                      aria-label="Scroll to main content"
+                      aria-label="Scroll to next section"
                     >
                       <Icon
                         name="arrow-down"

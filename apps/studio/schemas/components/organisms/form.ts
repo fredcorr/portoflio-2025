@@ -8,6 +8,7 @@ import { createFormField } from '@components/molecules/form-field'
 import { createMessageField } from '@components/molecules/message'
 import { extractPlainText } from '@utils/extract-plain-text'
 import { formatItemCount } from '@utils/format-item-count'
+import { componentFields } from '@schemas/compositions'
 
 const titleField = createTitleField({
   name: 'title',
@@ -32,6 +33,7 @@ const Form = defineType({
   title: 'Form',
   type: 'object',
   fields: [
+    ...componentFields.all,
     titleField.field,
     Block({
       name: 'subtitle',

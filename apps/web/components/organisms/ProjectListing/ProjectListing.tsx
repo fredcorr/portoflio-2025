@@ -16,6 +16,8 @@ const ProjectListing = ({
   projects,
   showCtaToProjects = false,
   splitLayout,
+  sectionId,
+  componentIndex,
 }: ProjectListingComponent) => {
   const hasSubtitle = subtitle?.length
   const headingId = makeComponentId({
@@ -37,6 +39,9 @@ const ProjectListing = ({
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-12 lg:gap-y-16"
       aria-labelledby={headingId}

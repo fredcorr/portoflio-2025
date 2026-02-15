@@ -5,7 +5,12 @@ import { buildStraplineLoop } from '@/utils/build-strapline-loop'
 const DEFAULT_STRAPLINE_TEXT = 'Visual design for digital experiences'
 const STRAPLINE_REPEAT_COUNT = 4
 
-const AnimatedStrapline = ({ strapline }: AnimatedStraplineComponent) => {
+const AnimatedStrapline = ({
+  strapline,
+  _key,
+  sectionId,
+  componentIndex,
+}: AnimatedStraplineComponent) => {
   const straplineText = strapline?.trim() || DEFAULT_STRAPLINE_TEXT
   const straplineLoop = buildStraplineLoop(straplineText, {
     repeat: STRAPLINE_REPEAT_COUNT,
@@ -19,6 +24,9 @@ const AnimatedStrapline = ({ strapline }: AnimatedStraplineComponent) => {
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       aria-label="Animated strapline"
       className="!bg-transparent text-background !py-0"
       contentClassName="gap-y-0 px-0"

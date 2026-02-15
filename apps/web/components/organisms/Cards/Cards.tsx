@@ -7,13 +7,24 @@ import { cn } from '@/utils/cn'
 import React from 'react'
 import type { CardsComponent } from '@portfolio/types/components'
 
-const Cards = ({ _id, _key, title, subtitle, items }: CardsComponent) => {
+const Cards = ({
+  _id,
+  _key,
+  title,
+  subtitle,
+  items,
+  sectionId,
+  componentIndex,
+}: CardsComponent) => {
   const headingId = makeComponentId({ value: _id || _key, prefix: 'cards' })
   const hasItems = Array.isArray(items) && items.length > 0
   const itemsList = hasItems ? items : []
 
   return (
     <ComponentLayout
+      sectionId={sectionId}
+      componentKey={_key}
+      componentIndex={componentIndex}
       aria-labelledby={headingId}
       className="text-black dark:text-foreground"
       contentClassName="gap-y-10 lg:gap-y-14"

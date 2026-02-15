@@ -5,6 +5,15 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./base": "./base.ts",
+    "./sanity": "./sanity.ts",
+    "./settings": "./settings.ts",
+    "./components": "./components/index.ts",
+    "./components/*": "./components/*.ts",
+    "./pages": "./pages/index.ts",
+    "./pages/*": "./pages/*.ts",
+    "./studio": "./studio/index.ts",
+    "./studio/*": "./studio/*.ts"
   }
 }
