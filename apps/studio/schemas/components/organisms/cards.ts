@@ -7,7 +7,7 @@ import { extractPlainText } from '@utils/extract-plain-text'
 import { formatItemCount } from '@utils/format-item-count'
 import { createCardField } from '@components/molecules/card'
 import { createTitleField } from '@components/molecules/title'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const titleField = createTitleField({
   name: 'title',
@@ -32,7 +32,7 @@ const Cards = defineType({
   title: 'Cards',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     titleField.field,
     Block({
       name: 'subtitle',

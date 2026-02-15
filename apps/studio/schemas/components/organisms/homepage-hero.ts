@@ -2,14 +2,14 @@ import { ComponentTypeName } from '@portfolio/types/base'
 import { GiHeron } from 'react-icons/gi'
 import String from '@components/atoms/string'
 import { defineType } from 'sanity'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const HomePageHero = defineType({
   name: ComponentTypeName.HomePageHero,
   title: 'Homepage Hero',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     String({
       name: 'title',
       title: 'Title',

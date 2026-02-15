@@ -2,14 +2,14 @@ import { ComponentTypeName } from '@portfolio/types/base'
 import { defineType } from 'sanity'
 import String from '@components/atoms/string'
 import { LuType } from 'react-icons/lu'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const AnimatedStrapline = defineType({
   name: ComponentTypeName.AnimatedStrapline,
   title: 'Animated Strapline',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     String({
       name: 'strapline',
       title: 'Strapline',

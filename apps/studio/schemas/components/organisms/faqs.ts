@@ -5,7 +5,7 @@ import List from '@components/atoms/list'
 import { formatItemCount } from '@utils/format-item-count'
 import { createFaqField } from '@components/molecules/faq'
 import { createTitleField } from '@components/molecules/title'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const faqField = createFaqField({
   name: 'faq',
@@ -31,7 +31,7 @@ const Faqs = defineType({
   title: 'FAQs',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     titleField.field,
     List({
       name: 'questions',

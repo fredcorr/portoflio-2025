@@ -7,7 +7,7 @@ import Media from '@components/atoms/media'
 import { extractPlainText } from '@utils/extract-plain-text'
 import { formatItemCount } from '@utils/format-item-count'
 import { createTitleField } from '@components/molecules/title'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const titleField = createTitleField({
   name: 'title',
@@ -18,7 +18,7 @@ const ImageGrid = defineType({
   title: 'Image Grid',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     titleField.field,
     Block({
       name: 'subtitle',

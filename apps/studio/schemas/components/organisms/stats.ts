@@ -4,7 +4,7 @@ import { LuChartBar } from 'react-icons/lu'
 import List from '@components/atoms/list'
 import { createCardField } from '@components/molecules/card'
 import { formatItemCount } from '@utils/format-item-count'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const statCard = createCardField({
   name: 'statItem',
@@ -25,7 +25,7 @@ const Stats = defineType({
   title: 'Stats',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     List(
       {
         name: 'items',

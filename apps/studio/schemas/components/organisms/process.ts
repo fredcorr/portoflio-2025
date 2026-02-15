@@ -6,7 +6,7 @@ import List from '@components/atoms/list'
 import { createCardField } from '@components/molecules/card'
 import { formatItemCount } from '@utils/format-item-count'
 import { createTitleField } from '@components/molecules/title'
-import { componentAnchorField } from '@schemas/compositions'
+import { componentFields } from '@schemas/compositions'
 
 const processStep = createCardField({
   name: 'processStep',
@@ -31,7 +31,7 @@ const Process = defineType({
   title: 'Process',
   type: 'object',
   fields: [
-    componentAnchorField,
+    ...componentFields.all,
     titleField.field,
     String({
       name: 'subtitle',

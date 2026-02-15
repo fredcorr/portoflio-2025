@@ -1,6 +1,6 @@
 import { defineField } from 'sanity'
 
-export const componentAnchorField = defineField({
+const sectionId = defineField({
   name: 'sectionId',
   title: 'Section ID',
   type: 'string',
@@ -20,4 +20,11 @@ export const componentAnchorField = defineField({
 
       return 'Use lowercase letters, numbers, and hyphens only.'
     }),
+})
+
+const entries = Object.freeze([sectionId] as const)
+
+export const componentFields = Object.freeze({
+  sectionId,
+  all: entries,
 })

@@ -1,5 +1,6 @@
 import { ComponentTypeName } from '@portfolio/types/base'
 import type { PageComponent } from '@portfolio/types/pages'
+import { getComponentSectionId } from '@/utils/get-component-section-id'
 import ProjectListing from '../organisms/ProjectListing/ProjectListing'
 import Cards from '../organisms/Cards/Cards'
 import Testimonials from '../organisms/Testimonials/Testimonials'
@@ -19,31 +20,35 @@ import {
 
 interface RenderOrganismProps {
   component?: PageComponent | null
-  sectionId?: string
-  nextSectionId?: string
+  componentIndex: number
+  nextComponent?: PageComponent
 }
 
 export const RenderOrganism = ({
   component,
-  sectionId,
-  nextSectionId,
+  componentIndex,
+  nextComponent,
 }: RenderOrganismProps) => {
   if (!component) {
     return null
   }
 
-  const componentWithSection = sectionId
-    ? { ...component, sectionId }
-    : component
+  const sectionId = getComponentSectionId(component, componentIndex)
+  const componentWithSection = { ...component, sectionId }
 
   switch (component._type) {
-    case ComponentTypeName.HomePageHero:
+    case ComponentTypeName.HomePageHero: {
+      const nextSectionId = nextComponent
+        ? getComponentSectionId(nextComponent, componentIndex + 1)
+        : undefined
+
       return (
         <HomePageHero
           {...componentWithSection}
           scrollTargetId={nextSectionId}
         />
       )
+    }
     case ComponentTypeName.ProjectListing:
       return <ProjectListing {...componentWithSection} />
     case ComponentTypeName.Testimonials:

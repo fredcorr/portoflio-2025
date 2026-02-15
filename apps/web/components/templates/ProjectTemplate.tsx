@@ -1,6 +1,5 @@
 import type { ProjectPageDocument } from '@portfolio/types/pages'
 import { RenderOrganism } from '@/components/hoc/RenderOrganism'
-import { getComponentSectionId } from './component-section-id'
 import ProjectIntro from '@/components/organisms/ProjectIntro/ProjectIntro'
 
 export function ProjectTemplate(props: ProjectPageDocument) {
@@ -17,7 +16,7 @@ export function ProjectTemplate(props: ProjectPageDocument) {
           <RenderOrganism
             key={component._key}
             component={component}
-            sectionId={getComponentSectionId(component, index)}
+            componentIndex={index}
           />
         )
       })}
