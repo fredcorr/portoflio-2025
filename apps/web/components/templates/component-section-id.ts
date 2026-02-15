@@ -4,7 +4,13 @@ export const getComponentSectionId = (
   component: PageComponent,
   index: number
 ) => {
-  const key = component.sectionId?.trim() || component._key?.trim()
+  const sectionId = component.sectionId?.trim()
+
+  if (sectionId) {
+    return sectionId
+  }
+
+  const key = component._key?.trim()
 
   if (key) {
     return `section-${key}`

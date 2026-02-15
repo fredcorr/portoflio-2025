@@ -5,6 +5,7 @@ import Block from '@components/atoms/block'
 import { extractPlainText } from '@utils/extract-plain-text'
 import Toggle from '@components/atoms/toggle'
 import { createTitleField } from '@components/molecules/title'
+import { componentAnchorField } from '@schemas/compositions'
 
 const titleField = createTitleField({
   name: 'title',
@@ -15,6 +16,7 @@ const BlockText = defineType({
   title: 'Block Text',
   type: 'object',
   fields: [
+    componentAnchorField,
     titleField.field,
     Block({
       name: 'body',

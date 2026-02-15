@@ -6,6 +6,7 @@ import Block from '@components/atoms/block'
 import List from '@components/atoms/list'
 import Toggle from '@components/atoms/toggle'
 import { createTitleField } from '@components/molecules/title'
+import { componentAnchorField } from '@schemas/compositions'
 const titleField = createTitleField({
   name: 'title',
 })
@@ -15,6 +16,7 @@ const ProjectListing = defineType({
   title: 'Project Listing',
   type: 'object',
   fields: [
+    componentAnchorField,
     titleField.field,
     Block({
       name: 'subtitle',
