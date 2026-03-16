@@ -11,5 +11,6 @@ export interface AboutPageHeroComponent
   location?: string;
   timezone?: string;
   languages?: string;
+  resumeUrl?: string;
   showCta?: boolean;
 }

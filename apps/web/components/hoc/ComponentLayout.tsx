@@ -32,7 +32,7 @@ export const ComponentLayout = ({
   return (
     <section
       className={cn(
-        'relative mx-auto bg-background px-4 py-12 md:px-6 md:py-16',
+        'relative mx-auto bg-background px-4 py-12 md:px-10 md:py-16',
         overflowHidden && 'overflow-hidden',
         fullBleed && '!px-0',
         className

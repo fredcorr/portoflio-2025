@@ -11,5 +11,6 @@ export const aboutPageHeroFields = groq`
   "location": location,
   "timezone": timezone,
   "languages": languages,
+  "resumeUrl": resume.asset->url,
   "showCta": showCta
 `

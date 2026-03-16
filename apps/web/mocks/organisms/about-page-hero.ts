@@ -43,5 +43,6 @@ export const aboutPageHeroMock: AboutPageHeroComponent = {
   location: 'Buenos Aires, Argentina',
   timezone: 'GMT-3',
   languages: 'Italian & English',
+  resumeUrl: 'https://cdn.example.com/my-resume.pdf',
   showCta: true,
 }

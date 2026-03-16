@@ -1,3 +1,4 @@
+import React from 'react'
 import type { AboutPageHeroComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
@@ -5,7 +6,6 @@ import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
-import { cn } from '@/utils/cn'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
 import AboutBackgroundHelixPulseCascade from '@/components/molecules/AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade'
 
@@ -18,6 +18,7 @@ const AboutPageHero = ({
   location,
   timezone,
   languages,
+  resumeUrl,
   showCta,
   sectionId,
   componentIndex,
@@ -28,7 +29,11 @@ const AboutPageHero = ({
   })
   const headline = title?.heading?.trim()
   const headingLevel = title?.headingLevel
-  const contactEmail = showCta && getContactEmail()
+  const resolvedResumeUrl = resumeUrl?.trim()
+  const contactEmail = getContactEmail()
+  const ctaLabel = resolvedResumeUrl ? 'My resume' : contactEmail
+  const ctaHref = resolvedResumeUrl || `mailto:${contactEmail}`
+  const ctaIconTitle = resolvedResumeUrl ? 'Resume' : 'Email'
   const metaItems = [location, timezone, languages].filter(Boolean)
 
   return (
@@ -106,19 +111,17 @@ const AboutPageHero = ({
                   />
                 )}
 
-                {contactEmail && (
+                {showCta && (
                   <a
-                    href={`mailto:${contactEmail}`}
-                    className={cn(
-                      'inline-flex items-center gap-2 font-heading text-body-lg text-background underline underline-offset-4 transition hover:opacity-70',
-                      'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background'
-                    )}
+                    href={ctaHref}
+                    download={resolvedResumeUrl ? '' : undefined}
+                    className="inline-flex items-center gap-2 text-heading-4 font-heading text-background underline underline-offset-4 transition hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
                   >
-                    <span>{contactEmail}</span>
+                    {ctaLabel}
                     <Icon
                       name="arrow-up-right"
                       className="size-5"
-                      title="Email"
+                      title={ctaIconTitle}
                     />
                   </a>
                 )}

@@ -56,7 +56,7 @@ export const HomePageHero = ({
                       {headline}
                     </h1>
                   )}
-                  <div className="mt-8 flex items-center gap-3">
+                  <div className="mt-8 mb-8 flex items-center gap-3">
                     <span className="font-heading text-sm uppercase tracking-wider">
                       Scroll
                     </span>
@@ -74,7 +74,7 @@ export const HomePageHero = ({
                 </div>
               </div>
 
-              <div className="flex h-full items-start justify-end pt-10 md:col-span-6 md:items-center md:pt-0">
+              <div className="flex h-full justify-start md:justify-end pt-10 md:col-span-6 md:items-center md:pt-0">
                 <div className="space-y-12 md:max-w-md md:px-6 lg:max-w-xl">
                   {supportingCopy && (
                     <p className="font-body text-body-lg leading-relaxed md:text-body-xl">

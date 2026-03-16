@@ -2,6 +2,7 @@ import { ComponentTypeName } from '@portfolio/types/base'
 import { defineType } from 'sanity'
 import { LuUserRound } from 'react-icons/lu'
 import Block from '@components/atoms/block'
+import File from '@components/atoms/file'
 import Toggle from '@components/atoms/toggle'
 import { extractPlainText } from '@utils/extract-plain-text'
 import { createTitleField } from '@components/molecules/title'
@@ -43,6 +44,11 @@ const AboutPageHero = defineType({
       title: 'Languages',
       type: 'string',
     },
+    File({
+      name: 'resume',
+      title: 'Resume',
+      description: 'Resume file used by the "My resume" call to action.',
+    }),
     Toggle({
       name: 'showCta',
       title: 'Show call to action',
