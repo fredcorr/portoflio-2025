@@ -4,6 +4,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import { lucideIconPicker } from '@fredcorr/sanity-plugin-lucide-icon-picker'
+import { media, mediaAssetSource } from 'sanity-plugin-media'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 import { dashboardWidgets } from './dashboard'
@@ -33,6 +34,7 @@ export default defineConfig({
     }),
     lucideIconPicker(),
     visionTool(),
+    media(),
   ],
 
   document: {
@@ -52,6 +54,13 @@ export default defineConfig({
         )
       }
       return prev
+    },
+  },
+
+  form: {
+    image: {
+      assetSources: (previousAssetSources) =>
+        [...previousAssetSources, mediaAssetSource],
     },
   },
 
