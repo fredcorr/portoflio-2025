@@ -5,6 +5,7 @@ import FocusTrap from 'focus-trap-react'
 import { RemoveScroll } from 'react-remove-scroll'
 import { cn } from '@/utils/cn'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
+import { Heading } from '@/components/atoms/Heading/Heading'
 import type { PortableTextBlock } from '@portabletext/react'
 
 export interface ModalProps {
@@ -50,12 +51,13 @@ export const Modal = ({
         >
           <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl outline-none dark:bg-background">
             {title && (
-              <h2
+              <Heading
+                level={2}
                 id="modal-title"
                 className="mb-3 font-heading text-heading-4 font-semibold text-black dark:text-foreground"
               >
                 {title}
-              </h2>
+              </Heading>
             )}
             {description && description.length > 0 && (
               <div id="modal-description" className="mb-4">

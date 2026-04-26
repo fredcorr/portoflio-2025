@@ -7,6 +7,8 @@ import Image from '@/components/atoms/Image/Image'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { cn } from '@/utils/cn'
 import { makeComponentId } from '@/utils/makeComponentId'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import SlideInStagger from '@/components/animation/SlideIn/SlideInStagger'
 
 // Figma annotations:
 // - ImageGallery component (node-id: 3591:2302)
@@ -66,7 +68,7 @@ const ImageGallery = ({
       )}
 
       {galleryImagesWithUrl.length > 0 && (
-        <div
+        <StaggerChildren
           className={cn(
             'md:col-span-12 grid grid-cols-1 gap-8',
             !isSingleImage && 'lg:grid-cols-2'
@@ -80,7 +82,7 @@ const ImageGallery = ({
             const altText = image.alt || 'Project gallery image'
 
             return (
-              <div
+              <SlideInStagger
                 key={_id || _key}
                 className={cn('min-w-0', isLastOddItem && 'lg:col-span-2')}
               >
@@ -98,10 +100,10 @@ const ImageGallery = ({
                     className="h-auto w-full object-contain"
                   />
                 )}
-              </div>
+              </SlideInStagger>
             )
           })}
-        </div>
+        </StaggerChildren>
       )}
 
       {galleryImagesWithUrl.length === 0 && (

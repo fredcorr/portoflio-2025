@@ -5,6 +5,7 @@ import type { ArticleContentProps as ArticleContentSharedProps } from '@portfoli
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Icon from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
+import { Heading } from '@/components/atoms/Heading/Heading'
 
 export interface ArticleContentProps extends ArticleContentSharedProps {
   className?: string
@@ -158,14 +159,20 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
                 components={{
                   block: {
                     h1: ({ children }) => (
-                      <h2 className="mb-6 mt-8 font-display text-heading-2 font-normal tracking-tight text-black dark:text-foreground">
+                      <Heading
+                        level={2}
+                        className="mb-6 mt-8 font-display text-heading-2 font-normal tracking-tight text-black dark:text-foreground"
+                      >
                         {children}
-                      </h2>
+                      </Heading>
                     ),
                     h2: ({ children }) => (
-                      <h2 className="mb-6 mt-8 font-display text-heading-2 font-normal tracking-tight text-black dark:text-foreground">
+                      <Heading
+                        level={2}
+                        className="mb-6 mt-8 font-display text-heading-2 font-normal tracking-tight text-black dark:text-foreground"
+                      >
                         {children}
-                      </h2>
+                      </Heading>
                     ),
                   },
                 }}

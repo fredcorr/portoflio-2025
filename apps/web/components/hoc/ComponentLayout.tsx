@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import { cn } from '@/utils/cn'
 import { getComponentSectionId } from '@/utils/get-component-section-id'
 

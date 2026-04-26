@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import type { PortableTextBlock } from '@portabletext/react'
 import Link from 'next/link'
@@ -7,8 +9,8 @@ import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Icon from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
 import { normalizePortableText } from '@/utils/portableText'
-import { ConditionalWrapper } from '@/components/hoc/ConditionalWrapper'
 import { SanityImage } from '@portfolio/types/sanity'
+import { PolymorphicProps } from '@/types'
 
 export enum CardTitleSize {
   Small = 'small',
@@ -53,6 +55,10 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   className?: string
   iconWrapperClassName?: string
   iconClassName?: string
+  // Component slot: any animation component (FadeIn, ScaleIn, SlideIn, etc.)
+  // Card resolves `as` to Link or 'article' — the animation handles the rest.
+  AnimationComponent?: React.ComponentType<PolymorphicProps>
+  animationProps?: Record<string, unknown>
 }
 
 const formatIndex = (index?: number): string | undefined => {
@@ -73,6 +79,8 @@ const Card = ({
   className,
   iconWrapperClassName,
   iconClassName,
+  AnimationComponent,
+  animationProps,
   ...props
 }: CardProps) => {
   const formattedIndex = formatIndex(index)
@@ -85,91 +93,88 @@ const Card = ({
         : 'justify-end'
   const subtitleBlocks = normalizePortableText(subtitle)
 
+  const Comp = (AnimationComponent ??
+    (href ? Link : 'article')) as React.ComponentType<PolymorphicProps>
+
+  const compClassName = cn(
+    'group flex bg-transparent h-full flex-col overflow-hidden rounded-[32px] transition hover:-translate-y-1',
+    href &&
+      'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black',
+    articleSpacingMap[spacing],
+    className
+  )
+
+  const compProps: PolymorphicProps = {
+    className: compClassName,
+    ...(AnimationComponent && { as: href ? Link : 'article' }),
+    ...(href && { href, 'aria-label': `View ${title}` }),
+  }
+
   return (
-    <ConditionalWrapper
-      condition={Boolean(href)}
-      wrapper={children => (
-        <Link
-          href={href as string}
-          className={cn(
-            'block rounded-[32px]',
-            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black'
-          )}
-          aria-label={`View ${title}`}
-          {...props}
-        >
-          {children}
-        </Link>
-      )}
+    <Comp
+      {...compProps}
+      {...(animationProps as PolymorphicProps)}
+      {...(props as PolymorphicProps)}
     >
-      <article
-        className={cn(
-          'group flex bg-transparent h-full flex-col overflow-hidden rounded-[32px] transition hover:-translate-y-1',
-          articleSpacingMap[spacing],
-          className
-        )}
-        {...(!Boolean(href) && { ...props })}
+      {image?.asset.url && (
+        <Image
+          src={image.asset.url}
+          alt={image.alt || ''}
+          width={image.asset.metadata?.dimensions?.width || 1200}
+          height={image.asset.metadata?.dimensions?.height || 1024}
+          wrapperClassName="aspect-[1.18]"
+          className="transition duration-300 group-hover:scale-[1.01]"
+        />
+      )}
+
+      <div
+        className={cn('flex flex-col px-3 pb-5', contentSpacingMap[spacing])}
       >
-        {image?.asset.url && (
-          <Image
-            src={image.asset.url}
-            alt={image.alt || ''}
-            width={image.asset.metadata?.dimensions?.width || 1200}
-            height={image.asset.metadata?.dimensions?.height || 1024}
-            wrapperClassName="aspect-[1.18]"
-            className="transition duration-300 group-hover:scale-[1.01]"
+        {hasIconRow && (
+          <div className={cn('flex items-start gap-3', iconRowClass)}>
+            {iconName && (
+              <span
+                className={cn(
+                  'inline-flex items-center justify-center',
+                  iconWrapperClassName
+                )}
+              >
+                <Icon
+                  name={iconName}
+                  className={cn('size-6 text-black', iconClassName)}
+                  title={`${title} icon`}
+                />
+              </span>
+            )}
+            {formattedIndex && (
+              <span
+                className="font-heading text-body-lg text-black/50"
+                aria-label={`Project ${Number(formattedIndex)}`}
+              >
+                {formattedIndex}
+              </span>
+            )}
+          </div>
+        )}
+
+        <p
+          className={cn(
+            'font-heading font-medium leading-tight text-black',
+            titleSizeClassMap[titleSize]
+          )}
+        >
+          {title}
+        </p>
+
+        {subtitleBlocks.length > 0 && (
+          <RichText
+            value={subtitleBlocks}
+            size={subtitleSize ?? RichTextSize.Lg}
+            className="text-black/70"
           />
         )}
-
-        <div
-          className={cn('flex flex-col px-3 pb-5', contentSpacingMap[spacing])}
-        >
-          {hasIconRow && (
-            <div className={cn('flex items-start gap-3', iconRowClass)}>
-              {iconName && (
-                <span
-                  className={cn(
-                    'inline-flex items-center justify-center',
-                    iconWrapperClassName
-                  )}
-                >
-                  <Icon
-                    name={iconName}
-                    className={cn('size-6 text-black', iconClassName)}
-                    title={`${title} icon`}
-                  />
-                </span>
-              )}
-              {formattedIndex && (
-                <span
-                  className="font-heading text-body-lg text-black/50"
-                  aria-label={`Project ${Number(formattedIndex)}`}
-                >
-                  {formattedIndex}
-                </span>
-              )}
-            </div>
-          )}
-
-          <p
-            className={cn(
-              'font-heading font-medium leading-tight text-black',
-              titleSizeClassMap[titleSize]
-            )}
-          >
-            {title}
-          </p>
-
-          {subtitleBlocks.length > 0 && (
-            <RichText
-              value={subtitleBlocks}
-              size={subtitleSize ?? RichTextSize.Lg}
-              className="text-black/70"
-            />
-          )}
-        </div>
-      </article>
-    </ConditionalWrapper>
+      </div>
+    </Comp>
   )
 }
 

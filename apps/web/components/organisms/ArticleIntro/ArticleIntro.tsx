@@ -1,6 +1,7 @@
 import React from 'react'
 import type { ArticleIntroProps as ArticleIntroSharedProps } from '@portfolio/types/components'
 import Image from '@/components/atoms/Image/Image'
+import { Heading } from '@/components/atoms/Heading/Heading'
 import { cn } from '@/utils/cn'
 
 export interface ArticleIntroProps extends ArticleIntroSharedProps {
@@ -42,9 +43,12 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
             )}
 
             {headline && (
-              <h1 className="font-display text-heading-1 font-normal leading-[1.1] tracking-tight text-black dark:text-foreground md:text-heading-1 xl:text-[64px]">
+              <Heading
+                level={1}
+                className="font-display text-heading-1 font-normal leading-[1.1] tracking-tight text-black dark:text-foreground md:text-heading-1 xl:text-[64px]"
+              >
                 {headline}
-              </h1>
+              </Heading>
             )}
 
             {hasTags && (

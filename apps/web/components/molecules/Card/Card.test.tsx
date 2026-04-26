@@ -6,6 +6,10 @@ import type { PortableTextBlock } from '@portabletext/react'
 
 import { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Card, { CardSpacing, CardTitleSize } from './Card'
+import type { PolymorphicProps } from '@/types'
+
+const AnimStub = ({ as: As = 'article' as React.ElementType, children, ...rest }: PolymorphicProps) =>
+  React.createElement(As as string, rest, children)
 
 const block = (text: string): PortableTextBlock[] => [
   {
@@ -79,4 +83,21 @@ test('renders string subtitles as plain text', () => {
   )
 
   assert.match(markup, /Plain text subtitle/)
+})
+
+test('renders AnimationComponent as article when no href', () => {
+  const markup = renderToStaticMarkup(
+    <Card title="Animated" AnimationComponent={AnimStub} />
+  )
+
+  assert.match(markup, /<article/)
+})
+
+test('renders AnimationComponent as link when href is provided', () => {
+  const markup = renderToStaticMarkup(
+    <Card title="Animated Link" href="/projects/test" AnimationComponent={AnimStub} />
+  )
+
+  assert.match(markup, /href="\/projects\/test"/)
+  assert.match(markup, /aria-label="View Animated Link"/)
 })

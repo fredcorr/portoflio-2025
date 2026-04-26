@@ -1,10 +1,13 @@
 import type { CollaborateHighlightsComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { RichTextSize } from '@/components/atoms/RichText/RichText'
-import { Heading } from '@/components/atoms/Heading/Heading'
 import { makeComponentId } from '@/utils/makeComponentId'
+import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import { CardSpacing } from '@/components/molecules/Card/Card'
 import Card from '@/components/molecules/Card/Card'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import SlideInStagger from '@/components/animation/SlideIn/SlideInStagger'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const CollaborateHighlights = ({
   _id,
@@ -29,17 +32,21 @@ const CollaborateHighlights = ({
       contentClassName="gap-y-12 lg:gap-y-14"
     >
       {title?.heading && (
-        <Heading
+        <FadeIn
           id={headingId}
-          level={title.headingLevel}
+          viewport={{ amount: 0.4 }}
+          as={toHeadingTag(title.headingLevel)}
           className="md:col-span-6 font-heading text-heading-1 leading-[1.1] tracking-tight whitespace-pre-line"
         >
           {title.heading}
-        </Heading>
+        </FadeIn>
       )}
 
       {highlights && highlights.length > 0 ? (
-        <div className="md:col-span-12 grid grid-cols-1 gap-10 md:grid-cols-3 lg:gap-14">
+        <StaggerChildren
+          amount={0.7}
+          className="md:col-span-12 grid grid-cols-1 gap-10 md:grid-cols-3 lg:gap-14"
+        >
           {highlights.map(
             ({ title: itemTitle, subtitle, _key: itemKey, icon }, index) => (
               <Card
@@ -47,6 +54,7 @@ const CollaborateHighlights = ({
                 title={itemTitle ?? ''}
                 subtitle={subtitle}
                 subtitleSize={RichTextSize.Md}
+                AnimationComponent={SlideInStagger}
                 spacing={CardSpacing.Compact}
                 iconName={icon}
                 iconWrapperClassName="size-12 rounded-full bg-black text-background"
@@ -55,7 +63,7 @@ const CollaborateHighlights = ({
               />
             )
           )}
-        </div>
+        </StaggerChildren>
       ) : (
         <div className="md:col-span-12 rounded-3xl border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-gray-200/40 dark:bg-gray-100 dark:text-foreground/70">
           Highlights will appear here once they are published.

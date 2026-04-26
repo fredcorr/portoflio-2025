@@ -1,5 +1,7 @@
 'use client'
 
+import { Heading } from '@/components/atoms/Heading/Heading'
+
 export default function GlobalError({
   reset,
 }: {
@@ -10,9 +12,9 @@ export default function GlobalError({
     <html lang="en">
       <body>
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-4 py-12 text-center text-neutral-800">
-          <h2 className="text-3xl font-semibold sm:text-4xl">
+          <Heading level={2} className="text-3xl font-semibold sm:text-4xl">
             Something went wrong!
-          </h2>
+          </Heading>
           <button
             onClick={() => reset()}
             className="rounded-md bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-700 transition-colors"

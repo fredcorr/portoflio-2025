@@ -52,6 +52,12 @@ const ProjectListing = defineType({
       description:
         'Toggle to enable the split layout. The title and subtitle will be displayed side by side.',
     }),
+    Toggle({
+      name: 'addStaggerAnimation',
+      title: 'Add Stagger Animation',
+      description:
+        'Toggle to enable the stagger animation for the project cards.',
+    }),
   ],
   preview: {
     select: {

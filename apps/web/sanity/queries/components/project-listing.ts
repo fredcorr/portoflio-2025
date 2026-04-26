@@ -24,6 +24,7 @@ export const projectListingFields = groq`
   ${baseComponentFields},
   "title": ${title},
   "subtitle": subtitle,
+  addStaggerAnimation,
   "projects": select(
     count(projects[]->slug.current) > 0 => projects[]->{ ${projectFields} },
     *[_type == "project" && defined(slug.current) && !(_id in path("drafts.**"))]

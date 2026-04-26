@@ -3,12 +3,13 @@
 import React from 'react'
 import type { FormComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import { Heading } from '@/components/atoms/Heading/Heading'
+import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Form from '@/components/molecules/Form/Form'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { normalizePortableText } from '@/utils/portableText'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const GetInTouch = ({
   _id,
@@ -42,13 +43,13 @@ const GetInTouch = ({
     >
       <div className="md:col-span-12 flex flex-col items-center gap-4 text-center">
         {title?.heading && (
-          <Heading
+          <FadeIn
             id={headingId}
-            level={title.headingLevel}
+            as={toHeadingTag(title?.headingLevel)}
             className="max-w-3xl font-heading text-heading-1 leading-[1.1] tracking-tight"
           >
             {title.heading}
-          </Heading>
+          </FadeIn>
         )}
         {subtitleBlocks.length > 0 && (
           <RichText

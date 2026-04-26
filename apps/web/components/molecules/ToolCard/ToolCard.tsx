@@ -1,11 +1,8 @@
-import React from 'react'
 import type { ToolSetItem } from '@portfolio/types/components'
 
 import Image from '@/components/atoms/Image/Image'
 import { cn } from '@/utils/cn'
-
-// Figma annotations:
-// - Tools card (node-id: 3595:2422 / 3595:2431 / 3595:2439 / 3595:2447)
+import SlideInStagger from '@/components/animation/SlideIn/SlideInStagger'
 
 export interface ToolCardProps extends ToolSetItem {
   className?: string
@@ -24,7 +21,8 @@ const ToolCard = ({ title, subtitle, image, className }: ToolCardProps) => {
   const altText = image?.alt || (title && `${title} logo`) || 'Tool logo'
 
   return (
-    <li
+    <SlideInStagger
+      as="li"
       className={cn(
         'flex h-[146px] items-center justify-center rounded-[16px] bg-gray-50 p-2 dark:bg-gray-100',
         className
@@ -59,7 +57,7 @@ const ToolCard = ({ title, subtitle, image, className }: ToolCardProps) => {
           </div>
         )}
       </div>
-    </li>
+    </SlideInStagger>
   )
 }
 

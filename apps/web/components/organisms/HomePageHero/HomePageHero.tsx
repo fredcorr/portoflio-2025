@@ -4,6 +4,8 @@ import OverlapAnimation from '@/components/hoc/OverlapAnimation'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
 import ThreeBackgroundTunnel from '@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
 
 interface HomePageHeroProps extends HomePageHeroComponent {
   scrollTargetId?: string
@@ -52,11 +54,18 @@ export const HomePageHero = ({
               <div className="relative flex h-full items-end justify-start overflow-hidden pb-10 md:col-span-6 md:items-center md:pb-0">
                 <div className="relative z-10 max-w-xl text-background">
                   {headline && (
-                    <h1 className="text-display-2xl lg:font-display md:text-[clamp(3rem,8vw,7rem)] leading-[0.95] tracking-tight">
+                    <FadeIn
+                      as="h1"
+                      delay={0.25}
+                      className="text-display-2xl lg:font-display md:text-[clamp(3rem,8vw,7rem)] leading-[0.95] tracking-tight"
+                    >
                       {headline}
-                    </h1>
+                    </FadeIn>
                   )}
-                  <div className="mt-8 mb-8 flex items-center gap-3">
+                  <SlideIn
+                    delay={0.35}
+                    className="mt-8 mb-8 flex items-center gap-3"
+                  >
                     <span className="font-heading text-sm uppercase tracking-wider">
                       Scroll
                     </span>
@@ -70,12 +79,15 @@ export const HomePageHero = ({
                         className="size-4 text-background"
                       />
                     </a>
-                  </div>
+                  </SlideIn>
                 </div>
               </div>
 
               <div className="flex h-full justify-start md:justify-end pt-10 md:col-span-6 md:items-center md:pt-0">
-                <div className="space-y-12 md:max-w-md md:px-6 lg:max-w-xl">
+                <SlideIn
+                  delay={0.35}
+                  className="space-y-12 md:max-w-md md:px-6 lg:max-w-xl"
+                >
                   {supportingCopy && (
                     <p className="font-body text-body-lg leading-relaxed md:text-body-xl">
                       {supportingCopy}
@@ -99,7 +111,7 @@ export const HomePageHero = ({
                       )}
                     </div>
                   )}
-                </div>
+                </SlideIn>
               </div>
             </div>
           </div>

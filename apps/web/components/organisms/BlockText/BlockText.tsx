@@ -1,11 +1,11 @@
-import React from 'react'
 import type { BlockTextComponent } from '@portfolio/types/components'
 
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import { Heading } from '@/components/atoms/Heading/Heading'
+import { Heading, toHeadingTag } from '@/components/atoms/Heading/Heading'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const BlockText = ({
   _id,
@@ -54,9 +54,10 @@ const BlockText = ({
       data-organism="block-text"
     >
       {hasHeading && headingText && (
-        <Heading
+        <FadeIn
           id={headingId}
-          level={title?.headingLevel}
+          as={toHeadingTag(title?.headingLevel)}
+          viewport={{ once: true, amount: 0.8 }}
           className={cn(
             headingColumnClassName,
             'font-heading font-medium tracking-tight',
@@ -65,15 +66,13 @@ const BlockText = ({
           )}
         >
           {headingText}
-        </Heading>
+        </FadeIn>
       )}
 
       {hasBody && body && (
-        <RichText
-          value={body}
-          size={RichTextSize.Lg}
-          className={bodyColumnClassName}
-        />
+        <FadeIn className={bodyColumnClassName} delay={0.25}>
+          <RichText value={body} size={RichTextSize.Lg} />
+        </FadeIn>
       )}
     </ComponentLayout>
   )

@@ -6,7 +6,9 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import Card from '@/components/molecules/Card/Card'
 import { cn } from '@/utils/cn'
 import Link from 'next/link'
-import React from 'react'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import ConditionalWrapper from '@/components/hoc/ConditionalWrapper'
 
 const ProjectListing = ({
   _id,
@@ -15,6 +17,7 @@ const ProjectListing = ({
   subtitle,
   projects,
   showCtaToProjects = false,
+  addStaggerAnimation = false,
   splitLayout,
   sectionId,
   componentIndex,
@@ -91,20 +94,39 @@ const ProjectListing = ({
       </div>
 
       {projects?.length ? (
-        <div className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-12 lg:gap-10">
+        <ConditionalWrapper
+          condition={!!addStaggerAnimation}
+          wrapper={children => (
+            <StaggerChildren
+              staggerDelay={0.25}
+              delay={0.15}
+              amount={0.15}
+              as="div"
+              className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-12 lg:gap-10"
+            >
+              {children}
+            </StaggerChildren>
+          )}
+        >
           {projects.map(project => (
-            <div key={project._id} className="h-full md:col-span-6">
-              <Card
-                title={project.clientName || ''}
-                subtitle={project.title}
-                href={project.slug?.current}
-                image={project.seoImage || project.projectHero}
-                subtitleSize={RichTextSize.Lg}
-                className="h-full"
-              />
-            </div>
+            <Card
+              key={project._id}
+              title={project.clientName || ''}
+              subtitle={project.title}
+              href={project.slug?.current}
+              image={project.seoImage || project.projectHero}
+              subtitleSize={RichTextSize.Lg}
+              className="h-full md:col-span-6"
+              {...(!!addStaggerAnimation
+                ? { AnimationComponent: FadeInWithStagger }
+                : {
+                    AnimationComponent: FadeIn,
+                    animationProps: { viewport: { amount: 0.5 } },
+                  })}
+              AnimationComponent={FadeInWithStagger}
+            />
           ))}
-        </div>
+        </ConditionalWrapper>
       ) : (
         <div className="md:col-span-12 rounded-3xl bg-gray-50 px-6 py-10 text-black/70 dark:bg-gray-100 dark:text-foreground/70">
           Projects will appear here once they are published.

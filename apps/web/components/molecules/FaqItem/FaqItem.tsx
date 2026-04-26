@@ -7,6 +7,7 @@ import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { useResizeObserver } from '@/hooks/use-resize-observer'
 import { cn } from '@/utils/cn'
+import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
 
 // Figma annotations:
 // - FAQ item patterns (node-id: 75:1735, 3594:2406)
@@ -47,7 +48,10 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
   })
 
   return (
-    <div className={cn('w-full', className)} data-molecule="faq-item">
+    <FadeInWithStagger
+      className={cn('w-full', className)}
+      data-molecule="faq-item"
+    >
       <button
         id={buttonId}
         type="button"
@@ -111,7 +115,7 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
           </div>
         </div>
       )}
-    </div>
+    </FadeInWithStagger>
   )
 }
 

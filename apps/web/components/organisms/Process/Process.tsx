@@ -1,6 +1,6 @@
 import type { ProcessComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import { Heading } from '@/components/atoms/Heading/Heading'
+import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Card, {
   CardSpacing,
@@ -9,7 +9,8 @@ import Card, {
 import { formatStepNumber } from '@/utils/format-step-number'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
-import React from 'react'
+import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 
 const Process = ({
   _id,
@@ -34,19 +35,21 @@ const Process = ({
       contentClassName="gap-y-12 lg:gap-y-16"
     >
       {title?.heading && (
-        <Heading
+        <FadeIn
           id={headingId}
-          level={title.headingLevel}
+          as={toHeadingTag(title.headingLevel)}
           className="md:col-span-12 font-heading text-heading-2 leading-[1.2] tracking-tight"
         >
           {title.heading}
-        </Heading>
+        </FadeIn>
       )}
 
       {Array.isArray(steps) && steps.length > 0 ? (
-        <div
+        <StaggerChildren
           className="md:col-span-12 grid grid-cols-1 md:grid-cols-12 md:gap-x-10 md:gap-y-10"
           style={{ gridTemplateRows: `repeat(${steps.length}, 'auto')` }}
+          staggerDelay={0.15}
+          amount={0.6}
         >
           {steps.map((step, index) => {
             const isRightColumn = index % 2 === 1
@@ -58,6 +61,7 @@ const Process = ({
                 subtitle={step.subtitle}
                 subtitleSize={RichTextSize.Md}
                 spacing={CardSpacing.Compact}
+                AnimationComponent={FadeInWithStagger}
                 style={{ gridRow: `${index + 1} / span 1` }}
                 className={cn(
                   'h-full bg-transparent shadow-none hover:translate-y-0 !rounded-none',
@@ -69,7 +73,7 @@ const Process = ({
               />
             )
           })}
-        </div>
+        </StaggerChildren>
       ) : (
         <div className="md:col-span-12 rounded-3xl border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-gray-200/40 dark:bg-gray-100 dark:text-foreground/70">
           Process steps will appear here once they are published.

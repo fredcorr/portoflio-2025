@@ -1,11 +1,12 @@
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import { Heading } from '@/components/atoms/Heading/Heading'
+import { Heading, toHeadingTag } from '@/components/atoms/Heading/Heading'
 import { makeComponentId } from '@/utils/makeComponentId'
 import Card from '@/components/molecules/Card/Card'
 import { cn } from '@/utils/cn'
-import React from 'react'
 import type { CardsComponent } from '@portfolio/types/components'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const Cards = ({
   _id,
@@ -33,13 +34,14 @@ const Cards = ({
         <div className="md:col-span-12">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             {title?.heading && (
-              <Heading
+              <FadeIn
+                delay={0.25}
                 id={headingId}
-                level={title.headingLevel}
+                as={toHeadingTag(title.headingLevel)}
                 className="font-heading text-heading-2 leading-[1.1] tracking-tight"
               >
                 {title.heading}
-              </Heading>
+              </FadeIn>
             )}
             {subtitle && (
               <RichText
@@ -56,7 +58,10 @@ const Cards = ({
       )}
 
       {hasItems && (
-        <div className="md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <StaggerChildren
+          staggerDelay={0.25}
+          className="md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2"
+        >
           {itemsList.map((item, index) => (
             <Card
               key={item._key ?? `card-${index}`}
@@ -64,9 +69,10 @@ const Cards = ({
               subtitle={item.subtitle}
               subtitleSize={RichTextSize.Lg}
               className="h-full pr-4"
+              AnimationComponent={FadeInWithStagger}
             />
           ))}
-        </div>
+        </StaggerChildren>
       )}
 
       {!hasItems && (

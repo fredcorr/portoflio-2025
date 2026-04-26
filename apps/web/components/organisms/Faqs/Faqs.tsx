@@ -6,6 +6,7 @@ import { Heading } from '@/components/atoms/Heading/Heading'
 import FaqItem from '@/components/molecules/FaqItem/FaqItem'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 
 // Figma annotations:
 // - FAQ list card (node-id: 75:1735)
@@ -61,7 +62,7 @@ const Faqs = ({
       )}
 
       {hasQuestions && questions && (
-        <div
+        <StaggerChildren
           className={cn(
             cardColumnClassName,
             'min-w-0 divide-y divide-black/10 rounded-[32px] p-6 md:p-0'
@@ -75,7 +76,7 @@ const Faqs = ({
               {...(index === 0 && { className: '[&>button]:pt-0' })}
             />
           ))}
-        </div>
+        </StaggerChildren>
       )}
     </ComponentLayout>
   )

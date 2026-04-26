@@ -5,6 +5,7 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import ToolCard from '@/components/molecules/ToolCard/ToolCard'
 import { makeComponentId } from '@/utils/makeComponentId'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 
 const ToolSet = ({
   _id,
@@ -48,7 +49,10 @@ const ToolSet = ({
       )}
 
       {hasTools && tools && (
-        <ul className="md:col-span-12 flex flex-wrap items-stretch gap-8">
+        <StaggerChildren
+          as="ul"
+          className="md:col-span-12 flex flex-wrap items-stretch gap-8"
+        >
           {tools.map((tool, index) => (
             <ToolCard
               key={tool._key ?? `tool-${index}`}
@@ -58,7 +62,7 @@ const ToolSet = ({
               className="flex-1 basis-[calc(50%-16px)] lg:basis-[calc(25%-24px)]"
             />
           ))}
-        </ul>
+        </StaggerChildren>
       )}
     </ComponentLayout>
   )

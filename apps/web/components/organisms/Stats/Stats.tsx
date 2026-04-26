@@ -1,8 +1,9 @@
-import React from 'react'
 import type { StatsComponent } from '@portfolio/types/components'
 
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import AnimatedStatValue from '@/components/molecules/AnimatedStatValue/AnimatedStatValue'
+import { ScaleInStagger } from '@/components/animation/ScaleIn/ScaleInStagger'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 
 // Figma annotations:
 // - Stats component (node-id: 3595:2418)
@@ -26,7 +27,10 @@ const Stats = ({ _key, items, sectionId, componentIndex }: StatsComponent) => {
       data-figma-node-id="3595:2418"
     >
       {!!hasItems && (
-        <ul className="md:col-span-12 grid grid-cols-2 gap-8 text-left sm:gap-x-20 sm:gap-y-12 md:grid-cols-4 md:justify-items-center md:gap-x-[141px] md:gap-y-10">
+        <StaggerChildren
+          as="ul"
+          className="md:col-span-12 grid grid-cols-2 gap-8 text-left sm:gap-x-20 sm:gap-y-12 md:grid-cols-4 md:justify-items-center md:gap-x-[141px] md:gap-y-10"
+        >
           {items?.map((item, index) => {
             const value = item.title?.trim()
             const label = item.subtitle?.trim()
@@ -36,7 +40,8 @@ const Stats = ({ _key, items, sectionId, componentIndex }: StatsComponent) => {
             }
 
             return (
-              <li
+              <ScaleInStagger
+                as="li"
                 key={item._key ?? `stat-${index}`}
                 className="flex min-w-0 flex-col items-start gap-4"
               >
@@ -50,10 +55,10 @@ const Stats = ({ _key, items, sectionId, componentIndex }: StatsComponent) => {
                     {label}
                   </p>
                 )}
-              </li>
+              </ScaleInStagger>
             )
           })}
-        </ul>
+        </StaggerChildren>
       )}
     </ComponentLayout>
   )

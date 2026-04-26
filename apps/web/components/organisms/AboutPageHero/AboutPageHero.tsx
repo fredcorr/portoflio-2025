@@ -1,13 +1,15 @@
 import React from 'react'
 import type { AboutPageHeroComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import { Heading } from '@/components/atoms/Heading/Heading'
+import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
 import AboutBackgroundHelixPulseCascade from '@/components/molecules/AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade'
+import { SlideDirection, SlideIn } from '@/components/animation/SlideIn/SlideIn'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const AboutPageHero = ({
   _id,
@@ -58,16 +60,24 @@ const AboutPageHero = ({
                   <div className="h-full w-full bg-gradient-to-b from-transparent via-background to-transparent opacity-70" />
                 </div>
                 {headline && (
-                  <Heading
+                  <SlideIn
                     id={headingId}
-                    level={headingLevel}
-                    className="font-heading leading-[0.85] tracking-tight whitespace-pre-line text-[clamp(7rem,25vw,20rem)] md:text-[clamp(15rem,13vw,20rem)]"
+                    key="headline"
+                    delay={0.25}
+                    as={toHeadingTag(headingLevel)}
+                    className="font-heading tracking-tight whitespace-pre-line text-[clamp(7rem,25vw,20rem)] md:text-[clamp(15rem,13vw,20rem)] leading-[0.85]"
                   >
                     {headline}
-                  </Heading>
+                  </SlideIn>
                 )}
                 {metaItems.length > 0 && (
-                  <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-background/60 md:mt-12 md:gap-4 md:text-base">
+                  <SlideIn
+                    delay={0.5}
+                    key="meta"
+                    as="div"
+                    direction={SlideDirection.Left}
+                    className="mt-8 flex flex-wrap items-center gap-3 text-sm text-background/60 md:mt-12 md:gap-4 md:text-base"
+                  >
                     {location && (
                       <div className="flex items-center gap-2">
                         <span className="size-2 rounded-full bg-green-500 animate-pulse" />
@@ -88,11 +98,11 @@ const AboutPageHero = ({
                         <span>{languages}</span>
                       </>
                     )}
-                  </div>
+                  </SlideIn>
                 )}
               </div>
 
-              <div className="space-y-6 md:col-span-8">
+              <FadeIn as="div" delay={0.65} className="space-y-6 md:col-span-8">
                 {body && (
                   <RichText
                     value={body}
@@ -100,9 +110,9 @@ const AboutPageHero = ({
                     className="space-y-4 text-background/80 md:pr-6"
                   />
                 )}
-              </div>
+              </FadeIn>
 
-              <div className="space-y-6 md:col-span-4">
+              <FadeIn as="div" delay={0.7} className="space-y-6 md:col-span-4">
                 {bodySecondary && (
                   <RichText
                     value={bodySecondary}
@@ -125,7 +135,7 @@ const AboutPageHero = ({
                     />
                   </a>
                 )}
-              </div>
+              </FadeIn>
             </div>
           </div>
         </OverlapAnimation>
