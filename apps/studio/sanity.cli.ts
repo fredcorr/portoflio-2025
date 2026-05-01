@@ -1,14 +1,6 @@
 import { resolve } from 'node:path'
 import { defineCliConfig } from 'sanity/cli'
 
-if (!process.env.SANITY_STUDIO_PROJECT_ID) {
-  throw new Error('Missing SANITY_STUDIO_PROJECT_ID environment variable')
-}
-
-if (!process.env.SANITY_STUDIO_DATASET) {
-  throw new Error('Missing SANITY_STUDIO_DATASET environment variable')
-}
-
 export default defineCliConfig({
   api: {
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
