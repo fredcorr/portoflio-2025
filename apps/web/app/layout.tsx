@@ -7,10 +7,15 @@ import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
 import { Footer, Navigation } from '@/components/organisms'
 import SettingsProvider from '@/context/settings-context'
 import getSettings from '@/utils/get-settings'
+import { getSiteUrl } from '@/utils/get-site-url'
 
 export const metadata: Metadata = {
-  title: 'Portfolio 2025',
-  description: 'Portfolio website built with Next.js and Sanity',
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    template: '%s | Federico Corradi',
+    default: 'Federico Corradi',
+  },
+  description: 'Portfolio of Federico Corradi — frontend developer and designer.',
 }
 
 const play = Play({
