@@ -16,6 +16,10 @@ export type FadeInStaggerProps<T extends React.ElementType = 'div'> = {
 } & FadeInStaggerOwnProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof FadeInStaggerOwnProps | 'as'>
 
+type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & import('framer-motion').MotionProps, 'children'> & {
+  children?: React.ReactNode
+}
+
 const FadeInStagger = <T extends React.ElementType = 'div'>({
   as,
   children,
@@ -25,13 +29,13 @@ const FadeInStagger = <T extends React.ElementType = 'div'>({
 }: FadeInStaggerProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType),
+    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
     [as]
   )
 
   return (
     <MotionTag
-      {...rest}
+      {...(rest as MotionTagProps)}
       className={cn(className)}
       variants={
         shouldReduce

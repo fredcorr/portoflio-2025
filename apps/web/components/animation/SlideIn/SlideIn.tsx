@@ -37,6 +37,10 @@ const getOffset = (direction: SlideDirection, distance: number) => {
   }
 }
 
+type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & MotionProps, 'children'> & {
+  children?: React.ReactNode
+}
+
 const SlideIn = <T extends React.ElementType = 'div'>({
   as,
   children,
@@ -50,14 +54,14 @@ const SlideIn = <T extends React.ElementType = 'div'>({
 }: SlideInProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType),
+    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
     [as]
   )
   const offset = getOffset(direction, distance)
 
   return (
     <MotionTag
-      {...rest}
+      {...(rest as MotionTagProps)}
       className={cn(className)}
       initial={shouldReduce ? false : { opacity: 0, ...offset }}
       whileInView={shouldReduce ? undefined : { opacity: 1, x: 0, y: 0 }}

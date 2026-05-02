@@ -19,6 +19,10 @@ export type StaggerChildrenProps<T extends React.ElementType = 'ul'> = {
 } & StaggerChildrenOwnProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof StaggerChildrenOwnProps | 'as'>
 
+type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & import('framer-motion').MotionProps, 'children'> & {
+  children?: React.ReactNode
+}
+
 const StaggerChildren = <T extends React.ElementType = 'ul'>({
   as,
   children,
@@ -31,7 +35,7 @@ const StaggerChildren = <T extends React.ElementType = 'ul'>({
 }: StaggerChildrenProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionParent = React.useMemo(
-    () => motion.create((as ?? 'ul') as React.ElementType),
+    () => motion.create((as ?? 'ul') as React.ElementType) as React.ComponentType<MotionTagProps>,
     [as]
   )
 
@@ -47,7 +51,7 @@ const StaggerChildren = <T extends React.ElementType = 'ul'>({
 
   if (shouldReduce) {
     return (
-      <MotionParent {...rest} className={cn(className)}>
+      <MotionParent {...(rest as MotionTagProps)} className={cn(className)}>
         {children}
       </MotionParent>
     )
@@ -55,7 +59,7 @@ const StaggerChildren = <T extends React.ElementType = 'ul'>({
 
   return (
     <MotionParent
-      {...rest}
+      {...(rest as MotionTagProps)}
       className={cn(className)}
       variants={containerVariants}
       initial="hidden"

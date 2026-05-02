@@ -18,6 +18,10 @@ export type FadeInProps<T extends React.ElementType = 'div'> = {
 } & FadeInOwnProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof FadeInOwnProps | 'as'>
 
+type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & MotionProps, 'children'> & {
+  children?: React.ReactNode
+}
+
 const FadeIn = <T extends React.ElementType = 'div'>({
   as,
   children,
@@ -32,13 +36,13 @@ const FadeIn = <T extends React.ElementType = 'div'>({
 }: FadeInProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType),
+    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
     [as]
   )
 
   return (
     <MotionTag
-      {...rest}
+      {...(rest as MotionTagProps)}
       className={cn(className)}
       initial={shouldReduce ? false : { opacity: 0 }}
       whileInView={shouldReduce ? undefined : { opacity: 1 }}

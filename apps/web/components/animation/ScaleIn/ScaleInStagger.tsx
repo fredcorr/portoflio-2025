@@ -17,6 +17,10 @@ export type ScaleInStaggerProps<T extends React.ElementType = 'div'> = {
 } & ScaleInStaggerOwnProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ScaleInStaggerOwnProps | 'as'>
 
+type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & import('framer-motion').MotionProps, 'children'> & {
+  children?: React.ReactNode
+}
+
 const ScaleInStagger = <T extends React.ElementType = 'div'>({
   as,
   children,
@@ -27,13 +31,13 @@ const ScaleInStagger = <T extends React.ElementType = 'div'>({
 }: ScaleInStaggerProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType),
+    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
     [as]
   )
 
   return (
     <MotionTag
-      {...rest}
+      {...(rest as MotionTagProps)}
       className={cn(className)}
       variants={
         shouldReduce

@@ -34,6 +34,10 @@ const getOffset = (direction: SlideDirection, distance: number) => {
   }
 }
 
+type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & import('framer-motion').MotionProps, 'children'> & {
+  children?: React.ReactNode
+}
+
 const SlideInStagger = <T extends React.ElementType = 'div'>({
   as,
   children,
@@ -45,14 +49,14 @@ const SlideInStagger = <T extends React.ElementType = 'div'>({
 }: SlideInStaggerProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType),
+    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
     [as]
   )
   const offset = getOffset(direction, distance)
 
   return (
     <MotionTag
-      {...rest}
+      {...(rest as MotionTagProps)}
       className={cn(className)}
       variants={
         shouldReduce
