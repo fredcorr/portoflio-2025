@@ -3,12 +3,11 @@ import type { ProjectListingComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import { makeComponentId } from '@/utils/makeComponentId'
-import Card from '@/components/molecules/Card/Card'
+import Card, { CardSpacing } from '@/components/molecules/Card/Card'
 import { cn } from '@/utils/cn'
 import Link from 'next/link'
 import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
-import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
-import ConditionalWrapper from '@/components/hoc/ConditionalWrapper'
+import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
 
 const ProjectListing = ({
   _id,
@@ -18,7 +17,6 @@ const ProjectListing = ({
   projects,
   showCtaToProjects = false,
   addStaggerAnimation = false,
-  splitLayout,
   sectionId,
   componentIndex,
 }: ProjectListingComponent) => {
@@ -27,18 +25,6 @@ const ProjectListing = ({
     value: _id || _key,
     prefix: 'project-listing',
   })
-
-  const headingColumnClasses = splitLayout
-    ? 'md:col-span-6 lg:col-span-6'
-    : 'md:col-span-8 lg:col-span-7'
-
-  const subtitleColumnClasses = splitLayout
-    ? 'md:col-span-6 md:col-start-7 lg:col-span-6 lg:col-start-7'
-    : 'md:col-span-10 lg:col-span-8'
-
-  const ctaColumnClasses = splitLayout
-    ? 'md:col-span-2 md:col-start-11'
-    : 'md:col-span-3 md:col-start-10'
 
   return (
     <ComponentLayout
@@ -49,8 +35,8 @@ const ProjectListing = ({
       contentClassName="gap-y-12 lg:gap-y-16"
       aria-labelledby={headingId}
     >
-      <div className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-12 md:items-start lg:gap-10">
-        <div className={cn('space-y-3', headingColumnClasses)}>
+      <div className="md:col-span-12 space-y-3">
+        <div className="flex items-center justify-between">
           {title && (
             <Heading
               level={title?.headingLevel}
@@ -61,54 +47,35 @@ const ProjectListing = ({
             </Heading>
           )}
 
-          {!splitLayout && hasSubtitle && (
-            <RichText
-              size={RichTextSize.Xl}
-              className="max-w-2xl"
-              value={subtitle}
-            />
+          {showCtaToProjects && (
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 px-4 py-2 font-heading text-body-lg font-medium text-black transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:text-foreground"
+            >
+              <span>More</span>
+              <span aria-hidden="true">→</span>
+            </Link>
           )}
         </div>
 
-        {splitLayout && hasSubtitle && (
+        {hasSubtitle && (
           <RichText
-            value={subtitle}
             size={RichTextSize.Xl}
-            className={cn('max-w-3xl', subtitleColumnClasses)}
+            className="max-w-2xl"
+            value={subtitle}
           />
-        )}
-
-        {showCtaToProjects && (
-          <Link
-            href="/projects"
-            className={cn(
-              'mt-1 inline-flex items-center gap-2 self-end px-4 py-2 font-heading text-body-lg font-medium text-black transition hover:-translate-y-0.5 hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black  dark:text-foreground ',
-              'md:mt-0 md:justify-end md:self-end',
-              ctaColumnClasses
-            )}
-          >
-            <span>More</span>
-            <span aria-hidden="true">→</span>
-          </Link>
         )}
       </div>
 
       {projects?.length ? (
-        <ConditionalWrapper
-          condition={!!addStaggerAnimation}
-          wrapper={children => (
-            <StaggerChildren
-              staggerDelay={0.25}
-              delay={0.15}
-              amount={0.15}
-              as="div"
-              className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-12 lg:gap-10"
-            >
-              {children}
-            </StaggerChildren>
-          )}
+        <StaggerChildren
+          staggerDelay={addStaggerAnimation ? 0.25 : 0}
+          delay={addStaggerAnimation ? 0.15 : 0}
+          amount={0.15}
+          as="div"
+          className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10"
         >
-          {projects.map(project => (
+          {projects.map((project, i) => (
             <Card
               key={project._id}
               title={project.clientName || ''}
@@ -116,17 +83,17 @@ const ProjectListing = ({
               href={project.slug?.current}
               image={project.seoImage || project.projectHero}
               subtitleSize={RichTextSize.Lg}
-              className="h-full md:col-span-6"
-              {...(!!addStaggerAnimation
-                ? { AnimationComponent: FadeInWithStagger }
-                : {
-                    AnimationComponent: FadeIn,
-                    animationProps: { viewport: { amount: 0.5 } },
-                  })}
+              index={i}
+              squareImage
+              imageShadow
+              indexAboveImage
+              spacing={CardSpacing.Spacious}
+              animationProps={{ viewport: { once: true, amount: 0.15 } }}
+              className={cn('h-full', i % 2 === 1 && 'md:mt-16')}
               AnimationComponent={FadeInWithStagger}
             />
           ))}
-        </ConditionalWrapper>
+        </StaggerChildren>
       ) : (
         <div className="md:col-span-12 rounded-3xl bg-gray-50 px-6 py-10 text-black/70 dark:bg-gray-100 dark:text-foreground/70">
           Projects will appear here once they are published.

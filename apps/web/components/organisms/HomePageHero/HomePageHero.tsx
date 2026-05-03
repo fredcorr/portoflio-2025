@@ -49,7 +49,7 @@ export const HomePageHero = ({
             </div>
           </div>
 
-          <div className="relative z-10" id="hero-content">
+          <div className="relative z-10 lg:-mt-20" id="hero-content">
             <div className="grid min-h-screen grid-cols-1 grid-rows-2 items-stretch md:grid-cols-12 md:grid-rows-1">
               <div className="relative flex h-full items-end justify-start overflow-hidden pb-10 md:col-span-6 md:items-center md:pb-0">
                 <div className="relative z-10 max-w-xl text-background">

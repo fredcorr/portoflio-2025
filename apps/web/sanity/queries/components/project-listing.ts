@@ -32,6 +32,5 @@ export const projectListingFields = groq`
         ${projectFields}
       }
   ),
-  "showCtaToProjects": showCtaToProjects,
-  "splitLayout": splitLayout
+  "showCtaToProjects": showCtaToProjects
 `

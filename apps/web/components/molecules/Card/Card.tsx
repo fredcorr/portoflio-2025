@@ -22,6 +22,7 @@ export enum CardSpacing {
   Compact = 'compact',
   Cozy = 'cozy',
   Roomy = 'roomy',
+  Spacious = 'spacious',
 }
 
 const titleSizeClassMap: Record<CardTitleSize, string> = {
@@ -34,12 +35,14 @@ const articleSpacingMap: Record<CardSpacing, string> = {
   [CardSpacing.Compact]: 'gap-3',
   [CardSpacing.Cozy]: 'gap-4',
   [CardSpacing.Roomy]: 'gap-6',
+  [CardSpacing.Spacious]: 'gap-8',
 }
 
 const contentSpacingMap: Record<CardSpacing, string> = {
   [CardSpacing.Compact]: 'gap-2',
   [CardSpacing.Cozy]: 'gap-3',
   [CardSpacing.Roomy]: 'gap-4',
+  [CardSpacing.Spacious]: 'gap-6',
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLElement> {
@@ -55,6 +58,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   className?: string
   iconWrapperClassName?: string
   iconClassName?: string
+  squareImage?: boolean
+  indexAboveImage?: boolean
+  imageShadow?: boolean
   // Component slot: any animation component (FadeIn, ScaleIn, SlideIn, etc.)
   // Card resolves `as` to Link or 'article' — the animation handles the rest.
   AnimationComponent?: React.ComponentType<PolymorphicProps>
@@ -79,12 +85,15 @@ const Card = ({
   className,
   iconWrapperClassName,
   iconClassName,
+  squareImage = false,
+  indexAboveImage = false,
+  imageShadow = false,
   AnimationComponent,
   animationProps,
   ...props
 }: CardProps) => {
   const formattedIndex = formatIndex(index)
-  const hasIconRow = iconName || formattedIndex
+  const hasIconRow = !indexAboveImage && (iconName || formattedIndex)
   const iconRowClass =
     iconName && formattedIndex
       ? 'justify-between'
@@ -97,7 +106,11 @@ const Card = ({
     (href ? Link : 'article')) as React.ComponentType<PolymorphicProps>
 
   const compClassName = cn(
-    'group flex bg-transparent h-full flex-col overflow-hidden rounded-[32px] transition hover:-translate-y-1',
+    'group flex bg-transparent h-full flex-col',
+    indexAboveImage
+      ? '' // no overflow-hidden/rounded/translate — badge must protrude above
+      : 'overflow-hidden rounded-[32px] hover:-translate-y-1',
+    'transition',
     href &&
       'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black',
     articleSpacingMap[spacing],
@@ -110,6 +123,25 @@ const Card = ({
     ...(href && { href, 'aria-label': `View ${title}` }),
   }
 
+  const imageWrapperClassName = cn(
+    squareImage ? 'aspect-square rounded-none' : 'aspect-[1.18]',
+    squareImage && [
+      'md:blur-[4px]',
+      'md:group-hover:blur-0',
+    ],
+    imageShadow && [
+      'shadow-[16px_16px_36px_4px_rgba(128,128,128,0.54)]',
+      'group-hover:shadow-[24px_24px_48px_8px_rgba(128,128,128,0.69)]',
+      squareImage
+        ? 'transition-[filter,box-shadow] duration-[700ms] ease-in-out'
+        : 'transition-shadow duration-[700ms] ease-in-out',
+    ]
+  )
+
+  const imageClassName = squareImage
+    ? 'md:scale-100 md:group-hover:scale-105 transition-transform duration-[700ms] ease-in-out'
+    : 'transition duration-300 group-hover:scale-[1.01]'
+
   return (
     <Comp
       {...compProps}
@@ -117,14 +149,37 @@ const Card = ({
       {...(props as PolymorphicProps)}
     >
       {image?.asset.url && (
-        <Image
-          src={image.asset.url}
-          alt={image.alt || ''}
-          width={image.asset.metadata?.dimensions?.width || 1200}
-          height={image.asset.metadata?.dimensions?.height || 1024}
-          wrapperClassName="aspect-[1.18]"
-          className="transition duration-300 group-hover:scale-[1.01]"
-        />
+        indexAboveImage ? (
+          <div className="relative mt-4">
+            {formattedIndex && (
+              <div
+                className="absolute right-6 top-[-16px] z-10 border-2 border-white mix-blend-difference px-4 py-1.5"
+                aria-label={`Project ${Number(formattedIndex)}`}
+              >
+                <span className="font-heading text-body-lg text-white">
+                  {formattedIndex}
+                </span>
+              </div>
+            )}
+            <Image
+              src={image.asset.url}
+              alt={image.alt || ''}
+              width={image.asset.metadata?.dimensions?.width || 1200}
+              height={image.asset.metadata?.dimensions?.height || 1024}
+              wrapperClassName={imageWrapperClassName}
+              className={imageClassName}
+            />
+          </div>
+        ) : (
+          <Image
+            src={image.asset.url}
+            alt={image.alt || ''}
+            width={image.asset.metadata?.dimensions?.width || 1200}
+            height={image.asset.metadata?.dimensions?.height || 1024}
+            wrapperClassName={imageWrapperClassName}
+            className={imageClassName}
+          />
+        )
       )}
 
       <div

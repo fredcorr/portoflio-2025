@@ -23,5 +23,4 @@ export interface ProjectListingComponent extends SanityComponentBase<ComponentTy
   projects?: ProjectListingProject[];
   addStaggerAnimation?: boolean;
   showCtaToProjects?: boolean;
-  splitLayout?: boolean;
 }

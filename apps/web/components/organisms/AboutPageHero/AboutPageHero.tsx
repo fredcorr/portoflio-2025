@@ -48,13 +48,13 @@ const AboutPageHero = ({
       contentClassName="gap-0 px-0"
       overflowHidden={false}
     >
-      <div className="md:col-span-12">
+      <div className="md:col-span-12 pb:10 lg:pb-5">
         <OverlapAnimation>
           <div className="pointer-events-none absolute left-1/2 h-full -top-24 bottom-0 z-0 w-screen -translate-x-1/2 before:absolute before:inset-0 before:content-[''] before:bg-foreground">
             <AboutBackgroundHelixPulseCascade className="absolute inset-0 z-10" />
           </div>
           <div className="relative z-10">
-            <div className="grid min-h-screen grid-cols-1 content-center gap-y-16 md:grid-cols-12 md:gap-y-20">
+            <div className="grid min-h-screen grid-cols-1 content-center gap-y-5 md:grid-cols-12 md:gap-y-10">
               <div className="relative md:col-span-12">
                 <div className="absolute -left-4 top-0 bottom-0 hidden w-[4px] md:block md:-left-12">
                   <div className="h-full w-full bg-gradient-to-b from-transparent via-background to-transparent opacity-70" />

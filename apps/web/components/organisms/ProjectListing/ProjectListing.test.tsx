@@ -35,7 +35,24 @@ const createProjectListing = (
     {
       _id: 'project-1',
       _type: PageTypeName.ProjectPage,
-      title: 'Crtly',
+      clientName: 'Senta',
+      title: 'Mobile App & Branding',
+      slug: { _type: 'slug', current: 'projects/senta' },
+      projectHero: {
+        _type: 'image',
+        alt: 'Senta mobile app UI',
+        asset: {
+          _type: 'reference',
+          _ref: 'image-senta',
+          url: '/senta.jpg',
+        },
+      },
+    },
+    {
+      _id: 'project-2',
+      _type: PageTypeName.ProjectPage,
+      clientName: 'Crtly',
+      title: 'Mobile App',
       slug: { _type: 'slug', current: 'projects/crtly' },
       projectHero: {
         _type: 'image',
@@ -43,22 +60,7 @@ const createProjectListing = (
         asset: {
           _type: 'reference',
           _ref: 'image-crtly',
-          url: 'https://example.com/crtly.jpg',
-        },
-      },
-    },
-    {
-      _id: 'project-2',
-      _type: PageTypeName.ProjectPage,
-      title: 'Tansto',
-      slug: { _type: 'slug', current: 'projects/web-design' },
-      projectHero: {
-        _type: 'image',
-        alt: 'Tansto landing page',
-        asset: {
-          _type: 'reference',
-          _ref: 'image-tansto',
-          url: 'https://example.com/tansto.jpg',
+          url: '/crtly.jpg',
         },
       },
     },
@@ -73,21 +75,42 @@ test('renders heading, subtitle, and project cards', () => {
 
   assert.match(markup, /Featured work/)
   assert.match(markup, /High-performing product design with brand craft/)
+  assert.match(markup, /Senta/)
   assert.match(markup, /Crtly/)
-  assert.match(markup, /Tansto/)
-  assert.match(markup, /href="\/projects\/web-design"/)
-  assert.match(markup, /Web Design/)
-  assert.match(markup, /data-icon="arrow-up-right"/)
-  assert.match(markup, />01<\/span>/)
+  assert.match(markup, /href="projects\/senta"/)
 })
 
-test('shows CTA when enabled', () => {
+test('renders index badge on first card', () => {
+  const markup = renderToStaticMarkup(
+    <ProjectListing {...createProjectListing()} />
+  )
+
+  assert.match(markup, />01</)
+})
+
+test('second card has staggered offset class', () => {
+  const markup = renderToStaticMarkup(
+    <ProjectListing {...createProjectListing()} />
+  )
+
+  assert.match(markup, /md:mt-16/)
+})
+
+test('shows More CTA when enabled', () => {
   const markup = renderToStaticMarkup(
     <ProjectListing {...createProjectListing({ showCtaToProjects: true })} />
   )
 
-  assert.match(markup, /View all projects/)
+  assert.match(markup, /More/)
   assert.match(markup, /href="\/projects"/)
+})
+
+test('does not show CTA when disabled', () => {
+  const markup = renderToStaticMarkup(
+    <ProjectListing {...createProjectListing({ showCtaToProjects: false })} />
+  )
+
+  assert.doesNotMatch(markup, /href="\/projects"/)
 })
 
 test('renders empty state when there are no projects', () => {
@@ -103,30 +126,12 @@ test('renders empty state when there are no projects', () => {
   assert.match(markup, /Projects will appear here once they are published/)
 })
 
-test('falls back to slug-derived subtitle when label is missing', () => {
+test('cards use square image, shadow, and above-image badge classes', () => {
   const markup = renderToStaticMarkup(
-    <ProjectListing
-      {...createProjectListing({
-        projects: [
-          {
-            _id: 'project-1',
-            _type: PageTypeName.ProjectPage,
-            title: 'No label project',
-            slug: { _type: 'slug', current: 'projects/brand-shapes' },
-            projectHero: {
-              _type: 'image',
-              alt: 'Brand shapes',
-              asset: {
-                _type: 'reference',
-                _ref: 'image-brand',
-                url: 'https://example.com/brand.jpg',
-              },
-            },
-          },
-        ],
-      })}
-    />
+    <ProjectListing {...createProjectListing()} />
   )
 
-  assert.match(markup, /Brand Shapes/)
+  assert.match(markup, /aspect-square/)
+  assert.match(markup, /mix-blend-difference/)
+  assert.match(markup, /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/)
 })
