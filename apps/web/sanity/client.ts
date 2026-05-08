@@ -34,4 +34,8 @@ export const previewClient = createClient({
   apiVersion: '2025-01-01',
   useCdn: false,
   perspective: 'drafts',
+  stega: {
+    enabled: true,
+    studioUrl: process.env.SANITY_STUDIO_URL || 'http://localhost:3333',
+  },
 })

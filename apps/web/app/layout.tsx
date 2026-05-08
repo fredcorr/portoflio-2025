@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import { Play } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { draftMode } from 'next/headers'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
 import { Footer, Navigation } from '@/components/organisms'
 import SettingsProvider from '@/context/settings-context'
+import VisualEditingEnabled from '@/components/atoms/VisualEditing/VisualEditing'
 import getSettings from '@/utils/get-settings'
 import { getSiteUrl } from '@/utils/get-site-url'
 
@@ -32,6 +34,7 @@ export default async function RootLayout({
 }>) {
   const { settings, projectCount } = await getSettings()
   const items = settings?.navigationItems ?? []
+  const { isEnabled: isDraftMode } = await draftMode()
 
   return (
     <html lang="en">
@@ -52,6 +55,7 @@ export default async function RootLayout({
           <Analytics />
           <SpeedInsights />
         </SettingsProvider>
+        {isDraftMode && <VisualEditingEnabled />}
       </body>
     </html>
   )

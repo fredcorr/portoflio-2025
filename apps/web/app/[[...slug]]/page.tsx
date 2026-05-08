@@ -1,6 +1,6 @@
 import PreviewBanner from '@/components/organisms/PreviewBanner/PreviewBanner'
 import { RenderTemplate } from '@/components/hoc/RenderTemplate'
-import { ALL_PAGES_QUERY, PAGE_BY_SLUG_QUERY } from '@/sanity/queries/base'
+import { ALL_PAGES_QUERY } from '@/sanity/queries/base'
 import { CmsPages } from '@portfolio/types/pages'
 import { notFound } from 'next/navigation'
 import { client } from '@/sanity/client'
@@ -12,8 +12,6 @@ import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
 import { getPageHeroImage } from '@/utils/get-page-hero-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
-import PreviewContext from '@/context/PreviewContext'
-import { sanityConfig } from '@/sanity/config'
 
 export const revalidate = 10
 
@@ -46,15 +44,6 @@ export default async function Page({ params }: PageProps) {
   const slug = resolvedParams.slug?.join('/') || '/'
   const draft = await draftMode()
   const isDraft = draft.isEnabled
-  const previewToken = process.env.SANITY_API_READ_TOKEN
-  const { projectId, dataset, apiVersion } = sanityConfig
-  const previewConfig = (() => {
-    if (!isDraft || !previewToken || !projectId || !dataset) {
-      return null
-    }
-
-    return { projectId, dataset, apiVersion, token: previewToken }
-  })()
 
   const page = await getPage(slug, isDraft)
 
@@ -68,7 +57,7 @@ export default async function Page({ params }: PageProps) {
     page.slug?.current || slug
   )
 
-  const content = (
+  return (
     <>
       {breadcrumbSchema && (
         <Script
@@ -83,24 +72,6 @@ export default async function Page({ params }: PageProps) {
       <RenderTemplate page={page} />
     </>
   )
-
-  if (previewConfig) {
-    return (
-      <PreviewContext
-        projectId={previewConfig.projectId}
-        dataset={previewConfig.dataset}
-        apiVersion={previewConfig.apiVersion}
-        token={previewConfig.token}
-        initialData={page}
-        query={PAGE_BY_SLUG_QUERY}
-        params={{ slug }}
-      >
-        {content}
-      </PreviewContext>
-    )
-  }
-
-  return content
 }
 
 export async function generateStaticParams() {

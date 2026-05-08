@@ -1,5 +1,6 @@
 import { defineConfig } from 'sanity'
 import { dashboardTool } from '@sanity/dashboard'
+import { presentationTool } from 'sanity/presentation'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
@@ -26,8 +27,15 @@ export default defineConfig({
 
   plugins: [
     dashboardTool({
-      // Surface deploy insights, QA lists, and quick links as the first landing page.
       widgets: dashboardWidgets,
+    }),
+    presentationTool({
+      previewUrl: {
+        initial: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
+        previewMode: {
+          enable: '/api/draft',
+        },
+      },
     }),
     structureTool({
       structure: (S, context) => structure(S, context),

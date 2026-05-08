@@ -1,4 +1,4 @@
-import { ComponentTypeName, PageTypeName } from '@portfolio/types/base'
+import { ComponentTypeName } from '@portfolio/types/base'
 import { LuList } from 'react-icons/lu'
 import { defineType } from 'sanity'
 import StringField from '@components/atoms/string'

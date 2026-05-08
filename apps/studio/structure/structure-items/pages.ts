@@ -5,7 +5,6 @@ import type {
 import { PageTypeName } from '@portfolio/types/base'
 import { LuLayers } from 'react-icons/lu'
 import { firstValueFrom } from 'rxjs'
-import PreviewPane from '../preview/PreviewPane'
 
 export const PAGE_STRUCTURE_TYPES = new Set<string>([
   PageTypeName.Page as string,
@@ -36,18 +35,10 @@ const PagesItem = (S: StructureBuilder, context: StructureResolverContext) =>
             return S.document()
               .schemaType(schemaType)
               .documentId(documentId)
-              .views([
-                S.view.form().title('Editor').id('editor'),
-                S.view.component(PreviewPane).title('Preview').id('preview'),
-              ])
           } catch {
             return S.document()
               .schemaType(PageTypeName.Page)
               .documentId(documentId)
-              .views([
-                S.view.form().title('Editor').id('editor'),
-                S.view.component(PreviewPane).title('Preview').id('preview'),
-              ])
           }
         })
     )
