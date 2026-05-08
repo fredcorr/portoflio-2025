@@ -3,6 +3,7 @@ import { defineType } from 'sanity'
 import { LuUserRound } from 'react-icons/lu'
 import Block from '@components/atoms/block'
 import File from '@components/atoms/file'
+import String from '@components/atoms/string'
 import Toggle from '@components/atoms/toggle'
 import { extractPlainText } from '@utils/extract-plain-text'
 import { createTitleField } from '@components/molecules/title'
@@ -29,21 +30,9 @@ const AboutPageHero = defineType({
       title: 'Secondary body',
       description: 'Secondary rich text body copy for the hero.',
     }),
-    {
-      name: 'location',
-      title: 'Location',
-      type: 'string',
-    },
-    {
-      name: 'timezone',
-      title: 'Timezone',
-      type: 'string',
-    },
-    {
-      name: 'languages',
-      title: 'Languages',
-      type: 'string',
-    },
+    String({ name: 'location', title: 'Location' }),
+    String({ name: 'timezone', title: 'Timezone' }),
+    String({ name: 'languages', title: 'Languages' }),
     File({
       name: 'resume',
       title: 'Resume',

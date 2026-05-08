@@ -1,5 +1,6 @@
 import groq from 'groq'
-import { baseComponentFields, imageFields, titleFields } from '../fragments'
+import { baseComponentFields, imageFields, titleFields, PUBLISHED_FILTER } from '../fragments'
+import { PageTypeName } from '@portfolio/types/base'
 
 const title = titleFields('title')
 
@@ -27,7 +28,7 @@ export const workIndexFields = groq`
   categoryLabel,
   "title": ${title},
   subtitle,
-  "projects": *[_type == "project" && defined(slug.current) && !(_id in path("drafts.**"))]
+  "projects": *[_type == "${PageTypeName.ProjectPage}" && defined(slug.current) && ${PUBLISHED_FILTER}]
     | order(coalesce(year, 0) desc, coalesce(_updatedAt, _createdAt) desc){
       ${workIndexProjectFields}
     }

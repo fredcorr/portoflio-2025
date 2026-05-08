@@ -1,7 +1,6 @@
 import groq from 'groq'
 import { GlobalItemsType, PageTypeName } from '@portfolio/types/base'
-
-const PUBLISHED_FILTER = '!(_id in path("drafts.**"))'
+import { PUBLISHED_FILTER } from './fragments'
 
 export const SETTINGS_QUERY = groq`
   {

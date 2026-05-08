@@ -1,5 +1,7 @@
 import groq from 'groq'
 
+export const PUBLISHED_FILTER = '!(_id in path("drafts.**"))'
+
 export const imageFields = groq`
   ...,
   asset->{

@@ -15,17 +15,23 @@ if (!dataset) {
 export const client = createClient({
   projectId,
   dataset,
-  apiVersion: '2024-01-01',
+  apiVersion: '2025-01-01',
   useCdn: process.env.NODE_ENV === 'production',
   perspective: 'published',
   ...(token && { token }),
 })
 
+if (!token) {
+  console.warn(
+    'SANITY_API_READ_TOKEN is not set — previewClient will not return draft content.'
+  )
+}
+
 export const previewClient = createClient({
   ...(token && { token }),
   projectId,
   dataset,
-  apiVersion: '2024-01-01',
+  apiVersion: '2025-01-01',
   useCdn: false,
   perspective: 'drafts',
 })
