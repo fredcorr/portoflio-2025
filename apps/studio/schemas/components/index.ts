@@ -14,6 +14,7 @@ import Faqs from './organisms/faqs'
 import ToolSet from './organisms/tool-set'
 import Form from './organisms/form'
 import AnimatedStrapline from './organisms/animated-strapline'
+import WorkIndex from './organisms/work-index'
 import { type ObjectDefinition } from 'sanity'
 import List from './atoms/list'
 
@@ -35,6 +36,7 @@ export const components: ComponentCollection = [
   ToolSet,
   Form,
   AnimatedStrapline,
+  WorkIndex,
 ]
 
 export const componentsByPageType = (pageType: PageTypeName) => {

@@ -15,6 +15,7 @@ import type {
   ToolSetComponent,
   FormComponent,
   AnimatedStraplineComponent,
+  WorkIndexComponent,
 } from '../components'
 
 export type PageComponent =
@@ -33,6 +34,7 @@ export type PageComponent =
   | ToolSetComponent
   | FormComponent
   | AnimatedStraplineComponent
+  | WorkIndexComponent
 
 export interface BasePageDocument extends BaseDocument {
   title?: string

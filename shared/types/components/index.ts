@@ -20,6 +20,7 @@ import type { LinkInternalReference, LinkItem } from './link'
 import type { FooterProps } from './footer'
 import type { ArticleIntroProps } from './article-intro'
 import type { ArticleContentProps } from './article-content'
+import type { WorkIndexComponent, WorkIndexProject } from './work-index'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -56,6 +57,7 @@ export type { LinkInternalReference, LinkItem } from './link'
 export type { FooterProps } from './footer'
 export type { ArticleIntroProps } from './article-intro'
 export type { ArticleContentProps } from './article-content'
+export type { WorkIndexComponent, WorkIndexProject } from './work-index'
 
 export type Components =
   | HomePageHeroComponent
@@ -73,3 +75,4 @@ export type Components =
   | FormComponent
   | AnimatedStraplineComponent
   | BlockTextComponent
+  | WorkIndexComponent

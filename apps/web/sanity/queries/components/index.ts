@@ -15,6 +15,7 @@ import { projectListingFields } from './project-listing'
 import { statsFields } from './stats'
 import { testimonialsFields } from './testimonials'
 import { toolSetFields } from './tool-set'
+import { workIndexFields } from './work-index'
 
 export {
   homepageHeroFields,
@@ -32,6 +33,7 @@ export {
   statsFields,
   testimonialsFields,
   toolSetFields,
+  workIndexFields,
 }
 
 export const pageComponentFields = groq`
@@ -80,6 +82,9 @@ export const pageComponentFields = groq`
     },
     _type == "${ComponentTypeName.AnimatedStrapline}" => {
       ${animatedStraplineFields}
+    },
+    _type == "${ComponentTypeName.WorkIndex}" => {
+      ${workIndexFields}
     },
     true => {
       _type

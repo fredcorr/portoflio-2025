@@ -19,6 +19,7 @@ import Faqs from './components/organisms/faqs'
 import ToolSet from './components/organisms/tool-set'
 import Form from './components/organisms/form'
 import AnimatedStrapline from './components/organisms/animated-strapline'
+import WorkIndex from './components/organisms/work-index'
 import Settings from './components/settings'
 
 export const schemaTypes = [
@@ -42,6 +43,7 @@ export const schemaTypes = [
   ToolSet,
   Form,
   AnimatedStrapline,
+  WorkIndex,
   BlockText,
   HomePageHero,
 ]

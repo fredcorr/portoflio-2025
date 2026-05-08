@@ -23,6 +23,7 @@ export enum ComponentTypeName {
   ToolSet = "toolSet",
   Form = "form",
   AnimatedStrapline = "animatedStrapline",
+  WorkIndex = "workIndex",
 }
 
 export enum GlobalItemsType {

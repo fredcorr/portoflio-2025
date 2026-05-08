@@ -1,6 +1,7 @@
 import { ComponentTypeName } from '@portfolio/types/base'
 import type { PageComponent } from '@portfolio/types/pages'
 import ProjectListing from '../organisms/ProjectListing/ProjectListing'
+import WorkIndex from '../organisms/WorkIndex/WorkIndex'
 import Cards from '../organisms/Cards/Cards'
 import Testimonials from '../organisms/Testimonials/Testimonials'
 import {
@@ -71,6 +72,8 @@ export const RenderOrganism = ({
       return <GetInTouch {...componentWithContext} />
     case ComponentTypeName.AnimatedStrapline:
       return <AnimatedStrapline {...componentWithContext} />
+    case ComponentTypeName.WorkIndex:
+      return <WorkIndex {...componentWithContext} />
     default:
       return null
   }

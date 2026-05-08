@@ -32,10 +32,10 @@ const ProjectListing = ({
       componentKey={_key}
       componentIndex={componentIndex}
       className="text-black dark:text-foreground"
-      contentClassName="gap-y-12 lg:gap-y-16"
+      contentClassName="flex flex-col gap-y-12 lg:gap-y-16"
       aria-labelledby={headingId}
     >
-      <div className="md:col-span-12 space-y-3">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
           {title && (
             <Heading
@@ -73,7 +73,7 @@ const ProjectListing = ({
           delay={addStaggerAnimation ? 0.15 : 0}
           amount={0.15}
           as="div"
-          className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10"
         >
           {projects.map((project, i) => (
             <Card

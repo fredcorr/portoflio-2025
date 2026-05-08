@@ -11,7 +11,7 @@ const projectFields = groq`
   slug,
   seoDescription,
   clientName,
-  projectTags,
+  "projectTags": projectTags[]->{_id, _type, name},
   "projectHero": projectHero{
     ${imageFields}
   },

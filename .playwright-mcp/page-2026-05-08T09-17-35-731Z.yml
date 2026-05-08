@@ -1,0 +1,102 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "Go to homepage" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "Federico Corradi" [ref=e6]
+        - list [ref=e16]:
+          - listitem [ref=e17]:
+            - link "Projects (5)" [ref=e18] [cursor=pointer]:
+              - /url: /projects
+              - generic [ref=e19]: Projects
+              - generic [ref=e20]: "5"
+          - listitem [ref=e21]:
+            - link "About" [ref=e22] [cursor=pointer]:
+              - /url: /about
+              - generic [ref=e23]: About
+          - listitem [ref=e24]:
+            - link "Contact" [ref=e25] [cursor=pointer]:
+              - /url: /contact
+              - generic [ref=e26]: Contact
+  - main [ref=e27]:
+    - generic [ref=e30]:
+      - region "WORK" [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - generic [ref=e35]: Case studies
+              - generic [ref=e36]: Development
+            - generic [ref=e37]:
+              - paragraph [ref=e38]: WORK
+              - paragraph [ref=e39]: Built sharp. Clean code. Zero compromise.
+          - generic [ref=e40]:
+            - link "View Reed" [ref=e42] [cursor=pointer]:
+              - /url: projects/reed
+              - generic [ref=e43]:
+                - generic [ref=e44]: Web
+                - paragraph [ref=e45]: Reed
+                - paragraph [ref=e46]: The Reed Group is one of the UK’s largest recruitment and workforce solutions companies, offering services that span the entire employee-employer lifecycle—from direct hiring to learning and wellbeing initiatives. Historically, their digital presence was fragmented across multiple properties, making it difficult to deliver a unified brand and customer experience.
+                - paragraph [ref=e47]: "2023"
+              - generic "Project 1" [ref=e50]: "01"
+            - link "View Phaidon" [ref=e52] [cursor=pointer]:
+              - /url: projects/phaidon
+              - generic [ref=e53]:
+                - generic [ref=e54]: Multi Language
+                - paragraph [ref=e55]: Phaidon
+                - paragraph [ref=e56]: Phaidon International is a global recruitment group with six specialist brands—Selby Jennings, LVI Associates, DSJ Global, EPM Scientific, Glocomms, and Larson Maddox—serving business-critical sectors across 14 international offices. Their digital presence was previously fragmented, with each brand maintaining its own site. This setup created inefficiencies, inconsistent UX, and high infrastructure overhead.
+                - paragraph [ref=e57]: "2025"
+              - generic "Project 2" [ref=e60]: "02"
+            - link "View UKPN" [ref=e62] [cursor=pointer]:
+              - /url: projects/ukpn
+              - generic [ref=e63]:
+                - generic [ref=e64]: Web
+                - paragraph [ref=e65]: UKPN
+                - paragraph [ref=e66]: UK Power Networks serves and provides electricity to over 8 million domestic and commercial customers. It owns and maintains electricity cables and lines across London, the South and South East of England. As a regulated company, it’s responsible for keeping the lights on 24/7, connecting new customers to the grid, and providing a whole range of services through numerous customer touchpoints, including digital and conversational interfaces.
+                - paragraph [ref=e67]: "2022"
+              - generic [ref=e68]:
+                - img "UKPN" [ref=e70]
+                - generic "Project 3" [ref=e71]: "03"
+            - link "View LightSpeed" [ref=e73] [cursor=pointer]:
+              - /url: projects/lightspeed
+              - generic [ref=e74]:
+                - generic [ref=e75]: Web
+                - paragraph [ref=e76]: LightSpeed
+                - paragraph [ref=e77]: LightSpeed Broadband is a UK full-fibre provider delivering ultrafast, reliable connectivity to homes and businesses. I contributed to redefining their customer acquisition journey, improving how users discover, understand, and convert to their services.
+                - paragraph [ref=e78]: "2025"
+              - generic "Project 4" [ref=e81]: "04"
+            - link "View Tangent" [ref=e83] [cursor=pointer]:
+              - /url: projects/tangent
+              - generic [ref=e84]:
+                - generic [ref=e85]: Animation
+                - paragraph [ref=e86]: Tangent
+                - paragraph [ref=e87]: "Tangent is a privately held digital consultancy founded in 2001, with a distributed team of around 90 experts across the UK, Spain, South Africa, Pakistan, and other regions. The company delivers future-ready digital products across four core areas: Strategy & Consultancy, Customer Experience & Design, Technology, and AI & Data. Despite its growth, Tangent’s previous website no longer reflected the scale or sophistication of the business, operating on a dated monolithic architecture with limited flexibility and minimal support for modern content or experience delivery."
+                - paragraph [ref=e88]: "2023"
+              - generic "Project 5" [ref=e91]: "05"
+      - region [ref=e92]:
+        - generic [ref=e93]:
+          - generic:
+            - heading [level=1]
+          - generic [ref=e96]:
+            - group "1 / 2" [ref=e97]:
+              - article [ref=e98]:
+                - blockquote [ref=e99]:
+                  - paragraph [ref=e100]: Fede is one of the best managers I’ve had the pleasure of working with. During our three years together at Tangent, he created such a positive, supportive environment where I always felt trusted and valued. He never micromanaged — instead, he gave me space to do my best work while always being there when I needed advice or a second opinion. Fede has a real gift for communicating clearly and thoughtfully, and he always knew how to deliver feedback in a way that was encouraging and helpful. I learned so much from him, and I’d recommend him to any team looking for a manager who genuinely cares about his people and knows how to help them grow.
+            - group "2 / 2" [ref=e101]:
+              - article [ref=e102]:
+                - blockquote [ref=e103]:
+                  - paragraph [ref=e104]: Fede is one of the best managers I’ve had the pleasure of working with. During our three years together at Tangent, he created such a positive, supportive environment where I always felt trusted and valued. He never micromanaged — instead, he gave me space to do my best work while always being there when I needed advice or a second opinion. Fede has a real gift for communicating clearly and thoughtfully, and he always knew how to deliver feedback in a way that was encouraging and helpful. I learned so much from him, and I’d recommend him to any team looking for a manager who genuinely cares about his people and knows how to help them grow.
+  - contentinfo [ref=e108]:
+    - generic [ref=e109]:
+      - heading "Let's talk!" [level=2] [ref=e110]
+      - link "Email info@fredcorr.com" [ref=e111] [cursor=pointer]:
+        - /url: mailto:info@fredcorr.com
+        - generic [ref=e112]: info@fredcorr.com
+        - img "Email" [ref=e113]
+    - paragraph [ref=e117]: 2026 © — Made by Federico Corradi
+  - button "Activate dark theme" [ref=e118] [cursor=pointer]:
+    - generic [ref=e119]: 🌙
+    - generic [ref=e120]: Dark mode
+  - button "Open Next.js Dev Tools" [ref=e126] [cursor=pointer]:
+    - img [ref=e127]
+  - alert [ref=e130]

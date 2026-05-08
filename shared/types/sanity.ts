@@ -38,3 +38,9 @@ export interface SanitySlug {
   _type: 'slug'
   current: string
 }
+
+export interface SanityMediaTag {
+  _id: string
+  _type: 'media.tag'
+  name?: SanitySlug
+}
