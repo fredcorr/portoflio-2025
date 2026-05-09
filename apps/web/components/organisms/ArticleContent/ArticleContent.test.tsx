@@ -6,24 +6,32 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import ArticleContent from './ArticleContent'
 import { articleContentMock } from '@/mocks/organisms/article-content'
 
-test('renders share actions and rich text content', () => {
+test('renders share rail, rich text, and sign-off', () => {
   const markup = renderToStaticMarkup(
     <ArticleContent
       content={articleContentMock.content}
       shareUrl={articleContentMock.shareUrl}
       shareTitle={articleContentMock.shareTitle}
+      tags={['Design', 'Craft']}
     />
   )
 
   assert.match(markup, /Share/)
-  assert.match(markup, /facebook/i)
-  assert.match(markup, /twitter\.com\/intent\/tweet/)
   assert.match(markup, /linkedin\.com\/sharing\/share-offsite/)
+  assert.match(markup, /twitter\.com\/intent\/tweet/)
   assert.match(markup, /The Power of Visual Identity/)
+  assert.match(markup, /Federico Corradi/)
+  assert.match(markup, /Design/)
 })
 
-test('returns empty markup when content and share url are missing', () => {
-  const markup = renderToStaticMarkup(<ArticleContent />)
+test('renders sign-off even without content', () => {
+  const markup = renderToStaticMarkup(
+    <ArticleContent shareUrl="https://example.com/a" />
+  )
+  assert.match(markup, /Federico Corradi/)
+})
 
+test('returns empty markup when no content and no shareUrl', () => {
+  const markup = renderToStaticMarkup(<ArticleContent />)
   assert.equal(markup, '')
 })

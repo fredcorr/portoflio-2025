@@ -4,4 +4,5 @@ export interface ArticleContentProps {
   content?: PortableTextBlock[]
   shareUrl?: string
   shareTitle?: string
+  tags?: string[]
 }
