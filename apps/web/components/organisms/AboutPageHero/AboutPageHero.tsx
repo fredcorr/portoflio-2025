@@ -54,7 +54,7 @@ const AboutPageHero = ({
             <AboutBackgroundHelixPulseCascade className="absolute inset-0 z-10" />
           </div>
           <div className="relative z-10">
-            <div className="grid min-h-screen grid-cols-1 content-center gap-y-5 md:grid-cols-12 md:gap-y-10">
+            <div className="grid py-16 md:py-0 md:min-h-[100svh] grid-cols-1 md:content-center gap-y-5 md:grid-cols-12 md:gap-y-10">
               <div className="relative md:col-span-12">
                 <div className="absolute -left-4 top-0 bottom-0 hidden w-[4px] md:block md:-left-12">
                   <div className="h-full w-full bg-gradient-to-b from-transparent via-background to-transparent opacity-70" />
