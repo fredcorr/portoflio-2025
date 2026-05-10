@@ -31,8 +31,8 @@ const OverlapAnimation = ({
         outer.style.marginBottom = `-${h}px`
         inner.style.position = 'sticky'
       } else {
-        outer.style.height = 'auto'
-        outer.style.marginBottom = '0'
+        outer.style.height = `calc(${h}px + 100svh)`
+        outer.style.marginBottom = '-100svh'
         inner.style.position = 'relative'
       }
     }

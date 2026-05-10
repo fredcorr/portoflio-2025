@@ -50,7 +50,7 @@ const AboutPageHero = ({
     >
       <div className="md:col-span-12 pb:10 lg:pb-5">
         <OverlapAnimation>
-          <div className="pointer-events-none absolute left-1/2 h-full -top-24 bottom-0 z-0 w-screen -translate-x-1/2 before:absolute before:inset-0 before:content-[''] before:bg-foreground">
+          <div className="pointer-events-none absolute left-1/2 -top-24 bottom-0 z-0 w-screen -translate-x-1/2 before:absolute before:inset-0 before:content-[''] before:bg-foreground">
             <AboutBackgroundHelixPulseCascade className="absolute inset-0 z-10" />
           </div>
           <div className="relative z-10">
