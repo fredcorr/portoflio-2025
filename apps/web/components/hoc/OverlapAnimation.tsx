@@ -24,15 +24,16 @@ const OverlapAnimation = ({
 
     const measure = () => {
       const h = inner.getBoundingClientRect().height
-      const fitsViewport = h <= window.innerHeight
+      const vhPx = window.innerHeight
+      const fitsViewport = h <= vhPx
 
       if (fitsViewport) {
-        outer.style.height = `calc(${h}px + 100svh)`
+        outer.style.height = `${h + vhPx}px`
         outer.style.marginBottom = `-${h}px`
         inner.style.position = 'sticky'
       } else {
-        outer.style.height = `calc(${h}px + 100svh)`
-        outer.style.marginBottom = '-100svh'
+        outer.style.height = `${h + vhPx}px`
+        outer.style.marginBottom = `-${vhPx}px`
         inner.style.position = 'relative'
       }
     }
