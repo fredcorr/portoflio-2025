@@ -24,15 +24,29 @@ const OverlapAnimation = ({
 
     const measure = () => {
       const h = inner.getBoundingClientRect().height
-      outer.style.height = `calc(${h}px + 100svh)`
-      outer.style.marginBottom = `-${h}px`
+      const fitsViewport = h <= window.innerHeight
+
+      if (fitsViewport) {
+        outer.style.height = `calc(${h}px + 100svh)`
+        outer.style.marginBottom = `-${h}px`
+        inner.style.position = 'sticky'
+      } else {
+        outer.style.height = 'auto'
+        outer.style.marginBottom = '0'
+        inner.style.position = 'relative'
+      }
     }
 
     measure()
 
     const observer = new ResizeObserver(measure)
     observer.observe(inner)
-    return () => observer.disconnect()
+    window.addEventListener('resize', measure, { passive: true })
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+    }
   }, [])
 
   return (
