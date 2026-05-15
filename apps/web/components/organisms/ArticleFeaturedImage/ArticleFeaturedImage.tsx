@@ -2,6 +2,7 @@ import React from 'react'
 import type { ArticleFeaturedImageProps } from '@portfolio/types/components'
 import Image from '@/components/atoms/Image/Image'
 import { cn } from '@/utils/cn'
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 
 interface Props extends ArticleFeaturedImageProps {
   className?: string
@@ -14,13 +15,16 @@ const ArticleFeaturedImage: React.FC<Props> = ({ heroImage, className }) => {
   const imageAlt = heroImage?.alt || ''
 
   return (
-    <figure
-      data-organism="article-featured-image"
-      aria-label="Featured image"
-      className={cn('px-4 md:px-8 xl:px-28', className)}
+    <ComponentLayout
+      className={cn('!pt-0', className)}
+      contentClassName="gap-y-0"
     >
-      <div className="mx-auto w-full max-w-[1440px]">
-        <div className="relative aspect-video overflow-hidden rounded-[32px] bg-primary-600">
+      <figure
+        data-organism="article-featured-image"
+        aria-label="Featured image"
+        className="md:col-span-12"
+      >
+        <div className="relative aspect-video overflow-hidden bg-primary-600">
           <Image
             src={imageUrl}
             alt={imageAlt}
@@ -35,8 +39,8 @@ const ArticleFeaturedImage: React.FC<Props> = ({ heroImage, className }) => {
             <span>{imageAlt}</span>
           </figcaption>
         )}
-      </div>
-    </figure>
+      </figure>
+    </ComponentLayout>
   )
 }
 

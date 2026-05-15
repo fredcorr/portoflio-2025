@@ -95,7 +95,7 @@ const ProjectListing = ({
           ))}
         </StaggerChildren>
       ) : (
-        <div className="md:col-span-12 rounded-3xl bg-gray-50 px-6 py-10 text-black/70 dark:bg-gray-100 dark:text-foreground/70">
+        <div className="md:col-span-12 bg-gray-50 px-6 py-10 text-black/70 dark:bg-gray-100 dark:text-foreground/70">
           Projects will appear here once they are published.
         </div>
       )}

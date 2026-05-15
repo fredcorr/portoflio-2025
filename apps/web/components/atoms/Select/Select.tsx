@@ -38,7 +38,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
             setIsPlaceholder(event.target.value === '')
           }}
           className={cn(
-            'w-full appearance-none rounded-[48px] bg-gray-50 px-5 py-4 text-body-md dark:bg-gray-100',
+            'w-full appearance-none bg-gray-50 px-5 py-4 text-body-md dark:bg-gray-100',
             isPlaceholder
               ? 'text-black/40 dark:text-foreground/60'
               : 'text-black dark:text-foreground',

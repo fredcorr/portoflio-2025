@@ -21,7 +21,7 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
   const deck = props.seoDescription
 
   return (
-    <section data-template="article">
+    <>
       <ArticleIntro
         title={title}
         dateLabel={dateLabel}
@@ -29,17 +29,15 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
         tags={props.tags}
         deck={deck}
         editionNumber={props.editionNumber}
+        author={props.author}
       />
-      {heroImage && (
-        <div className="mt-10 md:mt-12 xl:mt-14">
-          <ArticleFeaturedImage heroImage={heroImage} />
-        </div>
-      )}
+      {heroImage && <ArticleFeaturedImage heroImage={heroImage} />}
       <ArticleContent
         content={props.articleContent}
         shareUrl={shareUrl}
         shareTitle={title}
         tags={props.tags}
+        author={props.author}
       />
       {props.relatedArticles && props.relatedArticles.length > 0 && (
         <ArticleRelated relatedArticles={props.relatedArticles} />
@@ -51,7 +49,7 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
           componentIndex={index}
         />
       ))}
-    </section>
+    </>
   )
 }
 

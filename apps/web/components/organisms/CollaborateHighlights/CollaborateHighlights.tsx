@@ -57,7 +57,7 @@ const CollaborateHighlights = ({
                 AnimationComponent={SlideInStagger}
                 spacing={CardSpacing.Compact}
                 iconName={icon}
-                iconWrapperClassName="size-12 rounded-full bg-black text-background"
+                iconWrapperClassName="size-12 bg-black text-background"
                 iconClassName="size-7 text-background"
                 className="h-full bg-transparent shadow-none hover:translate-y-0 !rounded-none"
               />
@@ -65,7 +65,7 @@ const CollaborateHighlights = ({
           )}
         </StaggerChildren>
       ) : (
-        <div className="md:col-span-12 rounded-3xl border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-gray-200/40 dark:bg-gray-100 dark:text-foreground/70">
+        <div className="md:col-span-12 border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-gray-200/40 dark:bg-gray-100 dark:text-foreground/70">
           Highlights will appear here once they are published.
         </div>
       )}

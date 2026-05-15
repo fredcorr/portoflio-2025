@@ -120,7 +120,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
             href="/"
             aria-label="Go to homepage"
             className={cn(
-              'inline-flex items-center rounded-full text-black dark:text-white md:text-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white',
+              'inline-flex items-center text-black dark:text-white md:text-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white',
               !isOpen && 'text-current'
             )}
           >

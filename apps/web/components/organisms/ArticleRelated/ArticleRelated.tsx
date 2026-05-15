@@ -10,6 +10,7 @@ import { buildPageUrl } from '@/utils/slug'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { formatDate } from '@/utils/format-date'
 import { cn } from '@/utils/cn'
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 
 interface Props extends ArticleRelatedProps {
   className?: string
@@ -48,7 +49,7 @@ function PostCard({
       className="group flex flex-col gap-4 text-inherit no-underline transition hover:-translate-y-1"
     >
       {/* Thumbnail */}
-      <div className="relative aspect-[1.18/1] overflow-hidden rounded-[28px] bg-primary-600">
+      <div className="relative aspect-[1.18/1] overflow-hidden bg-primary-600">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -78,12 +79,12 @@ function PostCard({
           {editionLabel}
         </span>
         {article.title && (
-          <span
+          <h3
             className="font-heading font-normal leading-[1.2] tracking-[-0.015em] text-black dark:text-foreground text-balance"
             style={{ fontSize: 'clamp(1.1rem, 1.6vw, 1.35rem)' }}
           >
             {article.title}
-          </span>
+          </h3>
         )}
         <span className="flex items-center gap-3 font-heading text-[11px] uppercase tracking-[0.12em] text-black/55 dark:text-foreground/55">
           {firstTag && <span>{firstTag}</span>}
@@ -99,43 +100,38 @@ const ArticleRelated: React.FC<Props> = ({ relatedArticles, className }) => {
   if (!relatedArticles || relatedArticles.length === 0) return null
 
   return (
-    <section
+    <ComponentLayout
       data-organism="article-related"
-      className={cn(
-        'border-b border-gray-100 bg-background px-4 py-16 dark:border-gray-100 md:px-8 md:py-20 xl:px-28 xl:py-24',
-        className
-      )}
+      className={cn('border-b border-gray-100 bg-background dark:border-gray-100', className)}
     >
-      <div className="mx-auto w-full max-w-[1440px]">
-        {/* Header */}
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-6 border-b border-gray-100 pb-7 dark:border-gray-100 md:mb-12">
-          <h2
-            className="font-heading font-normal leading-none tracking-[-0.025em] text-black dark:text-foreground"
-            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
-          >
-            Continue reading
-          </h2>
-          <Link
-            href="/articles"
-            className="inline-flex items-center gap-2 rounded-full border border-gray-100 px-4 py-2.5 font-heading text-sm text-black transition hover:-translate-y-0.5 dark:border-gray-100 dark:text-foreground"
-          >
-            All essays
-            <Icon name="arrow-up-right" className="size-3.5" />
-          </Link>
-        </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
-          {relatedArticles.map((article, i) => (
-            <PostCard
-              key={article.slug?.current ?? i}
-              article={article}
-              index={i}
-            />
-          ))}
-        </div>
+      {/* Header */}
+      <div className="md:col-span-12 flex flex-wrap items-end justify-between gap-6 border-b border-gray-100 pb-7 dark:border-gray-100">
+        <h2
+          className="font-heading font-normal leading-none tracking-[-0.025em] text-black dark:text-foreground"
+          style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
+        >
+          Continue reading
+        </h2>
+        <Link
+          href="/articles"
+          className="inline-flex items-center gap-2 border border-gray-100 px-4 py-2.5 font-heading text-sm text-black transition hover:-translate-y-0.5 dark:border-gray-100 dark:text-foreground"
+        >
+          All essays
+          <Icon name="arrow-up-right" className="size-3.5" />
+        </Link>
       </div>
-    </section>
+
+      {/* Grid */}
+      <div className="md:col-span-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+        {relatedArticles.map((article, i) => (
+          <PostCard
+            key={article.slug?.current ?? i}
+            article={article}
+            index={i}
+          />
+        ))}
+      </div>
+    </ComponentLayout>
   )
 }
 

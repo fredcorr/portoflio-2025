@@ -109,7 +109,7 @@ const Card = ({
     'group flex bg-transparent h-full flex-col',
     indexAboveImage
       ? '' // no overflow-hidden/rounded/translate — badge must protrude above
-      : 'overflow-hidden rounded-[32px] hover:-translate-y-1',
+      : 'overflow-hidden hover:-translate-y-1',
     'transition',
     href &&
       'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black',

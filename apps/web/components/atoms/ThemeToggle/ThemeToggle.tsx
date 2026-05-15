@@ -83,7 +83,7 @@ export const ThemeToggle = () => {
         type="button"
         onClick={handleToggle}
         className={cn(
-          'pointer-events-auto inline-flex items-center gap-2 rounded-full border border-black/10 bg-black px-4 py-2 font-heading text-sm uppercase tracking-[0.08em] text-white shadow-lg transition',
+          'pointer-events-auto inline-flex items-center gap-2 border border-black/10 bg-black px-4 py-2 font-heading text-sm uppercase tracking-[0.08em] text-white shadow-lg transition',
           'hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black',
           'dark:border-white/10 dark:bg-gray-50 dark:text-black dark:focus-visible:outline-white'
         )}

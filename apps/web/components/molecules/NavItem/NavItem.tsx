@@ -73,7 +73,7 @@ const NavItem = ({
           aria-current={ariaCurrent}
           aria-label={ariaLabel}
           className={cn(
-            'group inline-flex items-center gap-2 rounded-full px-3 py-2 font-body text-[20px] font-normal leading-[1.4] tracking-[-0.02em] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white',
+            'group inline-flex items-center gap-2 px-3 py-2 font-body text-[20px] font-normal leading-[1.4] tracking-[-0.02em] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white',
             blendMode
               ? 'text-black dark:text-foreground md:text-current'
               : 'text-black dark:text-foreground',
@@ -95,7 +95,7 @@ const NavItem = ({
             <span
               data-development="Displays the total published project pages."
               className={cn(
-                'inline-flex size-4 items-center justify-center rounded-full text-[10px] font-semibold',
+                'inline-flex size-4 items-center justify-center text-[10px] font-semibold',
                 blendMode
                   ? 'border border-current text-current bg-transparent'
                   : 'bg-black text-white'

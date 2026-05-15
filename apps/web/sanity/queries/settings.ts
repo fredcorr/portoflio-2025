@@ -5,6 +5,9 @@ import { PUBLISHED_FILTER } from './fragments'
 export const SETTINGS_QUERY = groq`
   {
     "settings": *[_type == "${GlobalItemsType.Settings}"][0]{
+      firstName,
+      secondName,
+      jobTitle,
       email,
       "navigationItems": (navigationItems[]->{
         _id,

@@ -71,7 +71,7 @@ export const HomePageHero = ({
                     </span>
                     <a
                       href={`#${ctaTarget}`}
-                      className="inline-flex size-8 items-center justify-center rounded-full border border-background/20 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+                      className="inline-flex size-8 items-center justify-center border border-background/20 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
                       aria-label="Scroll to next section"
                     >
                       <Icon

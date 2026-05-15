@@ -82,7 +82,7 @@ const WorkIndex = ({
           ))}
         </>
       ) : (
-        <div className="rounded-3xl border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60">
+        <div className="border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60">
           Projects will appear here once they are published.
         </div>
       )}

@@ -6,6 +6,7 @@ export const articlePageFields = groq`
   ${basePageFields},
   _createdAt,
   _updatedAt,
+  "author": *[_type == "settings"][0]{ firstName, secondName, jobTitle },
   seoDescription,
   heroImage {
     ${imageFields}

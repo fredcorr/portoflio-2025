@@ -1,3 +1,5 @@
+import type { AuthorData } from '../settings'
+
 export interface ArticleIntroProps {
   title?: string
   dateLabel?: string
@@ -5,4 +7,5 @@ export interface ArticleIntroProps {
   tags?: string[]
   deck?: string
   editionNumber?: number
+  author?: AuthorData
 }
