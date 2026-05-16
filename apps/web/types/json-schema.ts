@@ -22,6 +22,17 @@ export type BreadcrumbListSchema = {
   }>
 }
 
+export type ProfilePageSchema = {
+  '@context': 'https://schema.org'
+  '@type': 'ProfilePage'
+  name: string
+  url: string
+  dateModified: string
+  mainEntity: PersonSchema & { url: string; email?: string }
+  image?: string
+  description?: string
+}
+
 export type ContactPageSchema = {
   '@context': 'https://schema.org'
   '@type': 'ContactPage'
