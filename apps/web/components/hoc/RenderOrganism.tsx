@@ -13,6 +13,7 @@ import {
   GetInTouch,
   HomePageHero,
   ImageGallery,
+  JournalsFeed,
   Process,
   Stats,
   ToolSet,
@@ -74,6 +75,8 @@ export const RenderOrganism = ({
       return <AnimatedStrapline {...componentWithContext} />
     case ComponentTypeName.WorkIndex:
       return <WorkIndex {...componentWithContext} />
+    case ComponentTypeName.JournalsFeed:
+      return <JournalsFeed {...componentWithContext} />
     default:
       return null
   }
