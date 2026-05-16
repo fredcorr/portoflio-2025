@@ -1,6 +1,8 @@
 import React from 'react'
 import type { ArticleIntroProps } from '@portfolio/types/components'
 import { cn } from '@/utils/cn'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 export interface ArticleMetaProps
   extends Pick<
@@ -39,14 +41,17 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
   const topicsLabel = tags?.join(', ')
 
   return (
-    <dl
+    <StaggerChildren
+      as="dl"
+      staggerDelay={0.08}
+      amount={0.2}
       className={cn(
         'grid grid-cols-2 gap-x-4 gap-y-5 border-t border-gray-100 pt-6 dark:border-gray-100 md:grid-cols-12 md:gap-6',
         className
       )}
     >
       {/* Author */}
-      <div className="col-span-2 flex flex-col gap-1.5 md:col-span-4">
+      <FadeIn.Stagger as="div" className="col-span-2 flex flex-col gap-1.5 md:col-span-4">
         <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
           Written by
         </dt>
@@ -59,56 +64,56 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           </span>
           {authorName}
         </dd>
-      </div>
+      </FadeIn.Stagger>
 
       {/* Published */}
       {dateLabel && (
-        <div className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Published
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {dateLabel}
           </dd>
-        </div>
+        </FadeIn.Stagger>
       )}
 
       {/* Reading time */}
       {readTimeLabel && (
-        <div className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Reading time
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {readTimeLabel}
           </dd>
-        </div>
+        </FadeIn.Stagger>
       )}
 
       {/* Topics */}
       {topicsLabel && (
-        <div className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Topics
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {topicsLabel}
           </dd>
-        </div>
+        </FadeIn.Stagger>
       )}
 
       {/* Edition */}
       {editionLabel && (
-        <div className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Edition
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {editionLabel}
           </dd>
-        </div>
+        </FadeIn.Stagger>
       )}
-    </dl>
+    </StaggerChildren>
   )
 }
 

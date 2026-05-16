@@ -18,7 +18,7 @@ const Shares: React.FC<ShareProps> = ({
   const [copied, setCopied] = useState(false)
   const shareItems = buildShareItems(shareUrl, shareTitle)
   const railBtn =
-    'inline-flex size-12 items-center justify-center rounded-xl bg-surface-2 text-black/78 dark:text-foreground/78 transition hover:-translate-y-0.5 hover:text-black dark:hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white'
+    'inline-flex size-12 items-center justify-center bg-surface-2 text-black/78 dark:text-foreground/78 transition hover:-translate-y-0.5 hover:text-black dark:hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white'
 
   const handleCopy = useCallback(async () => {
     if (!shareUrl) return
