@@ -14,7 +14,6 @@ import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
 import { getPageSchemas } from '@/utils/get-page-schemas'
 import getSettings from '@/utils/get-settings'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
-import { PageTypeName } from '@portfolio/types/base'
 
 export const revalidate = 10
 
@@ -60,8 +59,7 @@ export default async function Page({ params }: PageProps) {
     page.slug?.current || slug
   )
 
-  const needsSettings = page._type === PageTypeName.ArticlePage
-  const settings = needsSettings ? (await getSettings()).settings : null
+  const { settings } = await getSettings()
   const pageSchemas = getPageSchemas(siteUrl, page, settings)
 
   return (
