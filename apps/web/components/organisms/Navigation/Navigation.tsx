@@ -107,7 +107,7 @@ const Navigation = ({ items, projectCount, className }: NavigationProps) => {
         )}
         onClick={handleNavigate}
       />
-      <nav className="relative mx-auto w-full lg:px-6 ">
+      <nav className="relative mx-auto w-full lg:px-5 ">
         <div
           className={cn(
             'relative z-50 flex items-center justify-between py-4 transition-shadow',
