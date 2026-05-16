@@ -5,6 +5,7 @@ import Icon from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import Shares from '@/components/molecules/Shares/Shares'
+import ArticleMeta from '@/components/molecules/ArticleMeta/ArticleMeta'
 
 export interface ArticleContentProps extends ArticleContentSharedProps {
   className?: string
@@ -15,6 +16,10 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
   shareUrl,
   shareTitle,
   tags,
+  author,
+  dateLabel,
+  readTimeLabel,
+  editionNumber,
   showReaderCount = false,
   prevUrl,
   nextUrl,
@@ -155,6 +160,16 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
           </div>
         )}
       </div>
+
+      {/* Meta — mobile only; desktop instance lives inside ArticleIntro */}
+      <ArticleMeta
+        author={author}
+        dateLabel={dateLabel}
+        readTimeLabel={readTimeLabel}
+        tags={tags}
+        editionNumber={editionNumber}
+        className="md:col-span-12 md:hidden"
+      />
     </ComponentLayout>
   )
 }

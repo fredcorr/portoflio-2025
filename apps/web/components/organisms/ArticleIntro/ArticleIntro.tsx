@@ -2,7 +2,7 @@ import React from 'react'
 import type { ArticleIntroProps as ArticleIntroSharedProps } from '@portfolio/types/components'
 import { cn } from '@/utils/cn'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
-import ArticleMeta from '@/components/organisms/ArticleMeta/ArticleMeta'
+import ArticleMeta from '@/components/molecules/ArticleMeta/ArticleMeta'
 
 export interface ArticleIntroProps extends ArticleIntroSharedProps {
   className?: string
@@ -78,7 +78,7 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
         readTimeLabel={readTimeLabel}
         tags={tags}
         editionNumber={editionNumber}
-        className="md:col-span-12 hidden md:block"
+        className="md:col-span-12 hidden md:grid"
       />
     </ComponentLayout>
   )

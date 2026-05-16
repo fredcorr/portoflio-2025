@@ -1,6 +1,5 @@
 import type { ArticlePageDocument } from '@portfolio/types/pages'
 import ArticleIntro from '@/components/organisms/ArticleIntro/ArticleIntro'
-import ArticleMeta from '@/components/organisms/ArticleMeta/ArticleMeta'
 import ArticleFeaturedImage from '@/components/organisms/ArticleFeaturedImage/ArticleFeaturedImage'
 import ArticleContent from '@/components/organisms/ArticleContent/ArticleContent'
 import ArticleRelated from '@/components/organisms/ArticleRelated/ArticleRelated'
@@ -38,15 +37,10 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
         shareUrl={shareUrl}
         shareTitle={title}
         tags={props.tags}
-      />
-      {/* Mobile-only meta — shown below content on small screens */}
-      <ArticleMeta
         author={props.author}
         dateLabel={dateLabel}
         readTimeLabel={readTimeLabel}
-        tags={props.tags}
         editionNumber={props.editionNumber}
-        className="md:hidden"
       />
       {props.relatedArticles && props.relatedArticles.length > 0 && (
         <ArticleRelated relatedArticles={props.relatedArticles} />

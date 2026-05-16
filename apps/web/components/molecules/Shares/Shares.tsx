@@ -18,7 +18,7 @@ const Shares: React.FC<ShareProps> = ({
   const [copied, setCopied] = useState(false)
   const shareItems = buildShareItems(shareUrl, shareTitle)
   const railBtn =
-    'inline-flex size - 10 items - center justify - center bg - surface - 2 border border - transparent text - black / 78 dark: text - foreground / 78 transition hover: -translate - y - 0.5 hover: text - black hover: border - gray - 100 dark: hover: text - foreground dark: hover: border - gray - 100 focus - visible:outline focus - visible: outline - 2 focus - visible: outline - offset - 4 focus - visible: outline - black dark: focus - visible: outline - white'
+    'inline-flex size-12 items-center justify-center rounded-xl bg-surface-2 text-black/78 dark:text-foreground/78 transition hover:-translate-y-0.5 hover:text-black dark:hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white'
 
   const handleCopy = useCallback(async () => {
     if (!shareUrl) return
@@ -64,7 +64,7 @@ const Shares: React.FC<ShareProps> = ({
                 >
                   <Icon
                     name={action.icon}
-                    className="size-4"
+                    className="size-5"
                     title={action.label}
                   />
                 </button>
@@ -78,7 +78,7 @@ const Shares: React.FC<ShareProps> = ({
                 >
                   <Icon
                     name={action.icon}
-                    className="size-4"
+                    className="size-5"
                     title={action.label}
                   />
                 </a>
