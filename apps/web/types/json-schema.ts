@@ -22,6 +22,23 @@ export type BreadcrumbListSchema = {
   }>
 }
 
+export type CreativeWorkSchema = {
+  '@context': 'https://schema.org'
+  '@type': 'CreativeWork'
+  name: string
+  url: string
+  mainEntityOfPage: {
+    '@type': 'WebPage'
+    '@id': string
+  }
+  dateModified: string
+  author: PersonSchema
+  dateCreated?: string
+  image?: string
+  description?: string
+  keywords?: string
+}
+
 export type ArticleSchema = {
   '@context': 'https://schema.org'
   '@type': 'Article'
