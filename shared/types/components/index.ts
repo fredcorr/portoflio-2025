@@ -21,6 +21,7 @@ import type { FooterProps } from './footer'
 import type { ArticleIntroProps } from './article-intro'
 import type { ArticleContentProps } from './article-content'
 import type { WorkIndexComponent, WorkIndexProject } from './work-index'
+import type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -58,6 +59,7 @@ export type { FooterProps } from './footer'
 export type { ArticleIntroProps } from './article-intro'
 export type { ArticleContentProps } from './article-content'
 export type { WorkIndexComponent, WorkIndexProject } from './work-index'
+export type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
 
 export type Components =
   | HomePageHeroComponent
@@ -76,3 +78,4 @@ export type Components =
   | AnimatedStraplineComponent
   | BlockTextComponent
   | WorkIndexComponent
+  | JournalsFeedComponent
