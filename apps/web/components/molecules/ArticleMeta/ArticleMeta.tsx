@@ -2,18 +2,13 @@ import React from 'react'
 import type { ArticleIntroProps } from '@portfolio/types/components'
 import { cn } from '@/utils/cn'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
-import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
-export interface ArticleMetaProps
-  extends Pick<
-    ArticleIntroProps,
-    'author' | 'dateLabel' | 'readTimeLabel' | 'tags' | 'editionNumber'
-  > {
+export interface ArticleMetaProps extends Pick<
+  ArticleIntroProps,
+  'author' | 'dateLabel' | 'readTimeLabel' | 'tags' | 'editionNumber'
+> {
   className?: string
-}
-
-function padEdition(n: number): string {
-  return String(n).padStart(3, '0')
 }
 
 const ArticleMeta: React.FC<ArticleMetaProps> = ({
@@ -40,6 +35,10 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       : undefined
   const topicsLabel = tags?.join(', ')
 
+  function padEdition(n: number): string {
+    return String(n).padStart(3, '0')
+  }
+
   return (
     <StaggerChildren
       as="dl"
@@ -51,7 +50,10 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       )}
     >
       {/* Author */}
-      <FadeIn.Stagger as="div" className="col-span-2 flex flex-col gap-1.5 md:col-span-4">
+      <FadeInWithStagger
+        as="div"
+        className="col-span-2 flex flex-col gap-1.5 md:col-span-4"
+      >
         <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
           Written by
         </dt>
@@ -64,54 +66,66 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           </span>
           {authorName}
         </dd>
-      </FadeIn.Stagger>
+      </FadeInWithStagger>
 
       {/* Published */}
       {dateLabel && (
-        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeInWithStagger
+          as="div"
+          className="flex flex-col gap-1.5 md:col-span-2"
+        >
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Published
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {dateLabel}
           </dd>
-        </FadeIn.Stagger>
+        </FadeInWithStagger>
       )}
 
       {/* Reading time */}
       {readTimeLabel && (
-        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeInWithStagger
+          as="div"
+          className="flex flex-col gap-1.5 md:col-span-2"
+        >
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Reading time
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {readTimeLabel}
           </dd>
-        </FadeIn.Stagger>
+        </FadeInWithStagger>
       )}
 
       {/* Topics */}
       {topicsLabel && (
-        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeInWithStagger
+          as="div"
+          className="flex flex-col gap-1.5 md:col-span-2"
+        >
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Topics
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {topicsLabel}
           </dd>
-        </FadeIn.Stagger>
+        </FadeInWithStagger>
       )}
 
       {/* Edition */}
       {editionLabel && (
-        <FadeIn.Stagger as="div" className="flex flex-col gap-1.5 md:col-span-2">
+        <FadeInWithStagger
+          as="div"
+          className="flex flex-col gap-1.5 md:col-span-2"
+        >
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Edition
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {editionLabel}
           </dd>
-        </FadeIn.Stagger>
+        </FadeInWithStagger>
       )}
     </StaggerChildren>
   )

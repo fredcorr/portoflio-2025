@@ -67,7 +67,7 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
         )}
       >
         {hasQuestion && (
-          <span className="font-heading text-heading-5 font-medium tracking-tight">
+          <span className="font-heading text-heading-4 font-medium tracking-tight">
             {question}
           </span>
         )}
@@ -101,7 +101,7 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
           <div
             ref={setContentElement}
             className={cn(
-              'pt-9 pb-10 text-black transition-[opacity,transform] duration-300 ease-out dark:text-foreground',
+              'pt-9 pb-10 text-gray-200 transition-[opacity,transform] duration-300 ease-out',
               'motion-reduce:transition-none motion-reduce:transform-none',
               !isOpen && 'opacity-0 translate-y-2',
               isOpen && 'opacity-100 translate-y-0'
