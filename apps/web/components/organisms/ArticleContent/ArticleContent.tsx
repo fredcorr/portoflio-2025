@@ -35,7 +35,10 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
     <ComponentLayout
       data-organism="article-content"
       overflowHidden={false}
-      className={cn('bg-background text-black dark:text-foreground', className)}
+      className={cn(
+        'bg-background text-black dark:text-foreground py-0',
+        className
+      )}
       contentClassName="gap-y-10 md:gap-y-12"
     >
       {/* Body + share rail */}
@@ -117,7 +120,14 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
           </div>
         )}
       </div>
-
+      <ArticleMeta
+        author={author}
+        dateLabel={dateLabel}
+        readTimeLabel={readTimeLabel}
+        tags={tags}
+        editionNumber={editionNumber}
+        className="md:col-span-12 md:hidden"
+      />
       {/* Sign-off bar */}
       <div className="md:col-span-12 grid grid-cols-1 items-center gap-6 border-b border-t border-gray-100 py-10 dark:border-gray-100 md:grid-cols-2">
         {/* Tag pills */}
@@ -160,16 +170,6 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
           </div>
         )}
       </div>
-
-      {/* Meta — mobile only; desktop instance lives inside ArticleIntro */}
-      <ArticleMeta
-        author={author}
-        dateLabel={dateLabel}
-        readTimeLabel={readTimeLabel}
-        tags={tags}
-        editionNumber={editionNumber}
-        className="md:col-span-12 md:hidden"
-      />
     </ComponentLayout>
   )
 }
