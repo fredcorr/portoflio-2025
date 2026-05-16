@@ -49,7 +49,7 @@ export const Modal = ({
             fallbackFocus: '#modal-title',
           }}
         >
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl outline-none dark:bg-background">
+          <div className="w-full max-w-lg bg-white p-6 shadow-xl outline-none dark:bg-background">
             {title && (
               <Heading
                 level={2}
@@ -73,7 +73,7 @@ export const Modal = ({
                 type="button"
                 onClick={onClose}
                 className={cn(
-                  'inline-flex items-center gap-2 rounded-full px-4 py-2 font-heading text-body-md font-semibold transition',
+                  'inline-flex items-center gap-2 px-4 py-2 font-heading text-body-md font-semibold transition',
                   accentClass,
                   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
                 )}

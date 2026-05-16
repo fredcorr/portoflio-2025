@@ -24,7 +24,7 @@ const ToolCard = ({ title, subtitle, image, className }: ToolCardProps) => {
     <SlideInStagger
       as="li"
       className={cn(
-        'flex h-[146px] items-center justify-center rounded-[16px] bg-gray-50 p-2 dark:bg-gray-100',
+        'flex h-[146px] items-center justify-center bg-gray-50 p-2 dark:bg-gray-100',
         className
       )}
       data-molecule="tool-card"

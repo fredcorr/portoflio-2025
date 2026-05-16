@@ -1,8 +1,9 @@
 import React from 'react'
 import type { ArticleIntroProps as ArticleIntroSharedProps } from '@portfolio/types/components'
-import Image from '@/components/atoms/Image/Image'
-import { Heading } from '@/components/atoms/Heading/Heading'
 import { cn } from '@/utils/cn'
+import { ComponentLayout } from '@/components/hoc/ComponentLayout'
+import ArticleMeta from '@/components/molecules/ArticleMeta/ArticleMeta'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 export interface ArticleIntroProps extends ArticleIntroSharedProps {
   className?: string
@@ -13,78 +14,94 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
   dateLabel,
   readTimeLabel,
   tags,
-  heroImage,
+  deck,
+  editionNumber,
+  author,
   className,
 }) => {
   const headline = title?.trim()
-  const imageUrl = heroImage?.asset?.url
-  const imageAlt = heroImage?.alt || headline || ''
-  const hasMeta = Boolean(dateLabel || readTimeLabel)
-  const hasTags = Boolean(tags && tags.length)
-  const hasImage = Boolean(imageUrl)
+  const firstTag = tags?.[0]
+  const year = dateLabel
+    ? new Date(dateLabel).getFullYear()
+    : new Date().getFullYear()
+  const editionLabel =
+    editionNumber != null
+      ? `N° ${String(editionNumber).padStart(3, '0')} / ${year}`
+      : undefined
 
   return (
-    <section
+    <ComponentLayout
       data-organism="article-intro"
-      data-development="Figma: Article intro with meta, tags, and hero image."
       className={cn('bg-background text-black dark:text-foreground', className)}
+      contentClassName="gap-y-4 md:gap-y-6"
     >
-      <div className="mx-auto w-full max-w-[1440px] px-4 py-10 md:px-8 md:py-12 xl:px-28 xl:py-[73px]">
-        <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12 xl:gap-[35px]">
-          <div className="md:col-span-6 flex flex-col gap-4">
-            {hasMeta && (
-              <div className="flex flex-wrap items-center gap-2 font-body text-body-md text-black/80 dark:text-foreground/80">
-                {dateLabel && <span>{dateLabel}</span>}
-                {dateLabel && readTimeLabel && (
-                  <span aria-hidden="true">•</span>
-                )}
-                {readTimeLabel && <span>{readTimeLabel}</span>}
-              </div>
-            )}
+      {/* Eyebrow */}
+      <FadeIn
+        as="div"
+        duration={0.6}
+        delay={0}
+        viewport={{ once: true, amount: 0.3 }}
+        className="md:col-span-12 flex items-center gap-3 font-heading text-[11px] uppercase tracking-[0.12em] text-black/55 dark:text-foreground/55"
+      >
+        <span>Journal</span>
+        {firstTag && (
+          <>
+            <span aria-hidden="true" className="size-1 bg-current opacity-50" />
+            <span>{firstTag}</span>
+          </>
+        )}
+        {editionLabel && (
+          <>
+            <span aria-hidden="true" className="size-1 bg-current opacity-50" />
+            <span>{editionLabel}</span>
+          </>
+        )}
+      </FadeIn>
 
-            {headline && (
-              <Heading
-                level={1}
-                className="font-display text-heading-1 font-normal leading-[1.1] tracking-tight text-black dark:text-foreground md:text-heading-1 xl:text-[64px]"
-              >
-                {headline}
-              </Heading>
-            )}
+      {/* Title */}
+      {headline && (
+        <FadeIn
+          as="h1"
+          duration={0.6}
+          delay={0.1}
+          viewport={{ once: true, amount: 0.3 }}
+          className="md:col-span-12 max-w-[16ch] font-heading font-normal leading-[0.96] tracking-[-0.035em] text-balance text-black dark:text-foreground"
+          style={{ fontSize: 'clamp(2.75rem, 8.5vw, 8rem)' }}
+        >
+          {headline}
+        </FadeIn>
+      )}
 
-            {hasTags && (
-              <ul className="flex flex-wrap items-center gap-2">
-                {tags?.map((tag, index) => {
-                  const label = typeof tag === 'string' ? tag : ''
+      {/* Deck */}
+      {deck && (
+        <FadeIn
+          as="p"
+          duration={0.6}
+          delay={0.2}
+          viewport={{ once: true, amount: 0.3 }}
+          className="md:col-span-12 max-w-[56ch] font-body leading-[1.45] text-black/78 dark:text-foreground/80"
+          style={{ fontSize: 'clamp(1.05rem, 1.6vw, 1.4rem)' }}
+        >
+          {deck}
+        </FadeIn>
+      )}
 
-                  return (
-                    label && (
-                      <li key={`${label}-${index}`}>
-                        <span className="inline-flex items-center rounded-[8px] bg-gray-50 px-3 py-1 text-sm font-body text-black/80 dark:bg-surface-2 dark:text-foreground/80">
-                          {label}
-                        </span>
-                      </li>
-                    )
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-
-          {hasImage && imageUrl && (
-            <div className="md:col-span-6 md:justify-self-end">
-              <Image
-                src={imageUrl}
-                alt={imageAlt}
-                width={heroImage?.asset?.metadata?.dimensions?.width}
-                height={heroImage?.asset?.metadata?.dimensions?.height}
-                sizes="(min-width: 1280px) 589px, (min-width: 768px) 50vw, 100vw"
-                wrapperClassName="w-full max-w-[589px]"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
+      {/* Meta — desktop only; mobile instance is rendered in ArticleContent */}
+      <FadeIn
+        duration={0.6}
+        delay={0.3}
+        viewport={{ once: true, amount: 0.3 }}
+        className="md:col-span-12 hidden md:block"
+      >
+        <ArticleMeta
+          author={author}
+          dateLabel={dateLabel}
+          readTimeLabel={readTimeLabel}
+          tags={tags}
+          editionNumber={editionNumber}
+        />
+      </FadeIn>
+    </ComponentLayout>
   )
 }
 

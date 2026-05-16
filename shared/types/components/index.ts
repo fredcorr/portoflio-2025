@@ -20,7 +20,10 @@ import type { LinkInternalReference, LinkItem } from './link'
 import type { FooterProps } from './footer'
 import type { ArticleIntroProps } from './article-intro'
 import type { ArticleContentProps } from './article-content'
+import type { ArticleRelatedProps, RelatedArticle } from './article-related'
+import type { ArticleFeaturedImageProps } from './article-featured-image'
 import type { WorkIndexComponent, WorkIndexProject } from './work-index'
+import type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -57,7 +60,10 @@ export type { LinkInternalReference, LinkItem } from './link'
 export type { FooterProps } from './footer'
 export type { ArticleIntroProps } from './article-intro'
 export type { ArticleContentProps } from './article-content'
+export type { ArticleRelatedProps, RelatedArticle } from './article-related'
+export type { ArticleFeaturedImageProps } from './article-featured-image'
 export type { WorkIndexComponent, WorkIndexProject } from './work-index'
+export type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
 
 export type Components =
   | HomePageHeroComponent
@@ -76,3 +82,4 @@ export type Components =
   | AnimatedStraplineComponent
   | BlockTextComponent
   | WorkIndexComponent
+  | JournalsFeedComponent

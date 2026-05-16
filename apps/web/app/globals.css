@@ -133,3 +133,12 @@ html {
     animation: none !important;
   }
 }
+
+/* Article body — CSS counter for chapter numbering */
+[data-organism='article-content'] .chapter-label::before {
+  content: 'Chapter 0' counter(chapter);
+  font-family: var(--font-heading, inherit);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
