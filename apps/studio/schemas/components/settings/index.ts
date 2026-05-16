@@ -12,6 +12,21 @@ const SettingsSchema = defineType({
   type: 'document',
   fields: [
     String({
+      name: 'firstName',
+      title: 'First name',
+      description: 'Author first name, used across article pages.',
+    }),
+    String({
+      name: 'secondName',
+      title: 'Second name',
+      description: 'Author second name, used across article pages.',
+    }),
+    String({
+      name: 'jobTitle',
+      title: 'Job title',
+      description: 'Author job title, displayed in article sign-off.',
+    }),
+    String({
       name: 'email',
       title: 'Email',
       description: 'Public contact email address displayed across the site.',

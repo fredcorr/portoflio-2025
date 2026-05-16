@@ -31,7 +31,7 @@ const Footer: React.FC<FooterProps> = ({ email, socialLinks, className }) => {
             href={`mailto:${email}`}
             aria-label={`Email ${email}`}
             className={cn(
-              'inline-flex items-center justify-center gap-2 rounded-full bg-black text-surface-1 transition hover:-translate-y-0.5',
+              'inline-flex items-center justify-center gap-2 bg-black text-surface-1 transition hover:-translate-y-0.5',
               'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white',
               'md:gap-1 xl:gap-2',
               'w-[262px] px-6 py-3 md:w-[148px] md:px-4 md:py-2 xl:w-[262px] xl:px-8 xl:py-3'

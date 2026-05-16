@@ -3,6 +3,8 @@ export { default as AnimatedStrapline } from './AnimatedStrapline/AnimatedStrapl
 export { default as BlockText } from './BlockText/BlockText'
 export { default as ArticleIntro } from './ArticleIntro/ArticleIntro'
 export { default as ArticleContent } from './ArticleContent/ArticleContent'
+export { default as ArticleFeaturedImage } from './ArticleFeaturedImage/ArticleFeaturedImage'
+export { default as ArticleRelated } from './ArticleRelated/ArticleRelated'
 export * from './Cards/Cards'
 export { default as CollaborateHighlights } from './CollaborateHighlights/CollaborateHighlights'
 export { default as Faqs } from './Faqs/Faqs'

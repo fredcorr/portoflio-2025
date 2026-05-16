@@ -80,7 +80,7 @@ const AboutPageHero = ({
                   >
                     {location && (
                       <div className="flex items-center gap-2">
-                        <span className="size-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="size-2 bg-green-500 animate-pulse" />
                         <span>{location}</span>
                       </div>
                     )}

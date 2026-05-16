@@ -6,24 +6,24 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import ArticleIntro from './ArticleIntro'
 import { articleIntroMock } from '@/mocks/organisms/article-intro'
 
-test('renders article intro metadata, title, tags, and image', () => {
+test('renders eyebrow, title, deck, and meta grid', () => {
   const markup = renderToStaticMarkup(<ArticleIntro {...articleIntroMock} />)
 
-  assert.match(markup, /January 15, 2026/)
-  assert.match(markup, /8 min read/)
-  assert.match(markup, /Go by one dresscode; wear your heart on your sleeve/)
-  assert.match(markup, /Design/)
-  assert.match(markup, /Branding/)
-  assert.match(markup, /Storytelling/)
-  assert.match(markup, /Rolling hills at sunrise/)
+  assert.match(markup, /Journal/)
+  assert.match(markup, /Essay/)
+  assert.match(markup, /N° 014/)
+  assert.match(markup, /On the discipline of restraint/)
+  assert.match(markup, /Most interfaces fail/)
+  assert.match(markup, /April 14, 2026/)
+  assert.match(markup, /9 min read/)
+  assert.match(markup, /Federico Corradi/)
 })
 
-test('omits meta and tags when not provided', () => {
-  const markup = renderToStaticMarkup(
-    <ArticleIntro title="Title only" heroImage={articleIntroMock.heroImage} />
-  )
+test('omits eyebrow extras and deck when not provided', () => {
+  const markup = renderToStaticMarkup(<ArticleIntro title="Minimal title" />)
 
-  assert.match(markup, /Title only/)
+  assert.match(markup, /Minimal title/)
+  assert.match(markup, /Journal/)
+  assert.ok(!markup.includes('N°'))
   assert.ok(!markup.includes('min read'))
-  assert.ok(!markup.includes('January'))
 })

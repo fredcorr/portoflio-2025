@@ -35,7 +35,7 @@ export const Image = ({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-[32px]',
+        'relative overflow-hidden',
         wrapperClassName
       )}
     >

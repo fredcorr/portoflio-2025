@@ -65,7 +65,7 @@ const Faqs = ({
         <StaggerChildren
           className={cn(
             cardColumnClassName,
-            'min-w-0 divide-y divide-black/10 rounded-[32px] p-6 md:p-0'
+            'min-w-0 divide-y divide-black/10 p-6 md:p-0'
           )}
         >
           {questions.map((item, index) => (

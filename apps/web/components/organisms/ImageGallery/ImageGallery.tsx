@@ -107,7 +107,7 @@ const ImageGallery = ({
       )}
 
       {galleryImagesWithUrl.length === 0 && (
-        <div className="md:col-span-12 rounded-3xl border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-foreground/20 dark:bg-background dark:text-foreground/70">
+        <div className="md:col-span-12 border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-foreground/20 dark:bg-background dark:text-foreground/70">
           Images will appear here once they are published.
         </div>
       )}

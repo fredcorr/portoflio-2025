@@ -1,9 +1,11 @@
-import type { SanityImage } from '../sanity'
+import type { AuthorData } from '../settings'
 
 export interface ArticleIntroProps {
   title?: string
   dateLabel?: string
   readTimeLabel?: string
   tags?: string[]
-  heroImage?: SanityImage
+  deck?: string
+  editionNumber?: number
+  author?: AuthorData
 }
