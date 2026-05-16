@@ -12,6 +12,10 @@ import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
 import { getPageHeroImage } from '@/utils/get-page-hero-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
+import { getArticleSchema } from '@/utils/get-article-schema'
+import getSettings from '@/utils/get-settings'
+import type { ArticlePageDocument } from '@portfolio/types/pages/article-page'
+import { PageTypeName } from '@portfolio/types/base'
 
 export const revalidate = 10
 
@@ -57,6 +61,18 @@ export default async function Page({ params }: PageProps) {
     page.slug?.current || slug
   )
 
+  let articleSchema = null
+  if (page._type === PageTypeName.ArticlePage) {
+    const { settings } = await getSettings()
+    if (settings) {
+      articleSchema = getArticleSchema(
+        siteUrl,
+        page as ArticlePageDocument,
+        settings
+      )
+    }
+  }
+
   return (
     <>
       {breadcrumbSchema && (
@@ -65,6 +81,15 @@ export default async function Page({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(breadcrumbSchema),
+          }}
+        />
+      )}
+      {articleSchema && (
+        <Script
+          id="article-ld-json"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(articleSchema),
           }}
         />
       )}

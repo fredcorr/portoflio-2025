@@ -28,7 +28,7 @@ const CheckboxField = forwardRef<HTMLInputElement, CheckboxFieldProps>(
             aria-invalid={Boolean(error)}
             aria-describedby={error ? errorId : undefined}
             className={cn(
-              'h-5 w-5 rounded border border-black/40 text-black focus:ring-black focus:ring-offset-2 dark:border-foreground/60 dark:text-foreground',
+              'h-5 w-5 border border-black/40 text-black focus:ring-black focus:ring-offset-2 dark:border-foreground/60 dark:text-foreground',
               className
             )}
             {...props}
