@@ -2,7 +2,8 @@ import type { CmsPages } from '@portfolio/types/pages'
 import type { SettingsData } from '@portfolio/types/settings'
 import type { ArticlePageDocument } from '@portfolio/types/pages/article-page'
 import type { ProjectPageDocument } from '@portfolio/types/pages/project-page'
-import type { ArticleSchema, CreativeWorkSchema } from '@/types/json-schema'
+import type { ContactPageDocument } from '@portfolio/types/pages/contact-page'
+import type { ArticleSchema, ContactPageSchema, CreativeWorkSchema } from '@/types/json-schema'
 import { PageTypeName } from '@portfolio/types/base'
 import { buildPageUrl } from '@/utils/slug'
 
@@ -95,6 +96,24 @@ const buildProjectSchema = (
   }
 }
 
+const buildContactSchema = (
+  siteUrl: string,
+  page: ContactPageDocument
+): ContactPageSchema | null => {
+  const name = page.seoTitle ?? page.title
+  if (!name || !page.slug?.current) return null
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name,
+    url: buildPageUrl(siteUrl, page.slug.current),
+    dateModified: page._updatedAt,
+    ...(page.seoImage?.asset?.url ? { image: page.seoImage.asset.url } : {}),
+    ...(page.seoDescription ? { description: page.seoDescription } : {}),
+  }
+}
+
 export const getPageSchemas = (
   siteUrl: string,
   page: CmsPages,
@@ -102,25 +121,32 @@ export const getPageSchemas = (
 ): SchemaEntry[] => {
   const schemas: SchemaEntry[] = []
 
-  if (!settings) return schemas
-
   switch (page._type) {
+    case PageTypeName.ContactPage: {
+      const schema = buildContactSchema(siteUrl, page as ContactPageDocument)
+      if (schema) schemas.push({ id: 'contact-ld-json', schema })
+      break
+    }
     case PageTypeName.ArticlePage: {
-      const schema = buildArticleSchema(
-        siteUrl,
-        page as ArticlePageDocument,
-        settings
-      )
-      if (schema) schemas.push({ id: 'article-ld-json', schema })
+      if (settings) {
+        const schema = buildArticleSchema(
+          siteUrl,
+          page as ArticlePageDocument,
+          settings
+        )
+        if (schema) schemas.push({ id: 'article-ld-json', schema })
+      }
       break
     }
     case PageTypeName.ProjectPage: {
-      const schema = buildProjectSchema(
-        siteUrl,
-        page as ProjectPageDocument,
-        settings
-      )
-      if (schema) schemas.push({ id: 'project-ld-json', schema })
+      if (settings) {
+        const schema = buildProjectSchema(
+          siteUrl,
+          page as ProjectPageDocument,
+          settings
+        )
+        if (schema) schemas.push({ id: 'project-ld-json', schema })
+      }
       break
     }
   }

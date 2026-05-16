@@ -22,6 +22,16 @@ export type BreadcrumbListSchema = {
   }>
 }
 
+export type ContactPageSchema = {
+  '@context': 'https://schema.org'
+  '@type': 'ContactPage'
+  name: string
+  url: string
+  dateModified: string
+  image?: string
+  description?: string
+}
+
 export type CreativeWorkSchema = {
   '@context': 'https://schema.org'
   '@type': 'CreativeWork'
