@@ -15,19 +15,14 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
   shareUrl,
   shareTitle,
   tags,
-  author,
   showReaderCount = false,
+  prevUrl,
+  nextUrl,
   className,
 }) => {
-  const authorName =
-    [author?.firstName, author?.secondName].filter(Boolean).join(' ') ||
-    'Author'
-  const authorInitials =
-    [author?.firstName?.[0], author?.secondName?.[0]]
-      .filter(Boolean)
-      .join('') || '?'
   const hasContent = Boolean(content && content.length)
   const hasShare = shareUrl && shareTitle
+  const hasNav = Boolean(prevUrl || nextUrl)
 
   if (!hasContent) return null
 
@@ -119,30 +114,10 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
       </div>
 
       {/* Sign-off bar */}
-      <div className="md:col-span-12 grid grid-cols-1 items-center gap-6 border-b border-t border-gray-100 py-10 dark:border-gray-100 md:grid-cols-3">
-        {/* Author */}
-        <div className="flex items-center gap-3.5">
-          <span
-            aria-hidden="true"
-            className="inline-flex size-12 shrink-0 items-center justify-center bg-black font-heading text-sm font-bold text-white dark:bg-foreground dark:text-black"
-          >
-            {authorInitials}
-          </span>
-          <div>
-            <p className="font-heading text-[18px] tracking-[-0.01em] text-black dark:text-foreground">
-              {authorName}
-            </p>
-            {author?.jobTitle && (
-              <p className="font-body text-[13px] text-black/55 dark:text-foreground/55">
-                {author.jobTitle}
-              </p>
-            )}
-          </div>
-        </div>
-
+      <div className="md:col-span-12 grid grid-cols-1 items-center gap-6 border-b border-t border-gray-100 py-10 dark:border-gray-100 md:grid-cols-2">
         {/* Tag pills */}
         {tags && tags.length > 0 && (
-          <div className="flex flex-wrap justify-start gap-2 md:justify-center">
+          <div className="flex flex-wrap justify-start gap-2">
             {tags.map(tag => (
               <span
                 key={tag}
@@ -155,24 +130,30 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
         )}
 
         {/* Prev / next */}
-        <div className="flex flex-wrap items-center gap-2 md:justify-end">
-          <a
-            href="#"
-            aria-label="Previous article"
-            className="inline-flex items-center gap-2 border border-gray-100 px-4 py-3 font-heading text-[13px] text-black dark:border-gray-100 dark:text-foreground transition hover:-translate-y-0.5"
-          >
-            <Icon name="chevron-left" className="size-3.5" />
-            Previous
-          </a>
-          <a
-            href="#"
-            aria-label="Next article"
-            className="inline-flex items-center gap-2 border border-gray-100 px-4 py-3 font-heading text-[13px] text-black dark:border-gray-100 dark:text-foreground transition hover:-translate-y-0.5"
-          >
-            Next
-            <Icon name="chevron-right" className="size-3.5" />
-          </a>
-        </div>
+        {hasNav && (
+          <div className="flex flex-wrap items-center gap-2 md:justify-end">
+            {prevUrl && (
+              <a
+                href={prevUrl}
+                aria-label="Previous article"
+                className="inline-flex items-center gap-2 border border-gray-100 px-4 py-3 font-heading text-[13px] text-black dark:border-gray-100 dark:text-foreground transition hover:-translate-y-0.5"
+              >
+                <Icon name="chevron-left" className="size-3.5" />
+                Previous
+              </a>
+            )}
+            {nextUrl && (
+              <a
+                href={nextUrl}
+                aria-label="Next article"
+                className="inline-flex items-center gap-2 border border-gray-100 px-4 py-3 font-heading text-[13px] text-black dark:border-gray-100 dark:text-foreground transition hover:-translate-y-0.5"
+              >
+                Next
+                <Icon name="chevron-right" className="size-3.5" />
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </ComponentLayout>
   )

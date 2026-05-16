@@ -8,4 +8,6 @@ export interface ArticleContentProps {
   tags?: string[]
   author?: AuthorData
   showReaderCount?: boolean
+  prevUrl?: string
+  nextUrl?: string
 }
