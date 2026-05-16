@@ -1,4 +1,4 @@
-import type { JournalsFeedComponent } from '@portfolio/types/components'
+import type { JournalsFeedComponent, JournalsFeedArticle } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import { makeComponentId } from '@/utils/makeComponentId'
@@ -8,10 +8,30 @@ import { getReadTimeLabel } from '@/utils/calculate-read-time'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 
-const formatArticleNumber = (index: number): string => {
-  const n = (index + 1).toString().padStart(3, '0')
-  return `N° ${n}`
+const DATE_FORMAT: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
 }
+
+interface ProcessedArticle {
+  source: JournalsFeedArticle
+  num: string
+  href: string | undefined
+  date: string | undefined
+  readTime: string | undefined
+  topic: string | undefined
+}
+
+const processArticles = (articles: JournalsFeedArticle[]): ProcessedArticle[] =>
+  articles.map((article, i) => ({
+    source: article,
+    num: `N° ${(i + 1).toString().padStart(3, '0')}`,
+    href: article.slug?.current ? `/${article.slug.current}` : undefined,
+    date: formatDate({ value: article._createdAt, options: DATE_FORMAT }),
+    readTime: getReadTimeLabel(article.articleContent),
+    topic: article.tags?.join(' · '),
+  }))
 
 const JournalsFeed = ({
   _id,
@@ -30,6 +50,7 @@ const JournalsFeed = ({
   })
 
   const ctaHref = getLinkHref(ctaLink)
+  const processedArticles = processArticles(articles ?? [])
 
   return (
     <ComponentLayout
@@ -40,7 +61,7 @@ const JournalsFeed = ({
       aria-labelledby={headingId}
     >
       {/* Section header */}
-      <header className="grid grid-cols-[auto_1fr_auto] items-end gap-x-8 border-b border-foreground/10 pb-7 mb-10 md:mb-14">
+      <div className="grid grid-cols-[auto_1fr_auto] items-end gap-x-8 border-b border-foreground/10 pb-7 mb-10 md:mb-14">
         {kicker && (
           <span className="inline-flex items-center gap-3 font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/55 before:block before:size-1.5 before:rounded-full before:bg-foreground before:opacity-60">
             {kicker}
@@ -68,50 +89,40 @@ const JournalsFeed = ({
             {title.heading}
           </Heading>
         )}
-      </header>
+      </div>
 
       {/* Article list */}
-      {articles?.length ? (
+      {processedArticles.length ? (
         <ol>
-          {articles.map((article, i) => {
-            const href = article.slug?.current
-              ? `/${article.slug.current}`
-              : undefined
-            const date = formatDate({
-              value: article._createdAt,
-              options: { day: 'numeric', month: 'short', year: 'numeric' },
-            })
-            const readTime = getReadTimeLabel(article.articleContent)
-            const topic = article.tags?.join(' · ')
-
+          {processedArticles.map(({ source, num, href, date, readTime, topic }) => {
             const row = (
               <>
-                <span className="font-heading text-[11px] tracking-[0.14em] text-foreground/55">
-                  {formatArticleNumber(i)}
-                </span>
+                <p className="font-heading text-[11px] tracking-[0.14em] text-foreground/55">
+                  {num}
+                </p>
 
-                <span className="font-heading text-[clamp(1.25rem,2.4vw,1.75rem)] font-normal leading-snug tracking-tight text-foreground text-balance transition-[letter-spacing] duration-200 ease-out group-hover:tracking-[-0.022em]">
-                  {article.title}
-                </span>
+                <p className="font-heading text-[clamp(1.25rem,2.4vw,1.75rem)] font-normal leading-snug tracking-tight text-foreground text-balance transition-[letter-spacing] duration-200 ease-out group-hover:tracking-[-0.022em]">
+                  {source.title}
+                </p>
 
                 {topic && (
-                  <span className="hidden font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/55 md:block">
+                  <p className="hidden font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/55 md:block">
                     {topic}
-                  </span>
+                  </p>
                 )}
 
-                <span className="hidden text-right md:block">
+                <div className="hidden text-right md:block">
                   {date && (
-                    <span className="block font-heading text-sm tracking-[-0.01em] text-foreground">
+                    <p className="font-heading text-sm tracking-[-0.01em] text-foreground">
                       {date}
-                    </span>
+                    </p>
                   )}
                   {readTime && (
-                    <span className="font-heading text-[11px] tracking-[0.04em] text-foreground/55">
+                    <p className="font-heading text-[11px] tracking-[0.04em] text-foreground/55">
                       {readTime}
-                    </span>
+                    </p>
                   )}
-                </span>
+                </div>
 
                 <span
                   className="inline-flex size-7 items-center justify-center rounded-full border border-foreground/15 text-foreground opacity-55 transition-[transform,opacity] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
@@ -126,13 +137,13 @@ const JournalsFeed = ({
               'group grid grid-cols-[48px_1fr_28px] md:grid-cols-[64px_1fr_200px_140px_28px] items-center gap-4 md:gap-6 border-b border-foreground/10 py-5 px-3 rounded-xl text-inherit no-underline transition-[background,padding] duration-200 first:border-t first:border-t-foreground/10 hover:bg-foreground/[0.035] hover:pl-5'
 
             return href ? (
-              <li key={article._id}>
+              <li key={source._id}>
                 <Link href={href} className={sharedClassName}>
                   {row}
                 </Link>
               </li>
             ) : (
-              <li key={article._id} className={sharedClassName}>
+              <li key={source._id} className={sharedClassName}>
                 {row}
               </li>
             )
