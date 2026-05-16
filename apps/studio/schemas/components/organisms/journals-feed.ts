@@ -24,15 +24,11 @@ const JournalsFeed = defineType({
       title: 'Kicker',
       description: 'Small label shown above the title (e.g. "Journal").',
     }),
-    String({
-      name: 'ctaLabel',
-      title: 'CTA Label',
-      description: 'Text for the "Read all" button (e.g. "Read all articles"). Shown only when a CTA link is provided.',
-    }),
     Link({
       name: 'ctaLink',
       title: 'CTA Link',
-      description: 'Optional link for the CTA button. When set, the button is shown.',
+      description:
+        'Optional link for the CTA button. When set, the button is shown.',
     }),
     List({
       name: 'articles',
