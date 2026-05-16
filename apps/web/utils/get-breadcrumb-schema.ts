@@ -1,15 +1,5 @@
 import slugToBreadcrumbs, { buildPageUrl } from '@/utils/slug'
-
-type BreadcrumbListSchema = {
-  '@context': 'https://schema.org'
-  '@type': 'BreadcrumbList'
-  itemListElement: Array<{
-    '@type': 'ListItem'
-    position: number
-    name: string
-    item: string
-  }>
-}
+import type { BreadcrumbListSchema } from '@/types/json-schema'
 
 export const getBreadcrumbSchema = (
   siteUrl: string,
