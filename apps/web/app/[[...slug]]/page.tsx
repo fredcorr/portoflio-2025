@@ -6,12 +6,14 @@ import { notFound } from 'next/navigation'
 import { client } from '@/sanity/client'
 import { draftMode } from 'next/headers'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import getPage from '@/utils/get-page'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
 import { getPageHeroImage } from '@/utils/get-page-hero-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
+import { getPageSchemas } from '@/utils/get-page-schemas'
+import getSettings from '@/utils/get-settings'
+import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 
 export const revalidate = 10
 
@@ -57,17 +59,17 @@ export default async function Page({ params }: PageProps) {
     page.slug?.current || slug
   )
 
+  const { settings } = await getSettings()
+  const pageSchemas = getPageSchemas(siteUrl, page, settings)
+
   return (
     <>
       {breadcrumbSchema && (
-        <Script
-          id="breadcrumb-ld-json"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbSchema),
-          }}
-        />
+        <JsonLdSchema id="breadcrumb-ld-json" schema={breadcrumbSchema} />
       )}
+      {pageSchemas.map(({ id, schema }) => (
+        <JsonLdSchema key={id} id={id} schema={schema} />
+      ))}
       {isDraft && <PreviewBanner />}
       <RenderTemplate page={page} />
     </>
