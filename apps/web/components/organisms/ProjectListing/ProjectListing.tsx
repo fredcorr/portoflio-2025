@@ -8,6 +8,9 @@ import { cn } from '@/utils/cn'
 import Link from 'next/link'
 import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
+import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
+import { getSiteUrl } from '@/utils/get-site-url'
+import { buildItemListSchema } from '@/utils/get-page-schemas'
 
 const ProjectListing = ({
   _id,
@@ -20,6 +23,8 @@ const ProjectListing = ({
   sectionId,
   componentIndex,
 }: ProjectListingComponent) => {
+  const itemListSchema = buildItemListSchema(getSiteUrl(), projects ?? [])
+
   const hasSubtitle = subtitle?.length
   const headingId = makeComponentId({
     value: _id || _key,
@@ -27,11 +32,18 @@ const ProjectListing = ({
   })
 
   return (
-    <ComponentLayout
-      sectionId={sectionId}
-      componentKey={_key}
-      componentIndex={componentIndex}
-      className="text-black dark:text-foreground"
+    <>
+      {itemListSchema && (
+        <JsonLdSchema
+          id={`project-list-ld-${_key ?? _id ?? 'default'}`}
+          schema={itemListSchema}
+        />
+      )}
+      <ComponentLayout
+        sectionId={sectionId}
+        componentKey={_key}
+        componentIndex={componentIndex}
+        className="text-black dark:text-foreground"
       contentClassName="flex flex-col gap-y-12 lg:gap-y-16"
       aria-labelledby={headingId}
     >
@@ -100,7 +112,8 @@ const ProjectListing = ({
           Projects will appear here once they are published.
         </div>
       )}
-    </ComponentLayout>
+      </ComponentLayout>
+    </>
   )
 }
 

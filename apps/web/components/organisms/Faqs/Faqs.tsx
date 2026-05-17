@@ -1,5 +1,6 @@
 import React from 'react'
 import type { FaqsComponent } from '@portfolio/types/components'
+import type { PortableTextBlock } from '@portabletext/react'
 
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
@@ -7,6 +8,15 @@ import FaqItem from '@/components/molecules/FaqItem/FaqItem'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
 import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
+import type { FAQPageSchema } from '@/types/json-schema'
+
+const extractText = (blocks?: PortableTextBlock[]): string =>
+  blocks
+    ?.flatMap(block => block.children?.map(span => span.text) ?? [])
+    .filter(Boolean)
+    .join(' ')
+    .trim() ?? ''
 
 // Figma annotations:
 // - FAQ list card (node-id: 75:1735)
@@ -33,6 +43,22 @@ const Faqs = ({
     return null
   }
 
+  const validQuestions = questions?.filter(q => q.question) ?? []
+  const faqSchema: FAQPageSchema | null = validQuestions.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: validQuestions.map(q => ({
+          '@type': 'Question' as const,
+          name: q.question!,
+          acceptedAnswer: {
+            '@type': 'Answer' as const,
+            text: extractText(q.answer),
+          },
+        })),
+      }
+    : null
+
   const cardColumnClassName = cn(
     hasHeading && 'md:col-span-8',
     hasHeading && 'md:col-start-5',
@@ -41,11 +67,18 @@ const Faqs = ({
   )
 
   return (
-    <ComponentLayout
-      sectionId={sectionId}
-      componentKey={_key}
-      componentIndex={componentIndex}
-      {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
+    <>
+      {faqSchema && (
+        <JsonLdSchema
+          id={`faq-ld-${_key ?? _id ?? 'default'}`}
+          schema={faqSchema}
+        />
+      )}
+      <ComponentLayout
+        sectionId={sectionId}
+        componentKey={_key}
+        componentIndex={componentIndex}
+        {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
       className={'text-black dark:text-foreground'}
       contentClassName="gap-y-10"
       data-organism="faqs"
@@ -78,7 +111,8 @@ const Faqs = ({
           ))}
         </StaggerChildren>
       )}
-    </ComponentLayout>
+      </ComponentLayout>
+    </>
   )
 }
 

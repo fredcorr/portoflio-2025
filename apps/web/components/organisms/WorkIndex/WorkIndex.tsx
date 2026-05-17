@@ -3,6 +3,9 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import WorkIndexRow from '@/components/molecules/WorkIndexRow/WorkIndexRow'
 import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
 import type { WorkIndexComponent } from '@portfolio/types/components'
+import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
+import { getSiteUrl } from '@/utils/get-site-url'
+import { buildItemListSchema } from '@/utils/get-page-schemas'
 
 const WorkIndex = ({
   _id,
@@ -21,13 +24,22 @@ const WorkIndex = ({
   })
   const hasProjects = Array.isArray(projects) && projects.length > 0
 
+  const itemListSchema = buildItemListSchema(getSiteUrl(), projects ?? [])
+
   return (
-    <ComponentLayout
-      sectionId={sectionId}
-      componentKey={_key}
-      componentIndex={componentIndex}
-      aria-labelledby={headingId}
-      className="text-black"
+    <>
+      {itemListSchema && (
+        <JsonLdSchema
+          id={`work-index-ld-${_key ?? _id ?? 'default'}`}
+          schema={itemListSchema}
+        />
+      )}
+      <ComponentLayout
+        sectionId={sectionId}
+        componentKey={_key}
+        componentIndex={componentIndex}
+        aria-labelledby={headingId}
+        className="text-black"
       contentClassName="flex flex-col gap-y-0"
     >
       <div className="mb-8">
@@ -86,7 +98,8 @@ const WorkIndex = ({
           Projects will appear here once they are published.
         </div>
       )}
-    </ComponentLayout>
+      </ComponentLayout>
+    </>
   )
 }
 
