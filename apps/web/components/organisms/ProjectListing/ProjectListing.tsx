@@ -87,6 +87,7 @@ const ProjectListing = ({
               squareImage
               imageShadow
               indexAboveImage
+              priority={i === 0}
               spacing={CardSpacing.Spacious}
               animationProps={{ viewport: { once: true, amount: 0.15 } }}
               className={cn('h-full', i % 2 === 1 && 'md:mt-16')}

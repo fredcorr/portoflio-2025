@@ -30,7 +30,7 @@ const FadeIn = <T extends React.ElementType = 'div'>({
   delay = 0,
   viewport = {
     once: true,
-    amount: 0.8,
+    amount: 0.2,
   },
   ...rest
 }: FadeInProps<T>) => {
