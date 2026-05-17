@@ -5,13 +5,42 @@ import type { ProjectPageDocument } from '@portfolio/types/pages/project-page'
 import type { ContactPageDocument } from '@portfolio/types/pages/contact-page'
 import type { AboutPageDocument } from '@portfolio/types/pages/about-page'
 import type { HomePageDocument } from '@portfolio/types/pages/home-page'
-import type { ArticleSchema, ContactPageSchema, CreativeWorkSchema, ProfilePageSchema, WebSiteSchema } from '@/types/json-schema'
+import type { ArticleSchema, ContactPageSchema, CreativeWorkSchema, ItemListSchema, ProfilePageSchema, WebSiteSchema } from '@/types/json-schema'
 import { PageTypeName } from '@portfolio/types/base'
 import { buildPageUrl } from '@/utils/slug'
 
 export interface SchemaEntry {
   id: string
   schema: object
+}
+
+export interface ItemListEntry {
+  title?: string
+  slug?: { current?: string }
+  projectHero?: { asset?: { url?: string } }
+  seoImage?: { asset?: { url?: string } }
+}
+
+export const buildItemListSchema = (
+  siteUrl: string,
+  items: ItemListEntry[]
+): ItemListSchema | null => {
+  const valid = items.filter(i => i.title && i.slug?.current)
+  if (!valid.length) return null
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: valid.map((item, index) => ({
+      '@type': 'ListItem' as const,
+      position: index + 1,
+      name: item.title!,
+      url: buildPageUrl(siteUrl, item.slug!.current!),
+      ...(item.projectHero?.asset?.url ?? item.seoImage?.asset?.url
+        ? { image: item.projectHero?.asset?.url ?? item.seoImage?.asset?.url }
+        : {}),
+    })),
+  }
 }
 
 const buildAuthorName = (settings: SettingsData) =>

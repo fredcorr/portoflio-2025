@@ -5,8 +5,7 @@ import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
 import type { WorkIndexComponent } from '@portfolio/types/components'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 import { getSiteUrl } from '@/utils/get-site-url'
-import { buildPageUrl } from '@/utils/slug'
-import type { ItemListSchema } from '@/types/json-schema'
+import { buildItemListSchema } from '@/utils/get-page-schemas'
 
 const WorkIndex = ({
   _id,
@@ -25,28 +24,7 @@ const WorkIndex = ({
   })
   const hasProjects = Array.isArray(projects) && projects.length > 0
 
-  const siteUrl = getSiteUrl()
-  const itemListSchema: ItemListSchema | null = hasProjects
-    ? {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        itemListElement: projects!
-          .filter(p => p.title && p.slug?.current)
-          .map((project, index) => ({
-            '@type': 'ListItem' as const,
-            position: index + 1,
-            name: project.title!,
-            url: buildPageUrl(siteUrl, project.slug!.current!),
-            ...(project.projectHero?.asset?.url ?? project.seoImage?.asset?.url
-              ? {
-                  image:
-                    project.projectHero?.asset?.url ??
-                    project.seoImage?.asset?.url,
-                }
-              : {}),
-          })),
-      }
-    : null
+  const itemListSchema = buildItemListSchema(getSiteUrl(), projects ?? [])
 
   return (
     <>
