@@ -8,6 +8,10 @@ import { cn } from '@/utils/cn'
 import Link from 'next/link'
 import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
+import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
+import { getSiteUrl } from '@/utils/get-site-url'
+import { buildPageUrl } from '@/utils/slug'
+import type { ItemListSchema } from '@/types/json-schema'
 
 const ProjectListing = ({
   _id,
@@ -20,6 +24,30 @@ const ProjectListing = ({
   sectionId,
   componentIndex,
 }: ProjectListingComponent) => {
+  const siteUrl = getSiteUrl()
+  const itemListSchema: ItemListSchema | null =
+    projects?.length
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: projects
+            .filter(p => p.title && p.slug?.current)
+            .map((project, index) => ({
+              '@type': 'ListItem' as const,
+              position: index + 1,
+              name: project.title!,
+              url: buildPageUrl(siteUrl, project.slug!.current!),
+              ...(project.projectHero?.asset?.url ?? project.seoImage?.asset?.url
+                ? {
+                    image:
+                      project.projectHero?.asset?.url ??
+                      project.seoImage?.asset?.url,
+                  }
+                : {}),
+            })),
+        }
+      : null
+
   const hasSubtitle = subtitle?.length
   const headingId = makeComponentId({
     value: _id || _key,
@@ -27,11 +55,18 @@ const ProjectListing = ({
   })
 
   return (
-    <ComponentLayout
-      sectionId={sectionId}
-      componentKey={_key}
-      componentIndex={componentIndex}
-      className="text-black dark:text-foreground"
+    <>
+      {itemListSchema && (
+        <JsonLdSchema
+          id={`project-list-ld-${_key ?? _id ?? 'default'}`}
+          schema={itemListSchema}
+        />
+      )}
+      <ComponentLayout
+        sectionId={sectionId}
+        componentKey={_key}
+        componentIndex={componentIndex}
+        className="text-black dark:text-foreground"
       contentClassName="flex flex-col gap-y-12 lg:gap-y-16"
       aria-labelledby={headingId}
     >
@@ -99,7 +134,8 @@ const ProjectListing = ({
           Projects will appear here once they are published.
         </div>
       )}
-    </ComponentLayout>
+      </ComponentLayout>
+    </>
   )
 }
 

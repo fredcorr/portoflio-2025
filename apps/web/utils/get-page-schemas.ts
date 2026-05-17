@@ -4,7 +4,8 @@ import type { ArticlePageDocument } from '@portfolio/types/pages/article-page'
 import type { ProjectPageDocument } from '@portfolio/types/pages/project-page'
 import type { ContactPageDocument } from '@portfolio/types/pages/contact-page'
 import type { AboutPageDocument } from '@portfolio/types/pages/about-page'
-import type { ArticleSchema, ContactPageSchema, CreativeWorkSchema, ProfilePageSchema } from '@/types/json-schema'
+import type { HomePageDocument } from '@portfolio/types/pages/home-page'
+import type { ArticleSchema, ContactPageSchema, CreativeWorkSchema, ProfilePageSchema, WebSiteSchema } from '@/types/json-schema'
 import { PageTypeName } from '@portfolio/types/base'
 import { buildPageUrl } from '@/utils/slug'
 
@@ -143,6 +144,46 @@ const buildContactSchema = (
   }
 }
 
+const buildWebSiteSchema = (
+  siteUrl: string,
+  page: HomePageDocument,
+  settings: SettingsData
+): WebSiteSchema => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: buildAuthorName(settings),
+  url: siteUrl,
+  ...(page.seoDescription ? { description: page.seoDescription } : {}),
+})
+
+const buildHomeProfileSchema = (
+  siteUrl: string,
+  page: HomePageDocument,
+  settings: SettingsData
+): ProfilePageSchema | null => {
+  const name = page.seoTitle ?? page.title
+  if (!name || !page.slug?.current) return null
+
+  const authorName = buildAuthorName(settings)
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name,
+    url: buildPageUrl(siteUrl, page.slug.current),
+    dateModified: page._updatedAt,
+    mainEntity: {
+      '@type': 'Person',
+      name: authorName,
+      url: siteUrl,
+      ...(settings.jobTitle ? { jobTitle: settings.jobTitle } : {}),
+      ...(settings.email ? { email: settings.email } : {}),
+    },
+    ...(page.seoImage?.asset?.url ? { image: page.seoImage.asset.url } : {}),
+    ...(page.seoDescription ? { description: page.seoDescription } : {}),
+  }
+}
+
 export const getPageSchemas = (
   siteUrl: string,
   page: CmsPages,
@@ -151,6 +192,20 @@ export const getPageSchemas = (
   const schemas: SchemaEntry[] = []
 
   switch (page._type) {
+    case PageTypeName.HomePage: {
+      if (!settings) break
+      schemas.push({
+        id: 'website-ld-json',
+        schema: buildWebSiteSchema(siteUrl, page as HomePageDocument, settings),
+      })
+      const profile = buildHomeProfileSchema(
+        siteUrl,
+        page as HomePageDocument,
+        settings
+      )
+      if (profile) schemas.push({ id: 'home-profile-ld-json', schema: profile })
+      break
+    }
     case PageTypeName.AboutPage: {
       if (settings) {
         const schema = buildAboutSchema(siteUrl, page as AboutPageDocument, settings)

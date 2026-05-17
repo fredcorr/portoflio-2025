@@ -22,6 +22,36 @@ export type BreadcrumbListSchema = {
   }>
 }
 
+export type WebSiteSchema = {
+  '@context': 'https://schema.org'
+  '@type': 'WebSite'
+  name: string
+  url: string
+  description?: string
+}
+
+export type ItemListSchema = {
+  '@context': 'https://schema.org'
+  '@type': 'ItemList'
+  itemListElement: Array<{
+    '@type': 'ListItem'
+    position: number
+    name: string
+    url: string
+    image?: string
+  }>
+}
+
+export type FAQPageSchema = {
+  '@context': 'https://schema.org'
+  '@type': 'FAQPage'
+  mainEntity: Array<{
+    '@type': 'Question'
+    name: string
+    acceptedAnswer: { '@type': 'Answer'; text: string }
+  }>
+}
+
 export type ProfilePageSchema = {
   '@context': 'https://schema.org'
   '@type': 'ProfilePage'
