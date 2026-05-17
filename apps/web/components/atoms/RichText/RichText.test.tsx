@@ -27,7 +27,7 @@ test('renders rich text with default size', () => {
 
   assert.match(
     markup,
-    /class="font-body text-body-xl leading-relaxed text-black\/70/
+    /class="font-body text-body-xl leading-relaxed mb-6/
   )
   assert.match(markup, />Hello world<\/p>$/)
 })
