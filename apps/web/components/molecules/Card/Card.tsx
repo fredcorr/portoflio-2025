@@ -61,6 +61,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   squareImage?: boolean
   indexAboveImage?: boolean
   imageShadow?: boolean
+  priority?: boolean
   // Component slot: any animation component (FadeIn, ScaleIn, SlideIn, etc.)
   // Card resolves `as` to Link or 'article' — the animation handles the rest.
   AnimationComponent?: React.ComponentType<PolymorphicProps>
@@ -88,6 +89,7 @@ const Card = ({
   squareImage = false,
   indexAboveImage = false,
   imageShadow = false,
+  priority,
   AnimationComponent,
   animationProps,
   ...props
@@ -168,6 +170,7 @@ const Card = ({
               height={image.asset.metadata?.dimensions?.height || 1024}
               wrapperClassName={imageWrapperClassName}
               className={imageClassName}
+              priority={priority}
             />
           </div>
         ) : (
@@ -178,6 +181,7 @@ const Card = ({
             height={image.asset.metadata?.dimensions?.height || 1024}
             wrapperClassName={imageWrapperClassName}
             className={imageClassName}
+            priority={priority}
           />
         )
       )}

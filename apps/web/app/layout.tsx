@@ -24,7 +24,7 @@ const play = Play({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-play',
-  display: 'swap',
+  display: 'optional',
 })
 
 export default async function RootLayout({
@@ -37,7 +37,7 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode()
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body
         className={`${play.variable} min-h-screen bg-background text-foreground antialiased transition-colors duration-150`}
         suppressHydrationWarning
