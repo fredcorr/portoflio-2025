@@ -1,14 +1,27 @@
 'use client'
 
-import React from 'react'
-import { A11y, Autoplay, Pagination } from 'swiper/modules'
+import React, { useState } from 'react'
+import { A11y, Autoplay, EffectCreative } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Heading } from '@/components/atoms/Heading/Heading'
-import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
+import type SwiperType from 'swiper'
+import { useReducedMotion } from 'framer-motion'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { PortableText } from '@portabletext/react'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { normalizePortableText } from '@/utils/portableText'
+import { cn } from '@/utils/cn'
 import type { TestimonialsComponent } from '@portfolio/types/components'
+
+function getInitials(name?: string): string {
+  if (!name) return '??'
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+}
 
 const Testimonials = ({
   _id,
@@ -18,11 +31,22 @@ const Testimonials = ({
   sectionId,
   componentIndex,
 }: TestimonialsComponent) => {
-  const testimonialsList = Array.isArray(testimonials) ? testimonials : []
+  const list = Array.isArray(testimonials) ? testimonials : []
   const headingId = makeComponentId({
     value: _id || _key,
     prefix: 'testimonials',
   })
+  const prefersReduced = useReducedMotion()
+
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null)
+  const [activeIdx, setActiveIdx] = useState(0)
+
+  const total = list.length
+  const isLoop = total > 1
+
+  const creativeTranslate = prefersReduced
+    ? ([0, 0, 0] as [number, number, number])
+    : undefined
 
   return (
     <ComponentLayout
@@ -30,87 +54,167 @@ const Testimonials = ({
       componentKey={_key}
       componentIndex={componentIndex}
       aria-labelledby={headingId}
-      className="text-black dark:text-foreground"
-      contentClassName="gap-y-12 lg:gap-y-10"
+      className="!bg-primary-700 !text-background"
+      contentClassName="gap-y-8 lg:gap-y-10"
     >
-      {(title?.heading || title?.headingLevel) && (
-        <div className="md:col-span-12">
-          <Heading
-            id={headingId}
-            level={title?.headingLevel}
-            className="font-heading text-heading-1 leading-[1.1] tracking-tight mb-0"
-          >
-            {title?.heading}
-          </Heading>
+      {total === 0 ? (
+        <div className="md:col-span-12 border border-dashed border-background/10 bg-background/5 px-6 py-10 text-center font-body text-body-lg text-background/60">
+          Testimonials will appear here once they are published.
         </div>
-      )}
+      ) : (
+        <div className="md:col-span-12 flex flex-col gap-y-8 lg:gap-y-10">
+          {/* Section header */}
+          <header className="flex flex-col gap-4 border-b border-background/12 pb-7">
+            <span className="flex items-center gap-3 font-heading text-[11px] tracking-[0.14em] uppercase text-background/55 before:inline-block before:w-1.5 before:h-1.5 before:rounded-full before:bg-background before:opacity-60">
+              Testimonials
+            </span>
+            {title?.heading && (
+              <h2
+                id={headingId}
+                className="font-heading font-normal text-display-lg leading-[0.95] tracking-[-0.035em] text-background max-w-[16ch] text-balance"
+              >
+                {title.heading}
+              </h2>
+            )}
+          </header>
 
-      {testimonialsList.length ? (
-        <div className="md:col-span-12">
+          {/* Counter bar */}
+          <div className="flex items-center gap-6 font-heading text-[11px] tracking-[0.14em] uppercase text-background/55">
+            <span className="text-background text-[12px] tracking-[0.14em]">
+              {String(activeIdx + 1).padStart(2, '0')} /{' '}
+              {String(total).padStart(2, '0')}
+            </span>
+            <span className="flex-1 h-px bg-background/18" />
+            <span>Selected client feedback</span>
+          </div>
+
+          {/* Carousel */}
           <Swiper
-            modules={[Autoplay, Pagination, A11y]}
-            loop
-            speed={750}
-            autoplay={{
-              delay: 4000,
-              disableOnInteraction: false,
+            modules={[Autoplay, A11y, EffectCreative]}
+            effect="creative"
+            creativeEffect={{
+              prev: {
+                opacity: 0,
+                translate: creativeTranslate ?? [0, '-8px', 0],
+              },
+              next: {
+                opacity: 0,
+                translate: creativeTranslate ?? [0, '10px', 0],
+              },
             }}
-            pagination={
-              testimonialsList.length > 1 && {
-                clickable: true,
-                renderBullet: (_, className) =>
-                  `<span style="border-radius:0" class="${className} relative mx-2 block h-5 w-5 rotate-45 overflow-hidden border border-black/40 bg-transparent opacity-100 transition-colors duration-200 hover:border-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:border-foreground/50 dark:hover:border-foreground dark:focus-visible:outline-foreground after:absolute after:inset-0 after:block after:bg-black after:origin-center after:transition-transform after:duration-300 after:scale-0 after:content-[''] after:rounded-none dark:after:bg-foreground [&.swiper-pagination-bullet-active]:after:scale-100 !rounded-none"></span>`,
-              }
+            speed={prefersReduced ? 120 : 360}
+            autoplay={
+              isLoop ? { delay: 6000, disableOnInteraction: false } : false
             }
-            slidesPerView={1}
-            className="pb-10 [&_.swiper-pagination]:mt-10 [&_.swiper-pagination]:flex [&_.swiper-pagination]:justify-center [&_.swiper-pagination]:gap-4"
+            loop={isLoop}
+            onSwiper={setSwiperInstance}
+            onSlideChange={s => setActiveIdx(s.realIndex)}
+            a11y={{
+              prevSlideMessage: 'Previous testimonial',
+              nextSlideMessage: 'Next testimonial',
+            }}
+            className="w-full"
           >
-            {testimonialsList.map(({ _key, subtitle, ...testimonial }) => {
+            {list.map(({ _key: slideKey, subtitle, author }) => {
               const quote = normalizePortableText(subtitle || '')
-
               return (
-                <SwiperSlide key={_key}>
-                  <article
-                    className="flex flex-col gap-y-8 p-2 transition lg:flex-row lg:items-end lg:gap-x-[81px] lg:gap-y-0"
-                    aria-labelledby={`${_key}-title`}
-                  >
-                    {quote.length > 0 ? (
-                      <blockquote className="flex-1 text-black/90 dark:text-foreground/90">
-                        <RichText value={quote} size={RichTextSize.XXl} />
-                      </blockquote>
-                    ) : null}
-                    <div className="flex w-full flex-col items-start gap-3 lg:w-auto lg:items-end">
-                      {!!testimonial.title && (
-                        <Heading
-                          id={`${_key}-title`}
-                          level={3}
-                          className="font-heading text-heading-5 font-semibold leading-tight text-black dark:text-foreground"
-                        >
-                          {testimonial.title}
-                        </Heading>
+                <SwiperSlide key={slideKey}>
+                  <div className="flex flex-col gap-y-8">
+                    {/* Quote */}
+                    <blockquote className="relative font-heading font-normal text-heading-2 leading-[1.2] tracking-[-0.02em] text-background text-balance max-w-[42ch]">
+                      <span
+                        aria-hidden="true"
+                        className="absolute -left-[0.45em] -top-[0.32em] font-bold text-[1.6em] leading-[1] text-background/18 pointer-events-none select-none"
+                      >
+                        &ldquo;
+                      </span>
+                      {quote.length > 0 && (
+                        <PortableText
+                          value={quote}
+                          components={{
+                            marks: {
+                              em: ({ children }) => (
+                                <em className="not-italic font-normal text-accent-orange">
+                                  {children}
+                                </em>
+                              ),
+                            },
+                            block: {
+                              normal: ({ children }) => <span>{children}</span>,
+                            },
+                          }}
+                        />
                       )}
-                      {testimonial.author?.name && (
-                        <div className="mt-4 flex flex-col">
-                          <span className="font-heading text-body-lg font-semibold text-black dark:text-foreground">
-                            {testimonial.author.name}
+                    </blockquote>
+
+                    {/* Author */}
+                    {author?.name && (
+                      <div className="flex items-center gap-[18px] pt-7 border-t border-background/12">
+                        <span
+                          aria-hidden="true"
+                          className="w-14 h-14 shrink-0 border border-background/25 flex items-center justify-center font-heading font-bold text-base tracking-[0.02em] text-background"
+                        >
+                          {getInitials(author.name)}
+                        </span>
+                        <span className="flex flex-col gap-1">
+                          <span className="font-heading text-heading-5 tracking-[-0.01em] text-background leading-[1.2]">
+                            {author.name}
                           </span>
-                          {testimonial.author.role && (
-                            <span className="font-body text-body-md text-black/60 dark:text-foreground/70">
-                              {testimonial.author.role}
+                          {author.role && (
+                            <span className="font-heading text-[11px] tracking-[0.14em] uppercase text-background/55">
+                              {author.role}
                             </span>
                           )}
-                        </div>
-                      )}
-                    </div>
-                  </article>
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </SwiperSlide>
               )
             })}
           </Swiper>
-        </div>
-      ) : (
-        <div className="md:col-span-12 border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60 dark:border-gray-200/40 dark:bg-gray-100 dark:text-foreground/70">
-          Testimonials will appear here once they are published.
+
+          {/* Dots + nav */}
+          {isLoop && (
+            <div className="flex items-center justify-end gap-4">
+              <div
+                className="flex gap-1.5 items-center"
+                role="tablist"
+                aria-label="Select testimonial"
+              >
+                {list.map((_, i) => (
+                  <button
+                    key={i}
+                    role="tab"
+                    aria-selected={i === activeIdx}
+                    aria-label={`Go to testimonial ${i + 1}`}
+                    onClick={() => swiperInstance?.slideToLoop(i)}
+                    className={cn(
+                      'h-0.5 rounded-none transition-all duration-200 cursor-pointer bg-background/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background',
+                      i === activeIdx ? 'w-9 !bg-background' : 'w-[22px]'
+                    )}
+                  />
+                ))}
+              </div>
+
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => swiperInstance?.slidePrev()}
+                  aria-label="Previous testimonial"
+                  className="w-11 h-11 border border-background/18 flex items-center justify-center text-background hover:bg-background/8 hover:border-background/35 active:scale-[0.96] transition-[background-color,border-color,transform] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+                >
+                  <ChevronLeft className="w-4 h-4" aria-hidden="true" />
+                </button>
+                <button
+                  onClick={() => swiperInstance?.slideNext()}
+                  aria-label="Next testimonial"
+                  className="w-11 h-11 border border-background/18 flex items-center justify-center text-background hover:bg-background/8 hover:border-background/35 active:scale-[0.96] transition-[background-color,border-color,transform] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+                >
+                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </ComponentLayout>
