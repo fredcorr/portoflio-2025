@@ -5,7 +5,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { draftMode } from 'next/headers'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
-import { Footer, Navigation } from '@/components/organisms'
+import Footer from '@/components/organisms/Footer/Footer'
+import Navigation from '@/components/organisms/Navigation/Navigation'
 import SettingsProvider from '@/context/settings-context'
 import VisualEditingEnabled from '@/components/atoms/VisualEditing/VisualEditing'
 import getSettings from '@/utils/get-settings'
@@ -17,7 +18,8 @@ export const metadata: Metadata = {
     template: '%s | Federico Corradi',
     default: 'Federico Corradi',
   },
-  description: 'Portfolio of Federico Corradi — frontend developer and designer.',
+  description:
+    'Portfolio of Federico Corradi — frontend developer and designer.',
 }
 
 const play = Play({

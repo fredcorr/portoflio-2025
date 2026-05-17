@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import type { FooterProps } from '@portfolio/types/components'
 import { Heading } from '@/components/atoms/Heading/Heading'
@@ -12,10 +14,8 @@ const Footer: React.FC<FooterProps> = ({ email, socialLinks, className }) => {
 
   return (
     <footer
-      data-organism="footer"
-      data-development="Figma: Footer CTA with responsive layout and social links."
       className={cn(
-        'flex w-full flex-col gap-10 bg-background px-4 py-8 text-black dark:text-foreground md:gap-14 md:px-10 md:py-8 xl:gap-16 xl:px-28 xl:py-16',
+        'flex w-full flex-col gap-10 bg-background px-4 py-16 text-black dark:text-foreground md:gap-14 md:px-10 xl:gap-16',
         className
       )}
     >
