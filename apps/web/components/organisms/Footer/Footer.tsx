@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({
   return (
     <footer
       className={cn(
-        'w-full overflow-hidden bg-[#050505] px-4 text-[#f5f5f5] dark:bg-[#0a0909] md:px-10 xl:px-28',
+        'w-full overflow-hidden bg-[#050505] px-4 text-[#f5f5f5] dark:bg-[#0a0909] md:px-10',
         className
       )}
     >
