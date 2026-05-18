@@ -1,7 +1,7 @@
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { makeComponentId } from '@/utils/makeComponentId'
 import WorkIndexRow from '@/components/molecules/WorkIndexRow/WorkIndexRow'
-import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 import type { WorkIndexComponent } from '@portfolio/types/components'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 import { getSiteUrl } from '@/utils/get-site-url'
@@ -76,7 +76,7 @@ const WorkIndex = ({
       {hasProjects ? (
         <>
           {projects!.map((project, i) => (
-            <FadeInWithStagger
+            <FadeIn
               key={project._id}
               delay={i * 0.08}
               viewport={{ once: true, amount: 0.15 }}
@@ -90,7 +90,7 @@ const WorkIndex = ({
                 href={project.slug?.current}
                 index={i}
               />
-            </FadeInWithStagger>
+            </FadeIn>
           ))}
         </>
       ) : (

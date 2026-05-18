@@ -5,8 +5,8 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import Card from '@/components/molecules/Card/Card'
 import { cn } from '@/utils/cn'
 import type { CardsComponent } from '@portfolio/types/components'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
-import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const Cards = ({
   _id,
@@ -69,7 +69,7 @@ const Cards = ({
               subtitle={item.subtitle}
               subtitleSize={RichTextSize.Lg}
               className="h-full pr-4"
-              AnimationComponent={FadeInWithStagger}
+              AnimationComponent={FadeIn}
             />
           ))}
         </StaggerChildren>

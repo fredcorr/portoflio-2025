@@ -7,8 +7,8 @@ import Image from '@/components/atoms/Image/Image'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
 import { cn } from '@/utils/cn'
 import { makeComponentId } from '@/utils/makeComponentId'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
-import SlideInStagger from '@/components/animation/SlideIn/SlideInStagger'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
+import { SlideInStagger } from '@/components/animation/SlideIn/SlideInStagger'
 
 // Figma annotations:
 // - ImageGallery component (node-id: 3591:2302)

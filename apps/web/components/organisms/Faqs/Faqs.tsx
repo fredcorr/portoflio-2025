@@ -7,7 +7,7 @@ import { Heading } from '@/components/atoms/Heading/Heading'
 import FaqItem from '@/components/molecules/FaqItem/FaqItem'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 import type { FAQPageSchema } from '@/types/json-schema'
 
@@ -104,6 +104,7 @@ const Faqs = ({
           {questions.map((item, index) => (
             <FaqItem
               key={item._key ?? `faq-${index}`}
+              _key={item._key}
               question={item.question}
               answer={item.answer}
               {...(index === 0 && { className: '[&>button]:pt-0' })}

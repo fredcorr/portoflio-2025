@@ -5,8 +5,8 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import { CardSpacing } from '@/components/molecules/Card/Card'
 import Card from '@/components/molecules/Card/Card'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
-import SlideInStagger from '@/components/animation/SlideIn/SlideInStagger'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
+import { SlideInStagger } from '@/components/animation/SlideIn/SlideInStagger'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 const CollaborateHighlights = ({

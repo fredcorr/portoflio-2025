@@ -9,8 +9,8 @@ import Card, {
 import { formatStepNumber } from '@/utils/format-step-number'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
-import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 
 const Process = ({
   _id,
@@ -61,7 +61,7 @@ const Process = ({
                 subtitle={step.subtitle}
                 subtitleSize={RichTextSize.Md}
                 spacing={CardSpacing.Compact}
-                AnimationComponent={FadeInWithStagger}
+                AnimationComponent={FadeIn}
                 style={{ gridRow: `${index + 1} / span 1` }}
                 className={cn(
                   'h-full bg-transparent shadow-none hover:translate-y-0 !rounded-none',

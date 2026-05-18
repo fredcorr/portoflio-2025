@@ -5,7 +5,7 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { Heading } from '@/components/atoms/Heading/Heading'
 import ToolCard from '@/components/molecules/ToolCard/ToolCard'
 import { makeComponentId } from '@/utils/makeComponentId'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 
 const ToolSet = ({
   _id,
