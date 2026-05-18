@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import 'swiper/css';
-@import 'swiper/css/pagination';
+@import 'swiper/css/effect-creative';
 
 /* Class-based dark mode (replaces v3's darkMode: ['class']) */
 @custom-variant dark (&:where(.dark, .dark *));
