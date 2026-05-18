@@ -111,12 +111,17 @@ export async function generateMetadata({
     const siteUrl = getSiteUrl()
     const url = buildPageUrl(siteUrl, page.slug?.current || slug)
     const openGraphImages = getOpenGraphImage(page)
+    const indexPage = process.env.ALLOW_CRAWLERS === 'true' && !isDraft    
 
     return {
       title,
       description,
       alternates: {
         canonical: url,
+      },
+      robots: {
+        index: indexPage,
+        follow: indexPage,
       },
       openGraph: {
         title,
