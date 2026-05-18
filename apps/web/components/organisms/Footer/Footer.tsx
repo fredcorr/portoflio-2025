@@ -57,7 +57,7 @@ const Footer: React.FC<FooterProps> = ({
               className={cn(
                 'inline-flex items-center gap-3 bg-[#f5f5f5] px-[22px] py-4 text-[#0a0909]',
                 'font-heading text-[15px] tracking-[-0.005em] whitespace-nowrap',
-                'transition hover:-translate-y-0.5 hover:bg-accent-orange',
+                'transition hover:-translate-y-0.5',
                 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f5f5]'
               )}
             >
