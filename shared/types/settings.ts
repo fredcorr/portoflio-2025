@@ -11,4 +11,6 @@ export interface SettingsData extends AuthorData {
   navigationItems?: NavigationItem[]
   socialLinks?: LinkItem[]
   projectCount?: number
+  openForProjects?: boolean
+  availabilityText?: string
 }

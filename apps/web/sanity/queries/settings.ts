@@ -9,6 +9,8 @@ export const SETTINGS_QUERY = groq`
       secondName,
       jobTitle,
       email,
+      openForProjects,
+      availabilityText,
       "navigationItems": (navigationItems[]->{
         _id,
         title,

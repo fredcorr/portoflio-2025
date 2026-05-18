@@ -2,6 +2,7 @@ import { defineType } from 'sanity'
 import { LuSettings } from 'react-icons/lu'
 import { GlobalItemsType } from '@portfolio/types/base'
 import String from '@components/atoms/string'
+import Toggle from '@components/atoms/toggle'
 import Link from '@components/atoms/link'
 import List from '@components/atoms/list'
 import NavigationReference from '@components/atoms/navigation-reference'
@@ -30,6 +31,16 @@ const SettingsSchema = defineType({
       name: 'email',
       title: 'Email',
       description: 'Public contact email address displayed across the site.',
+    }),
+    Toggle({
+      name: 'openForProjects',
+      title: 'Open for projects',
+      description: 'When enabled, shows an availability indicator in the footer.',
+    }),
+    String({
+      name: 'availabilityText',
+      title: 'Availability period',
+      description: 'Short label shown next to the availability dot, e.g. "Q2 2026".',
     }),
     List({
       name: 'navigationItems',
