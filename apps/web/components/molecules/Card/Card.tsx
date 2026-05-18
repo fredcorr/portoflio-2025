@@ -129,7 +129,7 @@ const Card = ({
     squareImage ? 'aspect-square rounded-none' : 'aspect-[1.18]',
     squareImage && [
       'md:blur-[4px]',
-      'md:group-hover:blur-0',
+      'md:group-hover:blur-none',
     ],
     imageShadow && [
       'shadow-[16px_16px_36px_4px_rgba(128,128,128,0.54)]',
