@@ -4,7 +4,6 @@ import React from 'react'
 import { motion, MotionProps, useReducedMotion } from 'framer-motion'
 
 import { cn } from '@/utils/cn'
-import { SlideInStagger } from './SlideInStagger'
 import { SlideDirection } from './SlideDirection'
 
 export { SlideDirection }
@@ -73,16 +72,5 @@ const SlideIn = <T extends React.ElementType = 'div'>({
   )
 }
 
-interface SlideInComponent {
-  <T extends React.ElementType = 'div'>(
-    props: SlideInProps<T>
-  ): React.ReactElement | null
-  Stagger: typeof SlideInStagger
-}
-
-const SlideInWithStagger = Object.assign(SlideIn, {
-  Stagger: SlideInStagger,
-}) as SlideInComponent
-
-export default SlideInWithStagger
-export { SlideInWithStagger as SlideIn }
+export default SlideIn
+export { SlideIn }

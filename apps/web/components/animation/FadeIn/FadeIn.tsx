@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { motion, MotionProps, useReducedMotion } from 'framer-motion'
-import { FadeInStagger } from './FadeInStagger'
 
 export interface FadeInOwnProps extends Pick<MotionProps, 'viewport'> {
   children?: React.ReactNode
@@ -32,9 +31,11 @@ const FadeIn = <T extends React.ElementType = 'div'>({
   },
   ...rest
 }: FadeInProps<T>) => {
-  
   const shouldReduce = useReducedMotion()
-  const MotionTag = motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>
+  const MotionTag = React.useMemo(
+    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
+    [as]
+  )
 
   return (
     <MotionTag
@@ -50,16 +51,5 @@ const FadeIn = <T extends React.ElementType = 'div'>({
   )
 }
 
-interface FadeInComponent {
-  <T extends React.ElementType = 'div'>(
-    props: FadeInProps<T>
-  ): React.ReactElement | null
-  Stagger: typeof FadeInStagger
-}
-
-const FadeInWithStagger = Object.assign(FadeIn, {
-  Stagger: FadeInStagger,
-}) as FadeInComponent
-
-export default FadeInWithStagger
-export { FadeInWithStagger as FadeIn }
+export default FadeIn
+export { FadeIn }

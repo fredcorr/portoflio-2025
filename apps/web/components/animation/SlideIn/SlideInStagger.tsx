@@ -6,8 +6,6 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '@/utils/cn'
 import { SlideDirection } from './SlideDirection'
 
-export { SlideDirection }
-
 export interface SlideInStaggerOwnProps {
   children?: React.ReactNode
   className?: string

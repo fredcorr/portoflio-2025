@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/molecules/Breadcrumbs/Breadcrumbs'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { cn } from '@/utils/cn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
-import ScaleIn from '@/components/animation/ScaleIn/ScaleIn'
+import { ScaleIn } from '@/components/animation/ScaleIn/ScaleIn'
 
 export interface ProjectIntroProps extends ProjectIntroSharedProps {
   className?: string

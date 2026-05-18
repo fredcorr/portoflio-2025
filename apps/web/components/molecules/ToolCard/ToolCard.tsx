@@ -2,7 +2,7 @@ import type { ToolSetItem } from '@portfolio/types/components'
 
 import Image from '@/components/atoms/Image/Image'
 import { cn } from '@/utils/cn'
-import SlideInStagger from '@/components/animation/SlideIn/SlideInStagger'
+import { SlideInStagger } from '@/components/animation/SlideIn/SlideInStagger'
 
 export interface ToolCardProps extends ToolSetItem {
   className?: string

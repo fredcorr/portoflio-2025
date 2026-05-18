@@ -2,7 +2,7 @@ import React from 'react'
 import type { ArticleIntroProps } from '@portfolio/types/components'
 import { cn } from '@/utils/cn'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
-import FadeInWithStagger, { FadeIn } from '@/components/animation/FadeIn/FadeIn'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 export interface ArticleMetaProps extends Pick<
   ArticleIntroProps,
@@ -50,7 +50,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       )}
     >
       {/* Author */}
-      <FadeInWithStagger
+      <FadeIn
         as="div"
         className="col-span-2 flex flex-col gap-1.5 md:col-span-4"
       >
@@ -66,11 +66,11 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           </span>
           {authorName}
         </dd>
-      </FadeInWithStagger>
+      </FadeIn>
 
       {/* Published */}
       {dateLabel && (
-        <FadeInWithStagger
+        <FadeIn
           as="div"
           className="flex flex-col gap-1.5 md:col-span-2"
         >
@@ -80,12 +80,12 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {dateLabel}
           </dd>
-        </FadeInWithStagger>
+        </FadeIn>
       )}
 
       {/* Reading time */}
       {readTimeLabel && (
-        <FadeInWithStagger
+        <FadeIn
           as="div"
           className="flex flex-col gap-1.5 md:col-span-2"
         >
@@ -95,12 +95,12 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {readTimeLabel}
           </dd>
-        </FadeInWithStagger>
+        </FadeIn>
       )}
 
       {/* Topics */}
       {topicsLabel && (
-        <FadeInWithStagger
+        <FadeIn
           as="div"
           className="flex flex-col gap-1.5 md:col-span-2"
         >
@@ -110,12 +110,12 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {topicsLabel}
           </dd>
-        </FadeInWithStagger>
+        </FadeIn>
       )}
 
       {/* Edition */}
       {editionLabel && (
-        <FadeInWithStagger
+        <FadeIn
           as="div"
           className="flex flex-col gap-1.5 md:col-span-2"
         >
@@ -125,7 +125,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
             {editionLabel}
           </dd>
-        </FadeInWithStagger>
+        </FadeIn>
       )}
     </StaggerChildren>
   )

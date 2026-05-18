@@ -4,7 +4,6 @@ import React from 'react'
 import { motion, MotionProps, useReducedMotion } from 'framer-motion'
 
 import { cn } from '@/utils/cn'
-import { ScaleInStagger } from './ScaleInStagger'
 
 export interface ScaleInOwnProps {
   children?: React.ReactNode
@@ -54,16 +53,5 @@ const ScaleIn = <T extends React.ElementType = 'div'>({
   )
 }
 
-interface ScaleInComponent {
-  <T extends React.ElementType = 'div'>(
-    props: ScaleInProps<T>
-  ): React.ReactElement | null
-  Stagger: typeof ScaleInStagger
-}
-
-const ScaleInWithStagger = Object.assign(ScaleIn, {
-  Stagger: ScaleInStagger,
-}) as ScaleInComponent
-
-export default ScaleInWithStagger
-export { ScaleInWithStagger as ScaleIn }
+export default ScaleIn
+export { ScaleIn }

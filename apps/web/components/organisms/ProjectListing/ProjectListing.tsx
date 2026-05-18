@@ -6,8 +6,8 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import Card, { CardSpacing } from '@/components/molecules/Card/Card'
 import { cn } from '@/utils/cn'
 import Link from 'next/link'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
-import FadeInWithStagger from '@/components/animation/FadeIn/FadeIn'
+import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
+import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildItemListSchema } from '@/utils/get-page-schemas'
@@ -103,7 +103,7 @@ const ProjectListing = ({
               spacing={CardSpacing.Spacious}
               animationProps={{ viewport: { once: true, amount: 0.15 } }}
               className={cn('h-full', i % 2 === 1 && 'md:mt-16')}
-              AnimationComponent={FadeInWithStagger}
+              AnimationComponent={FadeIn}
             />
           ))}
         </StaggerChildren>
