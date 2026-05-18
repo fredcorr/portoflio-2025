@@ -7,7 +7,10 @@ const defaultStyles = {
     { title: 'H1', value: 'h1' },
     { title: 'H2', value: 'h2' },
   ],
-  lists: [{ title: 'Numbered', value: 'number' }],
+  lists: [
+    { title: 'Bullet', value: 'bullet' },
+    { title: 'Numbered', value: 'number' },
+  ],
   marks: {
     decorators: [
       { title: 'Strong', value: 'strong' },

@@ -6,6 +6,7 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import { lucideIconPicker } from '@fredcorr/sanity-plugin-lucide-icon-picker'
 import { media, mediaAssetSource } from 'sanity-plugin-media'
+import { unsplashImageAsset, unsplashAssetSource } from 'sanity-plugin-asset-source-unsplash'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 import { dashboardWidgets } from './dashboard'
@@ -43,6 +44,7 @@ export default defineConfig({
     lucideIconPicker(),
     visionTool(),
     media(),
+    unsplashImageAsset(),
   ],
 
   document: {
@@ -68,7 +70,7 @@ export default defineConfig({
   form: {
     image: {
       assetSources: (previousAssetSources) =>
-        [...previousAssetSources, mediaAssetSource],
+        [...previousAssetSources, mediaAssetSource, unsplashAssetSource],
     },
   },
 

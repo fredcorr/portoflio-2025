@@ -16,7 +16,7 @@ const Article = defineType({
   fields: [
     ...createBaseDocumentFields({
       slug: {
-        basePath: 'articles/',
+        basePath: 'journals/',
       },
       title: {
         initialValue: 'Article',

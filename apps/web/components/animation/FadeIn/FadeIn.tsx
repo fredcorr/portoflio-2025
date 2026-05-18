@@ -2,8 +2,6 @@
 
 import React from 'react'
 import { motion, MotionProps, useReducedMotion } from 'framer-motion'
-
-import { cn } from '@/utils/cn'
 import { FadeInStagger } from './FadeInStagger'
 
 export interface FadeInOwnProps extends Pick<MotionProps, 'viewport'> {
@@ -34,16 +32,14 @@ const FadeIn = <T extends React.ElementType = 'div'>({
   },
   ...rest
 }: FadeInProps<T>) => {
+  
   const shouldReduce = useReducedMotion()
-  const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
-    [as]
-  )
+  const MotionTag = motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>
 
   return (
     <MotionTag
       {...(rest as MotionTagProps)}
-      className={cn(className)}
+      className={className}
       initial={shouldReduce ? false : { opacity: 0 }}
       whileInView={shouldReduce ? undefined : { opacity: 1 }}
       viewport={viewport}

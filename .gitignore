@@ -26,6 +26,11 @@ yarn-error.log*
 .env
 .env*.local
 
+# AI
+.claude
+.claire
+.playwright-mcp
+
 # Vercel
 .vercel
 

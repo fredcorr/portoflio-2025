@@ -65,8 +65,7 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
           duration={0.6}
           delay={0.1}
           viewport={{ once: true, amount: 0.3 }}
-          className="md:col-span-12 max-w-[16ch] font-heading font-normal leading-[0.96] tracking-[-0.035em] text-balance text-black dark:text-foreground"
-          style={{ fontSize: 'clamp(2.75rem, 8.5vw, 8rem)' }}
+          className="text-display-lg md:col-span-12 max-w-[25ch] font-heading font-normal leading-[0.96] tracking-[-0.035em] text-balance text-black dark:text-foreground"
         >
           {headline}
         </FadeIn>
@@ -79,8 +78,7 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
           duration={0.6}
           delay={0.2}
           viewport={{ once: true, amount: 0.3 }}
-          className="md:col-span-12 max-w-[56ch] font-body leading-[1.45] text-black/78 dark:text-foreground/80"
-          style={{ fontSize: 'clamp(1.05rem, 1.6vw, 1.4rem)' }}
+          className="md:col-span-12 max-w-[56ch] text-body-xl font-body leading-[1.45] text-black/78 dark:text-foreground/80"
         >
           {deck}
         </FadeIn>
