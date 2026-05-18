@@ -52,7 +52,13 @@ export default async function RootLayout({
           >
             {children}
           </main>
-          <Footer email={settings?.email} socialLinks={settings?.socialLinks} />
+          <Footer
+            email={settings?.email}
+            socialLinks={settings?.socialLinks}
+            navigationItems={settings?.navigationItems}
+            openForProjects={settings?.openForProjects}
+            availabilityText={settings?.availabilityText}
+          />
           <ThemeToggle />
           <Analytics />
           <SpeedInsights />

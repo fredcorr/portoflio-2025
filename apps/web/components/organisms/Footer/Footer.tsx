@@ -2,90 +2,150 @@
 
 import React from 'react'
 import type { FooterProps } from '@portfolio/types/components'
-import { Heading } from '@/components/atoms/Heading/Heading'
 import Icon from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
 import getLinkHref from '@/utils/get-link-href'
 
-const Footer: React.FC<FooterProps> = ({ email, socialLinks, className }) => {
+const Footer: React.FC<FooterProps> = ({
+  email,
+  socialLinks,
+  navigationItems,
+  openForProjects,
+  availabilityText,
+  className,
+}) => {
   const year = new Date().getFullYear()
   const hasEmail = Boolean(email)
-  const hasSocialLinks = Boolean(socialLinks && socialLinks.length)
+  const hasSocialLinks = Boolean(socialLinks?.length)
+  const hasNavItems = Boolean(navigationItems?.length)
+  const availabilityLabel = availabilityText
+    ? `Open for projects · ${availabilityText}`
+    : 'Open for projects'
 
   return (
     <footer
       className={cn(
-        'flex w-full flex-col gap-10 bg-background px-4 py-16 text-black dark:text-foreground md:gap-14 md:px-10 xl:gap-16',
+        'w-full overflow-hidden bg-[#050505] px-4 text-[#f5f5f5] dark:bg-[#0a0909] md:px-10',
         className
       )}
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-6 md:gap-8 xl:gap-12">
-        <Heading
-          level={2}
-          className="text-center font-display text-heading-1 font-normal leading-[1.1] tracking-tight text-black dark:text-foreground xl:text-display-xl"
+      <div className="mx-auto w-full max-w-[1440px]">
+
+        {/* ── Head: kicker + heading ← → email pill ─────────────── */}
+        <div
+          className={cn(
+            'grid grid-cols-1 items-end gap-8 pt-16 pb-12',
+            'md:grid-cols-[1fr_auto] md:pt-24 md:pb-20'
+          )}
         >
-          Let&apos;s talk!
-        </Heading>
-        {hasEmail && (
-          <a
-            href={`mailto:${email}`}
-            aria-label={`Email ${email}`}
-            className={cn(
-              'inline-flex items-center justify-center gap-2 bg-black text-surface-1 transition hover:-translate-y-0.5',
-              'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:focus-visible:outline-white',
-              'md:gap-1 xl:gap-2',
-              'w-[262px] px-6 py-3 md:w-[148px] md:px-4 md:py-2 xl:w-[262px] xl:px-8 xl:py-3'
+          <div className="flex flex-col gap-5">
+            {openForProjects && (
+              <span className="inline-flex items-center gap-2.5 font-heading text-[11px] uppercase tracking-[0.14em] text-[rgba(245,245,245,0.55)]">
+                <span className="size-[7px] rounded-full bg-status-success shadow-[0_0_0_4px_rgba(41,174,41,0.18)]" />
+                {availabilityLabel}
+              </span>
             )}
-          >
-            <span className="font-heading text-heading-5 font-medium tracking-tight md:text-[11px] xl:text-heading-5">
+            <h2 className="max-w-[18ch] font-heading text-heading-1 font-normal leading-[1.02] tracking-[-0.035em] text-[#f5f5f5] xl:text-[clamp(2.25rem,5vw,4rem)]">
+              Let&rsquo;s <em className="not-italic">talk.</em>
+            </h2>
+          </div>
+
+          {hasEmail && (
+            <a
+              href={`mailto:${email}`}
+              aria-label={`Email ${email}`}
+              className={cn(
+                'inline-flex items-center gap-3 bg-[#f5f5f5] px-[22px] py-4 text-[#0a0909]',
+                'font-heading text-[15px] tracking-[-0.005em] whitespace-nowrap',
+                'transition hover:-translate-y-0.5',
+                'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f5f5]'
+              )}
+            >
               {email}
-            </span>
-            <Icon
-              name="arrow-up-right"
-              className="size-4 text-surface-1 md:size-3 xl:size-4"
-              title="Email"
-            />
-          </a>
-        )}
-      </div>
+              <Icon name="arrow-up-right" className="size-3.5" title="Send email" />
+            </a>
+          )}
+        </div>
 
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-6 text-center text-sm text-black/80 dark:text-foreground/80 md:flex-row md:justify-between md:text-left md:text-[11px] xl:text-sm">
-        <p className="font-heading">{year} © — Made by Federico Corradi</p>
-        {hasSocialLinks && (
-          <ul
-            aria-label="Social links"
-            className="flex flex-wrap items-center justify-center gap-6 md:gap-5 xl:gap-10"
+        {/* ── Link columns: Sitemap + Elsewhere ─────────────────── */}
+        {(hasNavItems || hasSocialLinks) && (
+          <div className="grid grid-cols-1 gap-8 pb-10 sm:grid-cols-2 md:gap-16 xl:grid-cols-3 xl:pb-14">
+
+            {hasNavItems && (
+              <div className="flex flex-col gap-4">
+                <span className="font-heading text-[10px] uppercase tracking-[0.18em] text-[rgba(245,245,245,0.5)]">
+                  Sitemap
+                </span>
+                <ul className="flex flex-col gap-2.5">
+                  {navigationItems?.map((item) => (
+                    <li key={item._id}>
+                      <a
+                        href={`/${item.slug.current}`}
+                        className="font-heading text-[15px] tracking-[-0.005em] text-[#f5f5f5] transition hover:opacity-55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f5f5]"
+                      >
+                        {item.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {hasSocialLinks && (
+              <div className="flex flex-col gap-4">
+                <span className="font-heading text-[10px] uppercase tracking-[0.18em] text-[rgba(245,245,245,0.5)]">
+                  Elsewhere
+                </span>
+                <ul className="flex flex-col gap-2.5">
+                  {socialLinks?.map((link, index) => {
+                    const href = getLinkHref(link)
+                    const label = link?.name || link?.internal_ref?.title || link?.url
+                    const linkKey =
+                      link?.internal_ref?._id ||
+                      link?.url ||
+                      link?.name ||
+                      `footer-social-${index}`
+                    const isExternal = Boolean(href?.startsWith('http'))
+
+                    return href && label ? (
+                      <li key={linkKey}>
+                        <a
+                          href={href}
+                          className="inline-flex items-center gap-1.5 font-heading text-[15px] tracking-[-0.005em] text-[#f5f5f5] transition hover:opacity-55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f5f5]"
+                          {...(isExternal && { target: '_blank', rel: 'noreferrer' })}
+                        >
+                          {label}
+                          {isExternal && (
+                            <span className="text-[11px] opacity-50">↗</span>
+                          )}
+                        </a>
+                      </li>
+                    ) : null
+                  })}
+                </ul>
+              </div>
+            )}
+
+          </div>
+        )}
+
+        {/* ── Rail ──────────────────────────────────────────────── */}
+        <div
+          className={cn(
+            'grid grid-cols-1 items-center gap-3 border-t border-[rgba(245,245,245,0.12)] py-6 pb-9',
+            'font-heading text-[12px] tracking-[0.02em] text-[rgba(245,245,245,0.55)]',
+            'md:grid-cols-[1fr_auto] md:gap-6'
+          )}
+        >
+          <span>© {year} · Federico Corradi · Milan, IT</span>
+          <a
+            href="#main-content"
+            className="text-[#f5f5f5] transition hover:opacity-55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f5f5] md:justify-self-end"
           >
-            {socialLinks?.map((link, index) => {
-              const href = getLinkHref(link)
-              const label = link?.name || link?.internal_ref?.title || link?.url
-              const linkKey =
-                link?.internal_ref?._id ||
-                link?.url ||
-                link?.name ||
-                `footer-link-${index}`
-              const isExternal = Boolean(href && href.startsWith('http'))
+            Back to top ↑
+          </a>
+        </div>
 
-              return (
-                href &&
-                label && (
-                  <li key={linkKey}>
-                    <a
-                      href={href}
-                      className="font-heading transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:hover:text-foreground dark:focus-visible:outline-white"
-                      {...(isExternal && {
-                        target: '_blank',
-                        rel: 'noreferrer',
-                      })}
-                    >
-                      {label}
-                    </a>
-                  </li>
-                )
-              )
-            })}
-          </ul>
-        )}
       </div>
     </footer>
   )

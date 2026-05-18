@@ -1,7 +1,7 @@
 import type { HomePageHeroComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
-import { getContactEmail } from '@/utils/get-contact-email'
+import getSettings from '@/utils/get-settings'
 import Icon from '@/components/atoms/Icon/Icon'
 import ThreeBackgroundTunnel from '@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
@@ -11,7 +11,7 @@ interface HomePageHeroProps extends HomePageHeroComponent {
   scrollTargetId?: string
 }
 
-export const HomePageHero = ({
+export const HomePageHero = async ({
   title,
   subtitle,
   getInTouchTitle,
@@ -20,10 +20,11 @@ export const HomePageHero = ({
   componentIndex,
   scrollTargetId,
 }: HomePageHeroProps) => {
+  const { settings } = await getSettings()
   const headline = title?.trim()
   const supportingCopy = subtitle?.trim()
   const contactLabel = getInTouchTitle?.trim()
-  const contactEmail = getContactEmail()
+  const contactEmail = settings?.email
   const ctaTarget = scrollTargetId?.trim() || 'main-content'
 
   return (
