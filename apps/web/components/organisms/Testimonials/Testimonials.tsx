@@ -182,7 +182,7 @@ const Testimonials = ({
 
             {isLoop && (
               <div
-                className="flex gap-1.5 items-center justify-self-start md:justify-self-center"
+                className="flex gap-1.5 items-center justify-self-start md:justify-self-end"
                 role="tablist"
                 aria-label="Select testimonial"
               >
@@ -194,8 +194,8 @@ const Testimonials = ({
                     aria-label={`Go to testimonial ${i + 1}`}
                     onClick={() => swiperInstance?.slideToLoop(i)}
                     className={cn(
-                      'h-0.5 rounded-none transition-all duration-200 cursor-pointer bg-background/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background',
-                      i === activeIdx ? 'w-9 !bg-background' : 'w-[22px]'
+                      'h-0.5 rounded-none bg-background transition-all duration-200 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background',
+                      i === activeIdx ? 'w-9 opacity-100' : 'w-[22px] opacity-30'
                     )}
                   />
                 ))}
