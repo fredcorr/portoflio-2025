@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { A11y, Autoplay, EffectCreative } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type SwiperType from 'swiper'
-import { useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { PortableText } from '@portabletext/react'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
@@ -115,70 +115,74 @@ const Testimonials = ({
             }}
             className="w-full"
           >
-            {list.map(({ _key: slideKey, subtitle, author }) => {
+            {list.map(({ _key: slideKey, subtitle }) => {
               const quote = normalizePortableText(subtitle || '')
               return (
                 <SwiperSlide key={slideKey}>
-                  <div className="flex flex-col gap-y-8">
-                    {/* Quote */}
-                    <blockquote className="relative font-heading font-normal text-heading-2 leading-[1.2] tracking-[-0.02em] text-background text-balance max-w-[42ch]">
-                      <span
-                        aria-hidden="true"
-                        className="absolute -left-[0.45em] -top-[0.32em] font-bold text-[1.6em] leading-[1] text-background/18 pointer-events-none select-none"
-                      >
-                        &ldquo;
-                      </span>
-                      {quote.length > 0 && (
-                        <PortableText
-                          value={quote}
-                          components={{
-                            marks: {
-                              em: ({ children }) => (
-                                <em className="not-italic font-normal text-accent-orange">
-                                  {children}
-                                </em>
-                              ),
-                            },
-                            block: {
-                              normal: ({ children }) => <span>{children}</span>,
-                            },
-                          }}
-                        />
-                      )}
-                    </blockquote>
-
-                    {/* Author */}
-                    {author?.name && (
-                      <div className="flex items-center gap-[18px] pt-7 border-t border-background/12">
-                        <span
-                          aria-hidden="true"
-                          className="w-14 h-14 shrink-0 border border-background/25 flex items-center justify-center font-heading font-bold text-base tracking-[0.02em] text-background"
-                        >
-                          {getInitials(author.name)}
-                        </span>
-                        <span className="flex flex-col gap-1">
-                          <span className="font-heading text-heading-5 tracking-[-0.01em] text-background leading-[1.2]">
-                            {author.name}
-                          </span>
-                          {author.role && (
-                            <span className="font-heading text-[11px] tracking-[0.14em] uppercase text-background/55">
-                              {author.role}
-                            </span>
-                          )}
-                        </span>
-                      </div>
+                  <blockquote className="relative font-heading font-normal text-heading-2 leading-[1.2] tracking-[-0.02em] text-background text-balance max-w-[42ch]">
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-[0.45em] -top-[0.32em] font-bold text-[1.6em] leading-[1] text-background/18 pointer-events-none select-none"
+                    >
+                      &ldquo;
+                    </span>
+                    {quote.length > 0 && (
+                      <PortableText
+                        value={quote}
+                        components={{
+                          marks: {
+                            em: ({ children }) => (
+                              <em className="not-italic font-normal text-accent-orange">
+                                {children}
+                              </em>
+                            ),
+                          },
+                          block: {
+                            normal: ({ children }) => <span>{children}</span>,
+                          },
+                        }}
+                      />
                     )}
-                  </div>
+                  </blockquote>
                 </SwiperSlide>
               )
             })}
           </Swiper>
 
-          {/* Dots + nav */}
-          {isLoop && (
-            <div className="flex items-center justify-end gap-4">
+          {/* Footer: author + dots + nav on one row, divider above */}
+          <div className="grid grid-cols-1 items-center gap-x-6 gap-y-6 pt-7 border-t border-background/12 md:grid-cols-[auto_1fr_auto]">
+            <motion.div
+              key={list[activeIdx]?._key ?? activeIdx}
+              initial={{ opacity: 0, y: prefersReduced ? 0 : 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: prefersReduced ? 0.12 : 0.32 }}
+              className="flex items-center gap-[18px] min-h-[56px]"
+            >
+              {list[activeIdx]?.author?.name && (
+                <>
+                  <span
+                    aria-hidden="true"
+                    className="w-14 h-14 shrink-0 border border-background/25 flex items-center justify-center font-heading font-bold text-base tracking-[0.02em] text-background"
+                  >
+                    {getInitials(list[activeIdx]?.author?.name)}
+                  </span>
+                  <span className="flex flex-col gap-1">
+                    <span className="font-heading text-heading-5 tracking-[-0.01em] text-background leading-[1.2]">
+                      {list[activeIdx]?.author?.name}
+                    </span>
+                    {list[activeIdx]?.author?.role && (
+                      <span className="font-heading text-[11px] tracking-[0.14em] uppercase text-background/55">
+                        {list[activeIdx]?.author?.role}
+                      </span>
+                    )}
+                  </span>
+                </>
+              )}
+            </motion.div>
+
+            {isLoop && (
               <div
-                className="flex gap-1.5 items-center"
+                className="flex gap-1.5 items-center justify-self-start md:justify-self-center"
                 role="tablist"
                 aria-label="Select testimonial"
               >
@@ -196,8 +200,10 @@ const Testimonials = ({
                   />
                 ))}
               </div>
+            )}
 
-              <div className="flex gap-2 items-center">
+            {isLoop && (
+              <div className="flex gap-2 items-center justify-self-start md:justify-self-end">
                 <button
                   onClick={() => swiperInstance?.slidePrev()}
                   aria-label="Previous testimonial"
@@ -213,8 +219,8 @@ const Testimonials = ({
                   <ChevronRight className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </ComponentLayout>
