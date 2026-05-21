@@ -6,7 +6,10 @@
     },
     "sanity": {
       "url": "https://mcp.sanity.io",
-      "type": "http"
+      "type": "http",
+      "headers": {
+        "Authorization": "Bearer ${SANITY_API_WRITE_TOKEN}"
+      }
     }
   }
 }
