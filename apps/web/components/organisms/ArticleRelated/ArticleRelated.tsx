@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'next/link'
+// import Link from 'next/link' // re-enable with the CTA below
 import type {
   ArticleRelatedProps,
   RelatedArticle,
@@ -112,13 +112,14 @@ const ArticleRelated: React.FC<Props> = ({ relatedArticles, className }) => {
         >
           Continue reading
         </h2>
-        <Link
+        {/* CTA — hidden until /articles route is ready */}
+        {/* <Link
           href="/articles"
           className="inline-flex items-center gap-2 border border-gray-100 px-4 py-2.5 font-heading text-sm text-black transition hover:-translate-y-0.5 dark:border-gray-100 dark:text-foreground"
         >
           All essays
           <Icon name="arrow-up-right" className="size-3.5" />
-        </Link>
+        </Link> */}
       </div>
 
       {/* Grid */}
