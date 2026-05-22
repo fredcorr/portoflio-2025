@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { dashboardTool } from '@sanity/dashboard'
 import { presentationTool } from 'sanity/presentation'
+import { locate } from './presentation/locate'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
@@ -31,6 +32,7 @@ export default defineConfig({
       widgets: dashboardWidgets,
     }),
     presentationTool({
+      locate,
       previewUrl: {
         initial: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
         previewMode: {
