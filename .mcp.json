@@ -3,6 +3,13 @@
     "next-devtools": {
       "command": "npx",
       "args": ["-y", "next-devtools-mcp@latest"]
+    },
+    "sanity": {
+      "url": "https://mcp.sanity.io",
+      "type": "http",
+      "headers": {
+        "Authorization": "Bearer ${SANITY_API_WRITE_TOKEN}"
+      }
     }
   }
 }
