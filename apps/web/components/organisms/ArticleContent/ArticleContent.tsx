@@ -5,7 +5,7 @@ import type {
   PullQuote as PullQuoteType,
 } from '@portfolio/types/components'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
-import CodeBlock from '@/components/atoms/CodeBlock/CodeBlock'
+import CodeBlock from '@/components/atoms/CodeBlock/CodeBlockAsync'
 import PullQuote from '@/components/atoms/PullQuote/PullQuote'
 import Icon from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
