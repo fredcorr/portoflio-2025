@@ -1,7 +1,11 @@
 import React from 'react'
-import type { PortableTextBlock, PortableTextComponents } from '@portabletext/react'
+import type {
+  PortableTextBlock,
+  PortableTextComponents,
+} from '@portabletext/react'
 import { PortableText } from '@portabletext/react'
 import { Emphasis } from '@/components/atoms/Emphasis/Emphasis'
+import type { ExternalLinkMark } from '@portfolio/types/components'
 
 export enum RichTextSize {
   Md = 'md',
@@ -32,26 +36,47 @@ const buildDefaultComponents = (size: RichTextSize): PortableTextComponents => {
       strong: ({ children }) => (
         <strong className="font-semibold">{children}</strong>
       ),
+      code: ({ children }) => (
+        <code className="rounded-sm bg-black/[0.06] px-1.5 py-0.5 font-mono text-[0.875em] dark:bg-white/10">
+          {children}
+        </code>
+      ),
+      externalLink: ({
+        value,
+        children,
+      }: {
+        value?: ExternalLinkMark
+        children?: React.ReactNode
+      }) => (
+        <a
+          href={value?.href}
+          target={value?.openInNewTab ? '_blank' : '_self'}
+          rel={value?.openInNewTab ? 'noopener noreferrer' : undefined}
+          className="underline underline-offset-2 decoration-current/40 transition-all hover:decoration-current"
+        >
+          {children}
+        </a>
+      ),
     },
     list: {
       bullet: ({ children }) => (
-        <ul className={`list-disc pl-6 mb-6 space-y-1.5 font-body ${sizeClass}`}>
+        <ul
+          className={`list-disc pl-6 mb-6 space-y-1.5 font-body ${sizeClass}`}
+        >
           {children}
         </ul>
       ),
       number: ({ children }) => (
-        <ol className={`list-decimal pl-6 mb-6 space-y-1.5 font-body ${sizeClass}`}>
+        <ol
+          className={`list-decimal pl-6 mb-6 space-y-1.5 font-body ${sizeClass}`}
+        >
           {children}
         </ol>
       ),
     },
     listItem: {
-      bullet: ({ children }) => (
-        <li className="leading-relaxed">{children}</li>
-      ),
-      number: ({ children }) => (
-        <li className="leading-relaxed">{children}</li>
-      ),
+      bullet: ({ children }) => <li className="leading-relaxed">{children}</li>,
+      number: ({ children }) => <li className="leading-relaxed">{children}</li>,
     },
   }
 }
