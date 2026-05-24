@@ -222,6 +222,8 @@
   }
 }
 
+@import 'highlight.js/styles/github-dark-dimmed.css';
+
 /* Article body — CSS counter for chapter numbering */
 [data-organism='article-content'] .chapter-label::before {
   content: 'Chapter 0' counter(chapter);

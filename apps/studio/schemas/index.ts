@@ -1,3 +1,6 @@
+import ExternalLink from './components/atoms/external-link'
+import CodeBlock from './components/atoms/code-block'
+import PullQuote from './components/atoms/pull-quote'
 import Homepage from './components/pages/homepage'
 import Project from './components/pages/project'
 import Page from './components/pages/page'
@@ -24,6 +27,9 @@ import Settings from './components/settings'
 import { JournalsFeed } from './components/organisms'
 
 export const schemaTypes = [
+  ExternalLink,
+  CodeBlock,
+  PullQuote,
   Homepage,
   Project,
   Page,

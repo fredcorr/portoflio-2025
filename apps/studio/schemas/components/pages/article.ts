@@ -33,11 +33,14 @@ const Article = defineType({
       description: 'Taxonomy tags assigned to this article.',
       of: [{ type: 'string' }],
     }),
-    Block({
-      name: 'articleContent',
-      title: 'Content',
-      description: 'Main article body content.',
-    }),
+    Block(
+      {
+        name: 'articleContent',
+        title: 'Content',
+        description: 'Main article body content.',
+      },
+      [{ type: 'codeBlock' }, { type: 'pullQuote' }]
+    ),
     componentsByPageType(PageTypeName.ArticlePage),
     ...seoFields.all,
   ],

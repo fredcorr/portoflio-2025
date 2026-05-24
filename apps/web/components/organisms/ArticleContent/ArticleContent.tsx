@@ -1,6 +1,12 @@
 import React from 'react'
 import type { ArticleContentProps as ArticleContentSharedProps } from '@portfolio/types/components'
+import type {
+  CodeBlock as CodeBlockType,
+  PullQuote as PullQuoteType,
+} from '@portfolio/types/components'
 import RichText, { RichTextSize } from '@/components/atoms/RichText/RichText'
+import CodeBlock from '@/components/atoms/CodeBlock/CodeBlock'
+import PullQuote from '@/components/atoms/PullQuote/PullQuote'
 import Icon from '@/components/atoms/Icon/Icon'
 import { cn } from '@/utils/cn'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
@@ -63,6 +69,14 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
               size={RichTextSize.Lg}
               className="text-black dark:text-foreground"
               components={{
+                types: {
+                  codeBlock: ({ value }: { value: CodeBlockType }) => (
+                    <CodeBlock {...value} />
+                  ),
+                  pullQuote: ({ value }: { value: PullQuoteType }) => (
+                    <PullQuote {...value} />
+                  ),
+                },
                 block: {
                   h2: ({ children }) => (
                     <div
