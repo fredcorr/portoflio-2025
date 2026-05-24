@@ -222,15 +222,7 @@
   }
 }
 
-/* Shiki dual theme — dark mode colour overrides */
-.dark .shiki,
-.dark .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
-}
+@import 'highlight.js/styles/github-dark-dimmed.css';
 
 /* Article body — CSS counter for chapter numbering */
 [data-organism='article-content'] .chapter-label::before {
