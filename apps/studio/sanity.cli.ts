@@ -37,5 +37,5 @@ export default defineCliConfig({
       ],
     },
   },
-  studioHost: process.env.SANITY_STUDIO_HOST || 'localhost',
+  studioHost: process.env.SANITY_STUDIO_HOST,
 })
