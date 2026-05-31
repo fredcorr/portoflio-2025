@@ -13,7 +13,7 @@ test('renders heading, body, meta row, secondary body, and CTA', () => {
   assert.match(markup, /Hey,\s*I(?:&apos;|&#x27;|')m Fede/)
   assert.match(markup, /Embarking on a journey of growth and education/)
   assert.match(markup, /Buenos Aires, Argentina/)
-  assert.match(markup, /GMT-3/)
+  assert.match(markup, /GMT\+1/)
   assert.match(markup, /Italian (?:&|&amp;) English/)
   assert.match(markup, /video game enthusiast/)
   assert.match(markup, /My resume/)
