@@ -3,7 +3,7 @@ import { LuSettings } from 'react-icons/lu'
 import { GlobalItemsType } from '@portfolio/types/base'
 import String from '@components/atoms/string'
 import Toggle from '@components/atoms/toggle'
-import Link from '@components/atoms/link'
+import { Link } from '@components/atoms/link'
 import List from '@components/atoms/list'
 import NavigationReference from '@components/atoms/navigation-reference'
 

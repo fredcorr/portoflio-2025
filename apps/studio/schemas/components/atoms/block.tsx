@@ -17,7 +17,7 @@ const defaultStyles = {
       { title: 'Emphasis', value: 'em' },
       { title: 'Code', value: 'code' },
     ],
-    annotations: [{ type: 'externalLink' }, { type: 'link' }],
+    annotations: [{ type: 'link' }],
   },
 }
 

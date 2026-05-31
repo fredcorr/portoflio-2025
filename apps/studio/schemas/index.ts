@@ -1,5 +1,4 @@
-import ExternalLink from './components/atoms/external-link'
-import { LinkAnnotation } from './components/atoms/link'
+import LinkAnnotation from './components/atoms/link'
 import CodeBlock from './components/atoms/code-block'
 import PullQuote from './components/atoms/pull-quote'
 import Homepage from './components/pages/homepage'
@@ -28,7 +27,6 @@ import Settings from './components/settings'
 import { JournalsFeed } from './components/organisms'
 
 export const schemaTypes = [
-  ExternalLink,
   LinkAnnotation,
   CodeBlock,
   PullQuote,

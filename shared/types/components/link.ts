@@ -1,15 +1,17 @@
 import type { PortableTextMarkDefinition } from '@portabletext/types'
 import type { SanitySlug } from '../sanity'
 
-export interface ExternalLinkMark extends PortableTextMarkDefinition {
-  href: string
-  openInNewTab?: boolean
-}
-
 export interface LinkInternalReference {
+  _ref?: string
   _id?: string
   title?: string
   slug?: SanitySlug
+}
+
+export interface LinkMark extends PortableTextMarkDefinition {
+  href?: string
+  openInNewTab?: boolean
+  internalRef?: LinkInternalReference
 }
 
 export interface LinkItem {
