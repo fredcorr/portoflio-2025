@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { motion, MotionProps, useReducedMotion } from 'framer-motion'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 
 export interface FadeInOwnProps extends Pick<MotionProps, 'viewport'> {
   children?: React.ReactNode
@@ -50,6 +51,8 @@ const FadeIn = <T extends React.ElementType = 'div'>({
     </MotionTag>
   )
 }
+
+FadeIn.Stagger = StaggerChildren
 
 export default FadeIn
 export { FadeIn }

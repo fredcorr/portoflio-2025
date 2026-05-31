@@ -70,10 +70,12 @@ test('Stagger renders with default div tag', () => {
   assert.match(markup, /<div/)
 })
 
-test('Stagger accepts all SlideDirection values', () => {
+test('Stagger renders children for each SlideDirection', () => {
   for (const direction of Object.values(SlideDirection)) {
     const markup = renderToStaticMarkup(
-      <SlideIn.Stagger direction={direction}>content</SlideIn.Stagger>
+      <SlideIn.Stagger>
+        <SlideIn direction={direction}>content</SlideIn>
+      </SlideIn.Stagger>
     )
     assert.match(markup, /content/)
   }

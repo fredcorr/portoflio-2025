@@ -4,6 +4,7 @@ import React from 'react'
 import { motion, MotionProps, useReducedMotion } from 'framer-motion'
 
 import { cn } from '@/utils/cn'
+import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 
 export interface ScaleInOwnProps {
   children?: React.ReactNode
@@ -52,6 +53,8 @@ const ScaleIn = <T extends React.ElementType = 'div'>({
     </MotionTag>
   )
 }
+
+ScaleIn.Stagger = StaggerChildren
 
 export default ScaleIn
 export { ScaleIn }

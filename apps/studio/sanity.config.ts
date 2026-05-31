@@ -32,7 +32,7 @@ export default defineConfig({
       widgets: dashboardWidgets,
     }),
     presentationTool({
-      locate,
+      resolve: { locations: locate },
       previewUrl: {
         initial: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
         previewMode: {
