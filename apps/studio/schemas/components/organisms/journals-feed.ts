@@ -4,7 +4,7 @@ import Reference from '@components/atoms/reference'
 import { defineType } from 'sanity'
 import List from '@components/atoms/list'
 import String from '@components/atoms/string'
-import { Link } from '@components/atoms/link'
+import UrlPicker from '@components/atoms/url-picker'
 import { createTitleField } from '@components/molecules/title'
 import { componentFields } from '@schemas/compositions'
 
@@ -24,7 +24,7 @@ const JournalsFeed = defineType({
       title: 'Kicker',
       description: 'Small label shown above the title (e.g. "Journal").',
     }),
-    Link({
+    UrlPicker({
       name: 'ctaLink',
       title: 'CTA Link',
       description:

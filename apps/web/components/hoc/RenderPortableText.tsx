@@ -5,7 +5,7 @@ import type {
 } from '@portabletext/react'
 import { PortableText } from '@portabletext/react'
 import { Emphasis } from '@/components/atoms/Emphasis/Emphasis'
-import type { ExternalLinkMark } from '@portfolio/types/components'
+import type { LinkMark } from '@portfolio/types/components'
 
 export enum RichTextSize {
   Md = 'md',
@@ -41,22 +41,26 @@ const buildDefaultComponents = (size: RichTextSize): PortableTextComponents => {
           {children}
         </code>
       ),
-      externalLink: ({
+      link: ({
         value,
         children,
       }: {
-        value?: ExternalLinkMark
+        value?: LinkMark
         children?: React.ReactNode
-      }) => (
-        <a
-          href={value?.href}
-          target={value?.openInNewTab ? '_blank' : '_self'}
-          rel={value?.openInNewTab ? 'noopener noreferrer' : undefined}
-          className="underline underline-offset-2 decoration-current/40 transition-all hover:decoration-current"
-        >
-          {children}
-        </a>
-      ),
+      }) => {
+        const href = value?.href ?? value?.internalRef?.slug?.current
+        const isExternal = !!value?.href
+        return (
+          <a
+            href={href}
+            target={isExternal && value?.openInNewTab ? '_blank' : '_self'}
+            rel={isExternal && value?.openInNewTab ? 'noopener noreferrer' : undefined}
+            className="underline underline-offset-2 decoration-current/40 transition-all hover:decoration-current"
+          >
+            {children}
+          </a>
+        )
+      },
     },
     list: {
       bullet: ({ children }) => (

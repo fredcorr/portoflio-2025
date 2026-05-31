@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import 'swiper/css';
 @import 'swiper/css/effect-creative';
-
 /* Class-based dark mode (replaces v3's darkMode: ['class']) */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -221,8 +220,6 @@
     animation: none !important;
   }
 }
-
-@import 'highlight.js/styles/github-dark-dimmed.css';
 
 /* Article body — CSS counter for chapter numbering */
 [data-organism='article-content'] .chapter-label::before {

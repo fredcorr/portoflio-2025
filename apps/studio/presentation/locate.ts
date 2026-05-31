@@ -1,16 +1,24 @@
-import { defineLocations } from 'sanity/presentation'
-import type { DocumentLocationResolverContext } from 'sanity/presentation'
+import type { DocumentLocationResolvers } from 'sanity/presentation'
 
-export function locate(
-  doc: { _type: string; title?: string; slug?: { current?: string } },
-  _context: DocumentLocationResolverContext
-) {
-  const slug = doc.slug?.current
-  if (!slug) return defineLocations({ locations: [] })
+const pageResolver = {
+  select: {
+    title: 'title',
+    slug: 'slug.current',
+  },
+  resolve(doc: { title?: string; slug?: string } | null) {
+    if (!doc?.slug) return null
+    const href = doc.slug.startsWith('/') ? doc.slug : `/${doc.slug}`
+    return {
+      locations: [{ title: doc.title ?? 'Page', href }],
+    }
+  },
+}
 
-  const href = slug.startsWith('/') ? slug : `/${slug}`
-
-  return defineLocations({
-    locations: [{ title: doc.title ?? doc._type, href }],
-  })
+export const locate: DocumentLocationResolvers = {
+  homepage: pageResolver,
+  project: pageResolver,
+  about: pageResolver,
+  contact: pageResolver,
+  article: pageResolver,
+  page: pageResolver,
 }

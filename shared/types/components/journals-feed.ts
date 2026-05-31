@@ -3,7 +3,7 @@ import type { ArticlePageDocument } from '../pages'
 import type { PortableTextBlock } from '@portabletext/react'
 import type { SanityComponentBase } from './base-component'
 import type { ComponentHeading } from './title'
-import type { LinkItem } from './link'
+import type { UrlPickerItem } from './link'
 
 export interface JournalsFeedArticle extends Pick<
   ArticlePageDocument,
@@ -16,6 +16,6 @@ export interface JournalsFeedComponent extends SanityComponentBase<ComponentType
   kicker?: string
   title?: ComponentHeading
   ctaLabel?: string
-  ctaLink?: LinkItem
+  ctaLink?: UrlPickerItem
   articles?: JournalsFeedArticle[]
 }
