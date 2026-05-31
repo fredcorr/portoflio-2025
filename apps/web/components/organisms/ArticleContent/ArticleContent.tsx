@@ -63,7 +63,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
         )}
         {/* Body */}
         {hasContent && (
-          <div className={'max-w-[100ch] mx-auto'}>
+          <div className={'min-w-0 max-w-[100ch] mx-auto'}>
             <RichText
               value={content ?? []}
               size={RichTextSize.Lg}
