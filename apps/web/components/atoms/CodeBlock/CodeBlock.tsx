@@ -7,6 +7,7 @@ import css from 'highlight.js/lib/languages/css'
 import json from 'highlight.js/lib/languages/json'
 import bash from 'highlight.js/lib/languages/bash'
 import plaintext from 'highlight.js/lib/languages/plaintext'
+import 'highlight.js/styles/github-dark-dimmed.css'
 import type { CodeBlock as CodeBlockProps } from '@portfolio/types/components'
 
 hljs.registerLanguage('typescript', typescript)

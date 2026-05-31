@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import 'swiper/css';
 @import 'swiper/css/effect-creative';
-@import 'highlight.js/styles/github-dark-dimmed.css';
-
 /* Class-based dark mode (replaces v3's darkMode: ['class']) */
 @custom-variant dark (&:where(.dark, .dark *));
 
