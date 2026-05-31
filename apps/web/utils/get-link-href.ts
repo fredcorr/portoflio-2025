@@ -1,6 +1,6 @@
-import type { LinkItem } from '@portfolio/types/components'
+import type { UrlPickerItem } from '@portfolio/types/components'
 
-export const getLinkHref = (link?: LinkItem): string | undefined => {
+export const getLinkHref = (link?: UrlPickerItem): string | undefined => {
   const url = link?.url
 
   if (typeof url === 'string' && url.length > 0) {

@@ -5,7 +5,6 @@ import { motion, MotionProps, useReducedMotion } from 'framer-motion'
 
 import { cn } from '@/utils/cn'
 import { SlideDirection } from './SlideDirection'
-import StaggerChildren from '@/components/animation/StaggerChildren/StaggerChildren'
 
 export { SlideDirection }
 
@@ -72,8 +71,6 @@ const SlideIn = <T extends React.ElementType = 'div'>({
     </MotionTag>
   )
 }
-
-SlideIn.Stagger = StaggerChildren
 
 export default SlideIn
 export { SlideIn }

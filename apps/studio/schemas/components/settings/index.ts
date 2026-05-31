@@ -3,7 +3,7 @@ import { LuSettings } from 'react-icons/lu'
 import { GlobalItemsType } from '@portfolio/types/base'
 import String from '@components/atoms/string'
 import Toggle from '@components/atoms/toggle'
-import { Link } from '@components/atoms/link'
+import UrlPicker from '@components/atoms/url-picker'
 import List from '@components/atoms/list'
 import NavigationReference from '@components/atoms/navigation-reference'
 
@@ -59,7 +59,7 @@ const SettingsSchema = defineType({
       title: 'Social links',
       description: 'Collection of social media profiles and external links.',
       of: [
-        Link({
+        UrlPicker({
           name: 'socialLink',
           title: 'Social link',
           description: 'Link to a social platform or external profile.',

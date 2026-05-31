@@ -1,4 +1,4 @@
-import type { NavigationItem, LinkItem } from './components'
+import type { NavigationItem, UrlPickerItem } from './components'
 
 export interface AuthorData {
   firstName?: string
@@ -9,7 +9,7 @@ export interface AuthorData {
 export interface SettingsData extends AuthorData {
   email?: string
   navigationItems?: NavigationItem[]
-  socialLinks?: LinkItem[]
+  socialLinks?: UrlPickerItem[]
   projectCount?: number
   openForProjects?: boolean
   availabilityText?: string

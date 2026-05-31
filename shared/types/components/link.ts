@@ -14,7 +14,7 @@ export interface LinkMark extends PortableTextMarkDefinition {
   internalRef?: LinkInternalReference
 }
 
-export interface LinkItem {
+export interface UrlPickerItem {
   _key?: string
   name?: string
   url?: string
