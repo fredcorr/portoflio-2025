@@ -84,7 +84,6 @@ const ProjectListing = ({
           staggerDelay={addStaggerAnimation ? 0.25 : 0}
           delay={addStaggerAnimation ? 0.15 : 0}
           amount={0.15}
-          as="div"
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10"
         >
           {projects.map((project, i) => (
@@ -92,6 +91,7 @@ const ProjectListing = ({
               key={project._id}
               title={project.clientName || ''}
               subtitle={project.title}
+              as="li"
               href={project.slug?.current}
               image={project.seoImage || project.projectHero}
               subtitleSize={RichTextSize.Lg}

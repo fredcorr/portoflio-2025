@@ -104,26 +104,27 @@ const Card = ({
         : 'justify-end'
   const subtitleBlocks = normalizePortableText(subtitle)
 
-  const Comp = (AnimationComponent ??
-    (href ? Link : asProp)) as React.ComponentType<PolymorphicProps>
+  const isLinkedListItem = asProp !== 'article' && !!href
 
-  const compClassName = cn(
+  const cardBaseClassName = cn(
     'group flex bg-transparent h-full flex-col',
     indexAboveImage
       ? '' // no overflow-hidden/rounded/translate — badge must protrude above
       : 'overflow-hidden hover:-translate-y-1',
     'transition',
-    href &&
-      'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black',
     articleSpacingMap[spacing],
-    className
   )
 
-  const compProps: PolymorphicProps = {
-    className: compClassName,
-    ...(AnimationComponent && { as: href ? Link : asProp }),
-    ...(href && { href, 'aria-label': `View ${title}` }),
-  }
+  const focusRingClassName =
+    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black'
+
+  const linkClassName = cn(cardBaseClassName, focusRingClassName)
+
+  const compClassName = cn(
+    cardBaseClassName,
+    href && focusRingClassName,
+    className,
+  )
 
   const imageWrapperClassName = cn(
     squareImage ? 'aspect-square rounded-none' : 'aspect-[1.18]',
@@ -144,12 +145,8 @@ const Card = ({
     ? 'md:scale-100 md:group-hover:scale-105 transition-transform duration-[700ms] ease-in-out'
     : 'transition duration-300 group-hover:scale-[1.01]'
 
-  return (
-    <Comp
-      {...compProps}
-      {...(animationProps as PolymorphicProps)}
-      {...(props as PolymorphicProps)}
-    >
+  const cardBody = (
+    <>
       {image?.asset.url && (
         indexAboveImage ? (
           <div className="relative mt-4">
@@ -233,6 +230,44 @@ const Card = ({
           />
         )}
       </div>
+    </>
+  )
+
+  if (isLinkedListItem) {
+    const OuterComp = (AnimationComponent ?? asProp) as React.ComponentType<PolymorphicProps>
+    const outerProps: PolymorphicProps = {
+      className,
+      ...(AnimationComponent && { as: asProp }),
+    }
+    return (
+      <OuterComp
+        {...outerProps}
+        {...(animationProps as PolymorphicProps)}
+        {...(props as PolymorphicProps)}
+      >
+        <Link href={href} aria-label={`View ${title}`} className={linkClassName}>
+          {cardBody}
+        </Link>
+      </OuterComp>
+    )
+  }
+
+  const Comp = (AnimationComponent ??
+    (href ? Link : asProp)) as React.ComponentType<PolymorphicProps>
+
+  const compProps: PolymorphicProps = {
+    className: compClassName,
+    ...(AnimationComponent && { as: href ? Link : asProp }),
+    ...(href && { href, 'aria-label': `View ${title}` }),
+  }
+
+  return (
+    <Comp
+      {...compProps}
+      {...(animationProps as PolymorphicProps)}
+      {...(props as PolymorphicProps)}
+    >
+      {cardBody}
     </Comp>
   )
 }
