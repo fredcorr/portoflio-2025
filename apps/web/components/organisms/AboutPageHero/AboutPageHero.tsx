@@ -7,11 +7,7 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
-import { withNoSSR } from '@/components/hoc/with-no-ssr'
-
-const AboutBackgroundHelixPulseCascade = withNoSSR(
-  () => import('@/components/molecules/AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade')
-)
+import { AboutBackgroundHelixPulseCascade } from '@/components/molecules/lazy-backgrounds'
 import { SlideDirection, SlideIn } from '@/components/animation/SlideIn/SlideIn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
