@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
+import 'swiper/css'
+import 'swiper/css/effect-creative'
 import { A11y, Autoplay, EffectCreative } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type SwiperType from 'swiper'

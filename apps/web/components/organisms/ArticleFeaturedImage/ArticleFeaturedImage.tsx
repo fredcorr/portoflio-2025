@@ -29,6 +29,7 @@ const ArticleFeaturedImage: React.FC<Props> = ({ heroImage, className }) => {
             src={imageUrl}
             alt={imageAlt}
             fill
+            priority
             sizes="(min-width: 1440px) 1440px, 100vw"
             className="object-cover"
             wrapperClassName="absolute inset-0"

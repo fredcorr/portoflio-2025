@@ -15,7 +15,7 @@ import { getPageSchemas } from '@/utils/get-page-schemas'
 import getSettings from '@/utils/get-settings'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 
-export const revalidate = 10
+export const revalidate = 3600
 
 interface PageProps {
   params: Promise<{
