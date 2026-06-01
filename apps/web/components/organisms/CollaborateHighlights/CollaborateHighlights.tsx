@@ -54,6 +54,7 @@ const CollaborateHighlights = ({
                 title={itemTitle ?? ''}
                 subtitle={subtitle}
                 subtitleSize={RichTextSize.Md}
+                as="li"
                 AnimationComponent={SlideInStagger}
                 spacing={CardSpacing.Compact}
                 iconName={icon}

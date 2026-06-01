@@ -61,6 +61,7 @@ const Process = ({
                 subtitle={step.subtitle}
                 subtitleSize={RichTextSize.Md}
                 spacing={CardSpacing.Compact}
+                as="li"
                 AnimationComponent={FadeIn}
                 style={{ gridRow: `${index + 1} / span 1` }}
                 className={cn(
