@@ -3,13 +3,12 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
 import getSettings from '@/utils/get-settings'
 import Icon from '@/components/atoms/Icon/Icon'
-import dynamic from 'next/dynamic'
+import { withNoSSR } from '@/components/hoc/with-no-ssr'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
 
-const ThreeBackgroundTunnel = dynamic(
-  () => import('@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'),
-  { ssr: false }
+const ThreeBackgroundTunnel = withNoSSR(
+  () => import('@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel')
 )
 
 interface HomePageHeroProps extends HomePageHeroComponent {
