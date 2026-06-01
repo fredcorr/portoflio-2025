@@ -7,7 +7,12 @@ import { makeComponentId } from '@/utils/makeComponentId'
 import { getContactEmail } from '@/utils/get-contact-email'
 import Icon from '@/components/atoms/Icon/Icon'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
-import AboutBackgroundHelixPulseCascade from '@/components/molecules/AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade'
+import dynamic from 'next/dynamic'
+
+const AboutBackgroundHelixPulseCascade = dynamic(
+  () => import('@/components/molecules/AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade'),
+  { ssr: false }
+)
 import { SlideDirection, SlideIn } from '@/components/animation/SlideIn/SlideIn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 

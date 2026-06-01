@@ -21,7 +21,7 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
   const deck = props.seoDescription
 
   return (
-    <>
+    <article>
       <ArticleIntro
         title={title}
         dateLabel={dateLabel}
@@ -52,7 +52,7 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
           componentIndex={index}
         />
       ))}
-    </>
+    </article>
   )
 }
 

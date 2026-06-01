@@ -3,9 +3,14 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import OverlapAnimation from '@/components/hoc/OverlapAnimation'
 import getSettings from '@/utils/get-settings'
 import Icon from '@/components/atoms/Icon/Icon'
-import ThreeBackgroundTunnel from '@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'
+import dynamic from 'next/dynamic'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
+
+const ThreeBackgroundTunnel = dynamic(
+  () => import('@/components/molecules/ThreeBackgroundTunnel/ThreeBackgroundTunnel'),
+  { ssr: false }
+)
 
 interface HomePageHeroProps extends HomePageHeroComponent {
   scrollTargetId?: string
