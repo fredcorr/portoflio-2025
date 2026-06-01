@@ -68,6 +68,7 @@ const Cards = ({
               title={`• ${item.title || `Card ${index + 1}`}`}
               subtitle={item.subtitle}
               subtitleSize={RichTextSize.Lg}
+              as="li"
               className="h-full pr-4"
               AnimationComponent={FadeIn}
             />

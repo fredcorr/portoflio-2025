@@ -51,6 +51,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   subtitleSize?: RichTextSize
   titleSize?: CardTitleSize
   spacing?: CardSpacing
+  as?: React.ElementType
   href?: string
   image?: SanityImage
   iconName?: string
@@ -62,8 +63,6 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   indexAboveImage?: boolean
   imageShadow?: boolean
   priority?: boolean
-  // Component slot: any animation component (FadeIn, ScaleIn, SlideIn, etc.)
-  // Card resolves `as` to Link or 'article' — the animation handles the rest.
   AnimationComponent?: React.ComponentType<PolymorphicProps>
   animationProps?: Record<string, unknown>
 }
@@ -79,6 +78,7 @@ const Card = ({
   subtitleSize,
   titleSize = CardTitleSize.Medium,
   spacing = CardSpacing.Cozy,
+  as: asProp = 'article',
   href,
   image,
   iconName,
@@ -105,7 +105,7 @@ const Card = ({
   const subtitleBlocks = normalizePortableText(subtitle)
 
   const Comp = (AnimationComponent ??
-    (href ? Link : 'article')) as React.ComponentType<PolymorphicProps>
+    (href ? Link : asProp)) as React.ComponentType<PolymorphicProps>
 
   const compClassName = cn(
     'group flex bg-transparent h-full flex-col',
@@ -121,7 +121,7 @@ const Card = ({
 
   const compProps: PolymorphicProps = {
     className: compClassName,
-    ...(AnimationComponent && { as: href ? Link : 'article' }),
+    ...(AnimationComponent && { as: href ? Link : asProp }),
     ...(href && { href, 'aria-label': `View ${title}` }),
   }
 
