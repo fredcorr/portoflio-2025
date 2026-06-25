@@ -1,7 +1,6 @@
-import type {
-  PortableTextBlock,
-  PortableTextValue,
-} from '@portfolio/types/studio'
+import type { PortableTextBlock } from '@portabletext/types'
+
+export type PortableTextValue = PortableTextBlock[]
 
 type BlockChild = NonNullable<PortableTextBlock['children']>[number]
 
@@ -44,7 +43,6 @@ const DECORATOR_PREFIX: Record<string, string> = {
   strong: '**',
 }
 
-// Serialize a single span, applying decorators then any link annotation.
 const serializeSpan = (
   span: BlockChild,
   markDefs: PortableTextBlock['markDefs']
@@ -90,7 +88,6 @@ const STYLE_PREFIX: Record<string, string> = {
   h2: '## ',
 }
 
-// Render a standard block as a heading, list item, or paragraph.
 const serializeStandardBlock = (block: PortableTextBlock): string => {
   const content = serializeChildren(block)
 
@@ -122,12 +119,6 @@ const serializeCodeBlock = (block: CodeBlock): string => {
   return `\`\`\`${language}\n${code}\n\`\`\``
 }
 
-/**
- * Convert a Portable Text value to Markdown suitable for the Medium and
- * Dev.to publishing APIs. Handles headings, the strong/em/code decorators,
- * link annotations, bullet/numbered lists, and the custom `pullQuote`
- * (blockquote) and `codeBlock` (fenced) block types.
- */
 export const portableTextToMarkdown = (
   blocks: PortableTextValue | undefined | null
 ): string => {

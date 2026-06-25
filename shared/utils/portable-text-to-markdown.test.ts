@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import type { PortableTextValue } from '@portfolio/types/studio'
+import type { PortableTextValue } from './portable-text-to-markdown'
 import { portableTextToMarkdown } from './portable-text-to-markdown'
 
 interface BlockOverrides {

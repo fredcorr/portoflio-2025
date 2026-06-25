@@ -14,8 +14,6 @@ import {
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 import { dashboardWidgets } from './dashboard'
-import { PageTypeName } from '@portfolio/types/base'
-import { PublishExternallyAction } from './actions/publish-externally/PublishExternallyAction'
 
 if (!process.env.SANITY_STUDIO_PROJECT_ID) {
   throw new Error('Missing SANITY_STUDIO_PROJECT_ID environment variable')
@@ -70,9 +68,6 @@ export default defineConfig({
           actionItem =>
             actionItem.action && SINGLETON_ACTIONS.has(actionItem.action)
         )
-      }
-      if (context.schemaType === PageTypeName.ArticlePage) {
-        return [...prev, PublishExternallyAction]
       }
       return prev
     },

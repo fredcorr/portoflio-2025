@@ -11,7 +11,9 @@ import { defineField, defineType } from 'sanity'
 import Media from '@components/atoms/media'
 import List from '@components/atoms/list'
 import Block from '@components/atoms/block'
+import Toggle from '@components/atoms/toggle'
 import PublishedLinkInput from '@components/atoms/published-link-input'
+import MediumSyndicationInput from '@components/atoms/medium-syndication-input'
 
 const Article = defineType({
   name: PageTypeName.ArticlePage,
@@ -53,9 +55,16 @@ const Article = defineType({
       title: 'Medium URL',
       type: 'url',
       description:
-        'Paste the article URL here after publishing it on Medium. Renders as a clickable link.',
+        'Copy the Markdown, paste it into the Medium editor, then save the published URL here.',
       fieldset: syndicationFieldset.name,
-      components: { input: PublishedLinkInput },
+      components: { input: MediumSyndicationInput },
+    }),
+    Toggle({
+      name: 'devtoSyndicate',
+      title: 'Publish to Dev.to',
+      description:
+        'Toggle on then publish the document to syndicate to Dev.to. Toggle off then publish to unpublish.',
+      fieldset: syndicationFieldset.name,
     }),
     defineField({
       name: 'devtoPublishedUrl',

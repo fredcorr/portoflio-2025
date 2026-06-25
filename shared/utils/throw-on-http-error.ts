@@ -1,15 +1,3 @@
-/**
- * Guard for `fetch()` calls: when the response is not ok, parses a
- * human-readable message from the body and throws. Agnostic of any particular
- * API, so it can guard any async call that must succeed (external publishing,
- * webhooks, etc.).
- *
- *   const res = await fetch(url)
- *   await throwOnHttpError(res, 'Dev.to')
- *
- * @param response The fetch Response to check.
- * @param context  Optional label prefixed to the error message (e.g. the API name).
- */
 const parseErrorMessage = async (response: Response): Promise<string> => {
   try {
     const body = await response.json()
