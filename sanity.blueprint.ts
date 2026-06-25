@@ -8,7 +8,7 @@ export default defineBlueprint({
   resources: [
     defineDocumentFunction({
       name: 'syndicate-devto',
-      src: 'functions/syndicate-devto/index.ts',
+      src: './functions/syndicate-devto',
       event: {
         on: ['create', 'update'],
         filter:

@@ -9,8 +9,15 @@ Automatically syndicates articles to Dev.to when the **"Publish to Dev.to"** tog
 ### Prerequisites
 
 - Node 24+
-- `@sanity/blueprints` CLI (installed via root `package.json`)
 - A Dev.to API key (generated in Dev.to settings → API Keys)
+
+> **Run every command below from the repo root** (next to `sanity.blueprint.ts`
+> and `package-lock.json`) — never from inside `apps/studio`.
+
+**Dependencies are project-level.** `@sanity/client` and `@sanity/functions` are
+declared in the **root** `package.json` (this is an npm workspace, so the
+function resolves them from the root install). Do **not** add a per-function
+`package.json` — mixing function-level and project-level deps breaks the deploy.
 
 ### Setup
 
@@ -24,7 +31,10 @@ Automatically syndicates articles to Dev.to when the **"Publish to Dev.to"** tog
    npx sanity blueprints deploy
    ```
 
-   The function is scoped to its own project's datasets automatically — no project ID or dataset configuration is required. To limit it to a single dataset, add `&& sanity::dataset() == "<name>"` to the filter in `sanity.blueprint.ts`.
+   Project/dataset are resolved from the `.sanity/` stack config created by
+   `blueprints init` — no env setup needed for deploy. The function is scoped to
+   its own project's datasets automatically; to limit it to one dataset, add
+   `&& sanity::dataset() == "<name>"` to the filter in `sanity.blueprint.ts`.
 
 2. **Set the Dev.to API key as a function environment variable:**
 
@@ -35,10 +45,24 @@ Automatically syndicates articles to Dev.to when the **"Publish to Dev.to"** tog
    > The syntax is `sanity functions env <add|list|remove> <function-name> <key> <value>`.
    > This only works after the blueprint is deployed (step 1), since the function must exist first.
 
+### Local testing
+
+`functions test` is the only command that needs the project/dataset, so pass them
+as flags (we deliberately keep no root CLI config). Local runs are
+**side-effect-free**: the function logs what it *would* do and skips the real
+Dev.to call and the document patch.
+
+```bash
+npx sanity functions test syndicate-devto --event update \
+  --project-id 4u0p3u30 --dataset develop \
+  --data-before '{"_id":"a","_type":"article","devtoSyndicate":false}' \
+  --data-after  '{"_id":"a","_type":"article","title":"T","devtoSyndicate":true,"articleContent":[]}'
+```
+
 ### Viewing logs
 
 ```bash
-npx sanity functions logs syndicate-devto
+npx sanity functions logs syndicate-devto --watch
 ```
 
 ### How it works

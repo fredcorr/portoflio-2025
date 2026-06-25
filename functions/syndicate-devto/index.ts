@@ -40,11 +40,20 @@ export const handler = documentEventHandler(async ({ context, event }) => {
   })
 
   if (wantsSyndicated) {
-    const key = getDevtoKey()
     const markdown = portableTextToMarkdown(doc.articleContent)
     const canonicalPath = doc.slug?.current
       ? `https://fredcorr.com/journals/${doc.slug.current}`
       : undefined
+
+    // Local test runs (`functions test`) must not publish for real.
+    if (context.local) {
+      console.log(
+        `[local] would publish "${doc.title ?? 'Untitled'}" to Dev.to (${markdown.length} chars of markdown); skipping API call and document patch.`
+      )
+      return
+    }
+
+    const key = getDevtoKey()
 
     const response = await fetch(`${DEVTO_API}/articles`, {
       method: 'POST',
@@ -73,12 +82,20 @@ export const handler = documentEventHandler(async ({ context, event }) => {
         devtoPublishedUrl: result.url,
         devtoArticleId: String(result.id),
       })
-      .commit({ dryRun: context.local })
+      .commit()
 
     return
   }
 
-  // devtoSyndicate is off but article was previously synced → unpublish
+  // devtoSyndicate is off but article was previously synced → unpublish.
+  // Local test runs must not call Dev.to or patch the document.
+  if (context.local) {
+    console.log(
+      `[local] would unpublish Dev.to article ${doc.devtoArticleId}; skipping API call and document patch.`
+    )
+    return
+  }
+
   const key = getDevtoKey()
   const response = await fetch(`${DEVTO_API}/articles/${doc.devtoArticleId}`, {
     method: 'PUT',
@@ -95,5 +112,5 @@ export const handler = documentEventHandler(async ({ context, event }) => {
   await client
     .patch(doc._id)
     .unset(['devtoPublishedUrl', 'devtoArticleId'])
-    .commit({ dryRun: context.local })
+    .commit()
 })
