@@ -52,9 +52,9 @@ const Article = defineType({
       name: 'mediumPublishedUrl',
       title: 'Medium URL',
       type: 'url',
-      description: 'Set automatically when the article is published to Medium.',
+      description:
+        'Paste the article URL here after publishing it on Medium. Renders as a clickable link.',
       fieldset: syndicationFieldset.name,
-      readOnly: true,
       components: { input: PublishedLinkInput },
     }),
     defineField({

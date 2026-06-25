@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from '@sanity/ui'
-import { LaunchIcon } from '@sanity/icons'
+import { CheckmarkIcon, CopyIcon, LaunchIcon } from '@sanity/icons'
 import { useClient } from 'sanity'
 import type { SanityDocument } from 'sanity'
 import type { PortableTextValue } from '@portfolio/types/studio'
@@ -18,9 +18,10 @@ import { portableTextToMarkdown } from '@utils/portable-text-to-markdown'
 import {
   ExternalPublishError,
   publishToDevto,
-  publishToMedium,
   unpublishFromDevto,
 } from '@utils/external-publishers'
+
+const MEDIUM_EDITOR_URL = 'https://medium.com/new-story'
 
 const API_VERSION = '2024-10-01'
 
@@ -68,30 +69,25 @@ export function PublishExternallyModal(props: PublishExternallyModalProps) {
     [doc.title, doc.articleContent, doc.tags, doc.slug?.current]
   )
 
-  const [mediumUrl, setMediumUrl] = useState(doc.mediumPublishedUrl)
   const [devtoUrl, setDevtoUrl] = useState(doc.devtoPublishedUrl)
 
-  const [mediumPhase, setMediumPhase] = useState<Phase>('idle')
-  const [mediumError, setMediumError] = useState<string>()
+  const [copied, setCopied] = useState(false)
+  const [copyError, setCopyError] = useState<string>()
   const [devtoPhase, setDevtoPhase] = useState<Phase>('idle')
   const [devtoError, setDevtoError] = useState<string>()
 
-  const handleMediumPublish = useCallback(async () => {
-    setMediumPhase('working')
-    setMediumError(undefined)
+  const handleCopyMarkdown = useCallback(async () => {
     try {
-      const result = await publishToMedium(payload)
-      await client
-        .patch(targetId)
-        .set({ mediumPublishedUrl: result.url })
-        .commit()
-      setMediumUrl(result.url)
-      setMediumPhase('idle')
-    } catch (error) {
-      setMediumError(errorMessage(error))
-      setMediumPhase('error')
+      await navigator.clipboard.writeText(payload.markdown)
+      setCopyError(undefined)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2000)
+    } catch {
+      setCopyError(
+        'Could not access the clipboard. Copy the Markdown manually.'
+      )
     }
-  }, [client, payload, targetId])
+  }, [payload.markdown])
 
   const handleDevtoPublish = useCallback(async () => {
     setDevtoPhase('working')
@@ -136,18 +132,44 @@ export function PublishExternallyModal(props: PublishExternallyModalProps) {
         independent.
       </Text>
 
-      <PlatformSection
-        title="Medium"
-        published={Boolean(mediumUrl)}
-        url={mediumUrl}
-        phase={mediumPhase}
-        error={mediumError}
-        confirmLabel="Publish to Medium"
-        onStart={() => setMediumPhase('confirming')}
-        onCancel={() => setMediumPhase('idle')}
-        onConfirm={handleMediumPublish}
-        onRetry={() => setMediumPhase('confirming')}
-      />
+      <Card padding={4} radius={2} border>
+        <Stack space={3}>
+          <Text size={2} weight="semibold">
+            Medium
+          </Text>
+          <Text size={1} muted>
+            Medium retired its publishing API. Copy the article as Markdown and
+            paste it into the Medium editor, then save the resulting link in the
+            “Medium URL” field on the article.
+          </Text>
+
+          {copyError && (
+            <Card padding={3} radius={2} tone="critical" border>
+              <Text size={1}>{copyError}</Text>
+            </Card>
+          )}
+
+          <Inline space={2}>
+            <Button
+              tone="primary"
+              icon={copied ? CheckmarkIcon : CopyIcon}
+              text={copied ? 'Copied!' : 'Copy Markdown'}
+              fontSize={1}
+              onClick={handleCopyMarkdown}
+            />
+            <Button
+              as="a"
+              href={MEDIUM_EDITOR_URL}
+              target="_blank"
+              rel="noreferrer"
+              mode="ghost"
+              icon={LaunchIcon}
+              text="Open Medium editor"
+              fontSize={1}
+            />
+          </Inline>
+        </Stack>
+      </Card>
 
       <PlatformSection
         title="Dev.to"
