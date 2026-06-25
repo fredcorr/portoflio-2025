@@ -45,6 +45,16 @@ export const handler = documentEventHandler(async ({ context, event }) => {
       ? `https://fredcorr.com/journals/${doc.slug.current}`
       : undefined
 
+    // Dev.to tags must be alphanumeric only (no spaces/punctuation) and capped
+    // at 4. Lowercase, strip everything else, drop empties, dedupe.
+    const tags = [
+      ...new Set(
+        (doc.tags ?? [])
+          .map(tag => tag.toLowerCase().replace(/[^a-z0-9]/g, ''))
+          .filter(Boolean)
+      ),
+    ].slice(0, 4)
+
     // Local test runs (`functions test`) must not publish for real.
     if (context.local) {
       console.log(
@@ -67,7 +77,7 @@ export const handler = documentEventHandler(async ({ context, event }) => {
           title: doc.title ?? 'Untitled',
           body_markdown: markdown,
           published: true,
-          tags: (doc.tags ?? []).slice(0, 4),
+          tags,
           canonical_url: canonicalPath,
         },
       }),
