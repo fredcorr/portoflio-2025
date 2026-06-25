@@ -5,7 +5,8 @@
   "packageManager": "npm@10.9.2",
   "workspaces": [
     "apps/*",
-    "shared/*"
+    "shared/*",
+    "functions/*"
   ],
   "scripts": {
     "dev": "turbo run dev --ui=tui",
