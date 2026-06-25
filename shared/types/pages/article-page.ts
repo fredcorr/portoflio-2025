@@ -14,4 +14,7 @@ export interface ArticlePageDocument extends BasePageDocument {
   editionNumber?: number
   relatedArticles?: RelatedArticle[]
   author?: AuthorData
+  mediumPublishedUrl?: string
+  devtoPublishedUrl?: string
+  devtoArticleId?: string
 }
