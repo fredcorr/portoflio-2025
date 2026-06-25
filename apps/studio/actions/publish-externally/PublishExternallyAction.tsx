@@ -5,7 +5,7 @@ import type {
   DocumentActionProps,
   SanityDocument,
 } from 'sanity'
-import { PublishExternallyModal } from './PublishExternallyModal'
+import { PublishExternallyModal } from '@structure/ui/PublishExternallyModal'
 
 export const PublishExternallyAction: DocumentActionComponent = (
   props: DocumentActionProps

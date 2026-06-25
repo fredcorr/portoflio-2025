@@ -8,6 +8,8 @@
 // API rejects cross-origin requests, route them through a Studio-side proxy
 // instead (see the implementation plan).
 
+import { throwOnHttpError } from '@utils/throw-on-http-error'
+
 const DEVTO_API = 'https://dev.to/api'
 
 export interface ArticlePayload {
@@ -43,20 +45,6 @@ const getDevtoKey = (): string => {
   return key
 }
 
-const readError = async (response: Response): Promise<string> => {
-  try {
-    const body = await response.json()
-    return (
-      body?.errors?.error ||
-      body?.error ||
-      body?.message ||
-      `Request failed with status ${response.status}.`
-    )
-  } catch {
-    return `Request failed with status ${response.status}.`
-  }
-}
-
 export const publishToDevto = async (
   payload: ArticlePayload
 ): Promise<PublishResult> => {
@@ -80,9 +68,7 @@ export const publishToDevto = async (
     }),
   })
 
-  if (!response.ok) {
-    throw new ExternalPublishError('devto', await readError(response))
-  }
+  await throwOnHttpError(response, 'Dev.to')
 
   const result = await response.json()
   const url = result?.url
@@ -110,7 +96,5 @@ export const unpublishFromDevto = async (articleId: string): Promise<void> => {
     body: JSON.stringify({ article: { published: false } }),
   })
 
-  if (!response.ok) {
-    throw new ExternalPublishError('devto', await readError(response))
-  }
+  await throwOnHttpError(response, 'Dev.to')
 }
