@@ -24,7 +24,7 @@ const getDevtoKey = (): string => {
   return key
 }
 
-export default documentEventHandler(async (event, context) => {
+export const handler = documentEventHandler(async ({ context, event }) => {
   const doc = event.data as ArticleDocument
 
   const wantsSyndicated = doc.devtoSyndicate === true
