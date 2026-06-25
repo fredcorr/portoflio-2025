@@ -1,18 +1,25 @@
 import { createBaseDocumentFields, seoFields } from '@schemas/compositions'
-import { baseDocumentFieldset, seoFieldset } from '@schemas/fieldsets'
+import {
+  baseDocumentFieldset,
+  seoFieldset,
+  syndicationFieldset,
+} from '@schemas/fieldsets'
 import { PageTypeName } from '@portfolio/types/base'
 import { MdOutlineArticle } from 'react-icons/md'
 import { componentsByPageType } from '..'
-import { defineType } from 'sanity'
+import { defineField, defineType } from 'sanity'
 import Media from '@components/atoms/media'
 import List from '@components/atoms/list'
 import Block from '@components/atoms/block'
+import Toggle from '@components/atoms/toggle'
+import PublishedLinkInput from '@components/atoms/published-link-input'
+import MediumSyndicationInput from '@components/atoms/medium-syndication-input'
 
 const Article = defineType({
   name: PageTypeName.ArticlePage,
   title: 'Article',
   type: 'document',
-  fieldsets: [baseDocumentFieldset, seoFieldset],
+  fieldsets: [baseDocumentFieldset, seoFieldset, syndicationFieldset],
   fields: [
     ...createBaseDocumentFields({
       slug: {
@@ -43,6 +50,37 @@ const Article = defineType({
     ),
     componentsByPageType(PageTypeName.ArticlePage),
     ...seoFields.all,
+    defineField({
+      name: 'mediumPublishedUrl',
+      title: 'Medium URL',
+      type: 'url',
+      description:
+        'Copy the Markdown, paste it into the Medium editor, then save the published URL here.',
+      fieldset: syndicationFieldset.name,
+      components: { input: MediumSyndicationInput },
+    }),
+    Toggle({
+      name: 'devtoSyndicate',
+      title: 'Publish to Dev.to',
+      description:
+        'Toggle on then publish the document to syndicate to Dev.to. Toggle off then publish to unpublish.',
+      fieldset: syndicationFieldset.name,
+    }),
+    defineField({
+      name: 'devtoPublishedUrl',
+      title: 'Dev.to URL',
+      type: 'url',
+      description: 'Set automatically when the article is published to Dev.to.',
+      fieldset: syndicationFieldset.name,
+      readOnly: true,
+      components: { input: PublishedLinkInput },
+    }),
+    defineField({
+      name: 'devtoArticleId',
+      title: 'Dev.to article ID',
+      type: 'string',
+      hidden: true,
+    }),
   ],
   preview: {
     select: {

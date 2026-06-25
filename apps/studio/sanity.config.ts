@@ -7,7 +7,10 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import { lucideIconPicker } from '@fredcorr/sanity-plugin-lucide-icon-picker'
 import { media, mediaAssetSource } from 'sanity-plugin-media'
-import { unsplashImageAsset, unsplashAssetSource } from 'sanity-plugin-asset-source-unsplash'
+import {
+  unsplashImageAsset,
+  unsplashAssetSource,
+} from 'sanity-plugin-asset-source-unsplash'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 import { dashboardWidgets } from './dashboard'
@@ -34,7 +37,8 @@ export default defineConfig({
     presentationTool({
       resolve: { locations: locate },
       previewUrl: {
-        initial: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
+        initial:
+          process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
         previewMode: {
           enable: '/api/draft',
         },
@@ -71,8 +75,11 @@ export default defineConfig({
 
   form: {
     image: {
-      assetSources: (previousAssetSources) =>
-        [...previousAssetSources, mediaAssetSource, unsplashAssetSource],
+      assetSources: previousAssetSources => [
+        ...previousAssetSources,
+        mediaAssetSource,
+        unsplashAssetSource,
+      ],
     },
   },
 

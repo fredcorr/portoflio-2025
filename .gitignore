@@ -48,5 +48,8 @@ next-env.d.ts
 # Sanity
 .sanity
 
+# Sanity Functions build output (regenerated on every blueprints deploy)
+functions/**/.build
+
 # Turborepo
 .turbo

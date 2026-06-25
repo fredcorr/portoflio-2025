@@ -1,0 +1,13 @@
+{
+  "name": "@portfolio/utils",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./makeID": "./makeID.ts",
+    "./portable-text-to-markdown": "./portable-text-to-markdown.ts",
+    "./throw-on-http-error": "./throw-on-http-error.ts"
+  }
+}
