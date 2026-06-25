@@ -14,27 +14,26 @@ Automatically syndicates articles to Dev.to when the **"Publish to Dev.to"** tog
 
 ### Setup
 
-1. **Set the Dev.to API key as a function environment variable:**
+1. **Deploy the blueprint** (must come before setting env vars):
+
+   ```bash
+   # Preview first (read-only, provisions nothing)
+   npx sanity blueprints plan
+
+   # Apply
+   npx sanity blueprints deploy
+   ```
+
+   The function is scoped to its own project's datasets automatically — no project ID or dataset configuration is required. To limit it to a single dataset, add `&& sanity::dataset() == "<name>"` to the filter in `sanity.blueprint.ts`.
+
+2. **Set the Dev.to API key as a function environment variable:**
 
    ```bash
    npx sanity functions env add syndicate-devto DEVTO_KEY <your-devto-api-key>
    ```
 
    > The syntax is `sanity functions env <add|list|remove> <function-name> <key> <value>`.
-   > If the CLI can't find `syndicate-devto`, run the blueprint deploy (step 3) first, then set the env var.
-
-2. **Configure the blueprint** — edit `sanity.blueprint.ts` at the repo root and set your `projectId` and `dataset`, or set these environment variables before deploying:
-
-   ```bash
-   export SANITY_PROJECT_ID=your-project-id
-   export SANITY_DATASET=production
-   ```
-
-3. **Deploy the blueprint:**
-
-   ```bash
-   npx sanity blueprints deploy
-   ```
+   > This only works after the blueprint is deployed (step 1), since the function must exist first.
 
 ### Viewing logs
 
