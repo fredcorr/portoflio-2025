@@ -1,7 +1,7 @@
 import type { JournalListingComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { toHeadingTag } from '@/components/atoms/Heading/Heading'
-import CategoryListingClient from '@/components/hoc/CategoryListingClient'
+import JournalListingClient from '@/components/hoc/JournalListingClient'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
@@ -70,7 +70,7 @@ export default function JournalListing({
       </div>
 
       {initialData && (
-        <CategoryListingClient initialData={initialData} apiEndpoint="/api/journal" />
+        <JournalListingClient initialData={initialData} apiEndpoint="/api/journal" />
       )}
     </ComponentLayout>
   )
