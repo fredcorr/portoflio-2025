@@ -2,13 +2,20 @@
 
 import { useState } from 'react'
 import useSWR from 'swr'
-import JournalCard from '@/components/molecules/JournalCard/JournalCard'
+import Card from '@/components/molecules/Card/Card'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 import { FadeInStagger } from '@/components/animation/FadeIn/FadeInStagger'
+import { formatDate } from '@/utils/format-date'
 import type {
   JournalListingArticle,
   JournalListingInitialData,
 } from '@portfolio/types/components'
+
+const DATE_FORMAT: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+}
 
 const PAGE_SIZE = 6
 
@@ -172,7 +179,23 @@ export default function CategoryListingClient({
           >
             {articles.map((article, i) => (
               <FadeInStagger key={article._id}>
-                <JournalCard article={article} priority={i < 3} />
+                <Card
+                  as="article"
+                  href={article.slug?.current ? `/${article.slug.current}` : undefined}
+                  title={article.title}
+                  image={article.cardImage}
+                  imageAspectClassName="aspect-[3/2]"
+                  indexLabel={
+                    article.editionNumber != null
+                      ? `N° ${String(article.editionNumber).padStart(3, '0')}`
+                      : undefined
+                  }
+                  tag={article.tags?.[0]}
+                  footerDate={formatDate({ value: article._createdAt, options: DATE_FORMAT }) ?? undefined}
+                  footerReadTime={article.readTime ?? undefined}
+                  priority={i < 3}
+                  className="hover:-translate-y-[3px] hover:shadow-[0_12px_32px_rgba(0,0,0,0.09)]"
+                />
               </FadeInStagger>
             ))}
           </StaggerChildren>
