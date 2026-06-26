@@ -24,7 +24,7 @@ import Form from './components/organisms/form'
 import AnimatedStrapline from './components/organisms/animated-strapline'
 import WorkIndex from './components/organisms/work-index'
 import Settings from './components/settings'
-import { JournalsFeed } from './components/organisms'
+import { JournalsFeed, JournalListing } from './components/organisms'
 
 export const schemaTypes = [
   LinkAnnotation,
@@ -54,4 +54,5 @@ export const schemaTypes = [
   BlockText,
   HomePageHero,
   JournalsFeed,
+  JournalListing,
 ]

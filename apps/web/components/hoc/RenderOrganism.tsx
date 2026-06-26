@@ -14,6 +14,7 @@ import {
   HomePageHero,
   ImageGallery,
   JournalsFeed,
+  JournalListing,
   Process,
   Stats,
   ToolSet,
@@ -77,6 +78,8 @@ export const RenderOrganism = ({
       return <WorkIndex {...componentWithContext} />
     case ComponentTypeName.JournalsFeed:
       return <JournalsFeed {...componentWithContext} />
+    case ComponentTypeName.JournalListing:
+      return <JournalListing {...componentWithContext} />
     default:
       return null
   }

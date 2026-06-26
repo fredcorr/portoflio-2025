@@ -17,6 +17,7 @@ import { testimonialsFields } from './testimonials'
 import { toolSetFields } from './tool-set'
 import { workIndexFields } from './work-index'
 import { journalsFeedFields } from './journals-feed'
+import { journalListingFields } from './journal-listing'
 
 export {
   homepageHeroFields,
@@ -36,6 +37,7 @@ export {
   toolSetFields,
   workIndexFields,
   journalsFeedFields,
+  journalListingFields,
 }
 
 export const pageComponentFields = groq`
@@ -90,6 +92,9 @@ export const pageComponentFields = groq`
     },
     _type == "${ComponentTypeName.JournalsFeed}" => {
       ${journalsFeedFields}
+    },
+    _type == "${ComponentTypeName.JournalListing}" => {
+      ${journalListingFields}
     },
     true => {
       _type

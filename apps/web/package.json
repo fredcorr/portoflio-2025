@@ -23,6 +23,7 @@
     "focus-trap-react": "^10.3.0",
     "framer-motion": "^11.18.2",
     "groq": "^3.99.0",
+    "highlight.js": "^11.11.1",
     "lucide-react": "^0.469.0",
     "next": "^16.1.7",
     "react": "^19.2.4",
@@ -30,8 +31,8 @@
     "react-google-recaptcha-v3": "^1.11.0",
     "react-hook-form": "^7.53.0",
     "react-remove-scroll": "^2.6.1",
-    "highlight.js": "^11.11.1",
     "swiper": "^12.1.2",
+    "swr": "^2.4.2",
     "tailwind-merge": "^2.6.0",
     "three": "^0.167.1",
     "yup": "^1.4.0"

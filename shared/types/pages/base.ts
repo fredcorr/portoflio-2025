@@ -17,6 +17,7 @@ import type {
   AnimatedStraplineComponent,
   WorkIndexComponent,
   JournalsFeedComponent,
+  JournalListingComponent,
 } from '../components'
 
 export type PageComponent =
@@ -37,6 +38,7 @@ export type PageComponent =
   | AnimatedStraplineComponent
   | WorkIndexComponent
   | JournalsFeedComponent
+  | JournalListingComponent
 
 export interface BasePageDocument extends BaseDocument {
   title?: string
