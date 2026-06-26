@@ -17,8 +17,9 @@ interface ApiResponse {
   total: number
 }
 
-interface JournalListingClientProps {
+interface CategoryListingClientProps {
   initialData: JournalListingInitialData
+  apiEndpoint: string
 }
 
 async function fetcher(url: string): Promise<ApiResponse> {
@@ -27,10 +28,10 @@ async function fetcher(url: string): Promise<ApiResponse> {
   return res.json() as Promise<ApiResponse>
 }
 
-function buildKey(category: string, page: number): string {
+function buildKey(apiEndpoint: string, category: string, page: number): string {
   const params = new URLSearchParams({ page: String(page) })
   if (category !== 'All') params.set('category', category)
-  return `/api/journal?${params.toString()}`
+  return `${apiEndpoint}?${params.toString()}`
 }
 
 function buildPageNumbers(current: number, total: number): (number | '...')[] {
@@ -66,16 +67,17 @@ function SkeletonCard() {
   )
 }
 
-export default function JournalListingClient({
+export default function CategoryListingClient({
   initialData,
-}: JournalListingClientProps) {
+  apiEndpoint,
+}: CategoryListingClientProps) {
   const [activeCategory, setActiveCategory] = useState('All')
   const [page, setPage] = useState(1)
 
   const isInitialState = activeCategory === 'All' && page === 1
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse>(
-    isInitialState ? null : buildKey(activeCategory, page),
+    isInitialState ? null : buildKey(apiEndpoint, activeCategory, page),
     fetcher
   )
 
