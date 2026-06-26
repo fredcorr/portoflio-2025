@@ -20,7 +20,7 @@ const journalArticleFields = groq`
 
 const articleBase = groq`_type == "article" && defined(slug.current) && ${PUBLISHED_FILTER}`
 
-export const journalListingFields = groq`
+export const journalsListingFields = groq`
   ${baseComponentFields},
   "title": ${title},
   kicker,

@@ -16,7 +16,7 @@ import Form from './organisms/form'
 import AnimatedStrapline from './organisms/animated-strapline'
 import WorkIndex from './organisms/work-index'
 import JournalsFeed from './organisms/journals-feed'
-import JournalListing from './organisms/journals-listing'
+import JournalsListing from './organisms/journals-listing'
 
 import { type ObjectDefinition } from 'sanity'
 import List from './atoms/list'
@@ -41,7 +41,7 @@ export const components: ComponentCollection = [
   AnimatedStrapline,
   WorkIndex,
   JournalsFeed,
-  JournalListing,
+  JournalsListing,
 ]
 
 export const componentsByPageType = (pageType: PageTypeName) => {

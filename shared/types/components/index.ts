@@ -24,7 +24,7 @@ import type { ArticleRelatedProps, RelatedArticle } from './article-related'
 import type { ArticleFeaturedImageProps } from './article-featured-image'
 import type { WorkIndexComponent, WorkIndexProject } from './work-index'
 import type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
-import type { JournalListingComponent, JournalListingArticle, JournalListingInitialData } from './journal-listing'
+import type { JournalsListingComponent, JournalsListingArticle, JournalsListingInitialData } from './journals-listing'
 
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
@@ -67,7 +67,7 @@ export type { ArticleRelatedProps, RelatedArticle } from './article-related'
 export type { ArticleFeaturedImageProps } from './article-featured-image'
 export type { WorkIndexComponent, WorkIndexProject } from './work-index'
 export type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
-export type { JournalListingComponent, JournalListingArticle, JournalListingInitialData } from './journal-listing'
+export type { JournalsListingComponent, JournalsListingArticle, JournalsListingInitialData } from './journals-listing'
 
 export type Components =
   | HomePageHeroComponent
@@ -87,4 +87,4 @@ export type Components =
   | BlockTextComponent
   | WorkIndexComponent
   | JournalsFeedComponent
-  | JournalListingComponent
+  | JournalsListingComponent

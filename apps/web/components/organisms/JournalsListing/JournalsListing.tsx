@@ -1,12 +1,12 @@
-import type { JournalListingComponent } from '@portfolio/types/components'
+import type { JournalsListingComponent } from '@portfolio/types/components'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { toHeadingTag } from '@/components/atoms/Heading/Heading'
-import JournalListingClient from '@/components/hoc/JournalListingClient'
+import JournalsListingClient from '@/components/hoc/JournalsListingClient'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
-export default function JournalListing({
+export default function JournalsListing({
   _id,
   _key,
   sectionId,
@@ -14,10 +14,10 @@ export default function JournalListing({
   kicker,
   title,
   initialData,
-}: JournalListingComponent) {
+}: JournalsListingComponent) {
   const headingId = makeComponentId({
     value: _id || _key,
-    prefix: 'journal-listing',
+    prefix: 'journals-listing',
   })
 
   const total = initialData?.total ?? 0
@@ -70,7 +70,7 @@ export default function JournalListing({
       </div>
 
       {initialData && (
-        <JournalListingClient initialData={initialData} apiEndpoint="/api/journal" />
+        <JournalsListingClient initialData={initialData} apiEndpoint="/api/journal" />
       )}
     </ComponentLayout>
   )

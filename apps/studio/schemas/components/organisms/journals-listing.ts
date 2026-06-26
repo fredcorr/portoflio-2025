@@ -7,8 +7,8 @@ import { componentFields } from '@schemas/compositions'
 
 const titleField = createTitleField({ name: 'title' })
 
-const JournalListing = defineType({
-  name: ComponentTypeName.JournalListing,
+const JournalsListing = defineType({
+  name: ComponentTypeName.JournalsListing,
   title: 'Journal Listing',
   type: 'object',
   fields: [
@@ -34,4 +34,4 @@ const JournalListing = defineType({
   },
 })
 
-export default JournalListing
+export default JournalsListing

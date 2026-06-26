@@ -11,8 +11,8 @@ import { FadeInStagger } from '@/components/animation/FadeIn/FadeInStagger'
 import { formatDate } from '@/utils/format-date'
 import { cn } from '@/utils/cn'
 import type {
-  JournalListingArticle,
-  JournalListingInitialData,
+  JournalsListingArticle,
+  JournalsListingInitialData,
 } from '@portfolio/types/components'
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
@@ -24,12 +24,12 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 const PAGE_SIZE = 6
 
 interface ApiResponse {
-  articles: JournalListingArticle[]
+  articles: JournalsListingArticle[]
   total: number
 }
 
-interface JournalListingClientProps {
-  initialData: JournalListingInitialData
+interface JournalsListingClientProps {
+  initialData: JournalsListingInitialData
   apiEndpoint: string
 }
 
@@ -58,7 +58,7 @@ const buildPageNumbers = (current: number, total: number): (number | '...')[] =>
   return result
 }
 
-const articleToCardProps = (article: JournalListingArticle, index: number) => ({
+const articleToCardProps = (article: JournalsListingArticle, index: number) => ({
   href: article.slug?.current ? `/${article.slug.current}` : undefined,
   title: article.title,
   image: article.cardImage,
@@ -74,10 +74,10 @@ const articleToCardProps = (article: JournalListingArticle, index: number) => ({
   className: 'hover:-translate-y-[3px] hover:shadow-[0_12px_32px_rgba(0,0,0,0.09)]',
 })
 
-const JournalListingClient = ({
+const JournalsListingClient = ({
   initialData,
   apiEndpoint,
-}: JournalListingClientProps) => {
+}: JournalsListingClientProps) => {
   const [activeCategory, setActiveCategory] = useState('All')
   const [page, setPage] = useState(1)
 
@@ -261,4 +261,4 @@ const JournalListingClient = ({
   )
 }
 
-export default JournalListingClient
+export default JournalsListingClient

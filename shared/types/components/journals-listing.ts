@@ -3,7 +3,7 @@ import type { SanityComponentBase } from './base-component'
 import type { ComponentHeading } from './title'
 import type { SanityImage } from '../sanity'
 
-export interface JournalListingArticle {
+export interface JournalsListingArticle {
   _id: string
   title: string
   slug: { current: string }
@@ -14,15 +14,15 @@ export interface JournalListingArticle {
   cardImage?: SanityImage
 }
 
-export interface JournalListingInitialData {
-  articles: JournalListingArticle[]
+export interface JournalsListingInitialData {
+  articles: JournalsListingArticle[]
   total: number
   categories: string[]
   allTags: string[]
 }
 
-export interface JournalListingComponent extends SanityComponentBase<ComponentTypeName.JournalListing> {
+export interface JournalsListingComponent extends SanityComponentBase<ComponentTypeName.JournalsListing> {
   kicker?: string
   title?: ComponentHeading
-  initialData?: JournalListingInitialData
+  initialData?: JournalsListingInitialData
 }
