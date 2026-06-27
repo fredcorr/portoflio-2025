@@ -105,7 +105,17 @@ export const RenderOrganism = ({
     return null
   }
 
-  const render = organismComponents[component._type] as OrganismRenderer
+  // The registry is exhaustive over `ComponentTypeName` at compile time, but the CMS
+  // can still emit a `_type` outside the enum (drafts, legacy, or content authored on
+  // another branch). Fall back to rendering nothing, matching the previous switch's
+  // `default: return null` rather than crashing the render.
+  const render = organismComponents[component._type] as
+    | OrganismRenderer
+    | undefined
+
+  if (!render) {
+    return null
+  }
 
   return render({ ...component, componentIndex }, { nextSectionId })
 }
