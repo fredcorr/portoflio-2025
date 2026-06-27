@@ -1,5 +1,10 @@
 import groq from 'groq'
-import { baseComponentFields, imageFields, titleFields, PUBLISHED_FILTER } from '../fragments'
+import {
+  baseComponentFields,
+  imageFields,
+  titleFields,
+  PUBLISHED_FILTER,
+} from '../fragments'
 
 const title = titleFields('title')
 

@@ -16,12 +16,16 @@ test('ghost variant applies text color classes', () => {
 })
 
 test('outline variant applies border classes', () => {
-  const markup = renderToStaticMarkup(<Button variant="outline">Outline</Button>)
+  const markup = renderToStaticMarkup(
+    <Button variant="outline">Outline</Button>
+  )
   assert.match(markup, /border-foreground\/10/)
 })
 
 test('forwards className', () => {
-  const markup = renderToStaticMarkup(<Button className="custom-class">Btn</Button>)
+  const markup = renderToStaticMarkup(
+    <Button className="custom-class">Btn</Button>
+  )
   assert.match(markup, /custom-class/)
 })
 
