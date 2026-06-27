@@ -24,14 +24,19 @@ How they map: a CSS token becomes a Tailwind utility by dropping the `--color-` 
 
 If a design needs a color or size that isn't defined in `globals.css`, surface it to the user — don't silently hardcode a raw hex/px value.
 
-## Component inventory (reuse before creating)
+## Reusing components (discover, don't trust a list)
 
-Atomic structure is `atoms → molecules → organisms`. Read a component's source for its real props before using it; this list is the map, not the API.
+There is intentionally no hand-maintained component list here — it would drift. The source of truth is the code itself. Atomic structure is `atoms → molecules → organisms`.
 
-- **Atoms** (`components/atoms/`): `Heading` (semantic `h1`–`h6` via `level`), `Image` (`next/image` wrapper, handles `fill`/sizing), `Icon` (renders a `lucide-react` icon by `name`), `RichText` (Portable Text, `RichTextSize` enum), `Input`, `TextArea`, `Select`, `Checkbox`, `Logo`, `ThemeToggle`, `PullQuote`, `Emphasis`, `CodeBlock`, `JsonLdSchema`, `VisualEditing`
-- **Molecules** (`components/molecules/`): `Card`, `Form`, `Modal`, `NavItem`, `Breadcrumbs`, `ArticleMeta`, `Shares`, `FaqItem`, `ToolCard`, `WorkIndexRow`, `AnimatedStatValue`, plus animated backgrounds (`ThreeBackgroundTunnel`, `AboutBackgroundHelixPulseCascade`)
-- **Organisms** (`components/organisms/`): CMS-driven page sections (see the full list in the folder). Adding one is the cross-workspace checklist in the root `CLAUDE.md`.
-- **Utilities:** className merging is `cn` from `@/utils/cn` — use it instead of manual template strings.
+Before building any UI, discover what already exists:
+
+1. **What exists** → one folder per component in `components/atoms/`, `components/molecules/`, `components/organisms/`. List them.
+2. **What it does / its props** → open the candidate component file. The props and implementation are the real API — read them before using a component, or before concluding none fits and creating a new one.
+3. **Organisms specifically** are CMS-driven and have a canonical set: the `ComponentTypeName` enum in `shared/types/base.ts` (each value has a Sanity schema + a folder here). That enum, not a list, is the authoritative roster. Adding one is the cross-workspace checklist in the root `CLAUDE.md`.
+
+Only create a new atom/molecule when nothing existing fits and it's genuinely reusable across the design system.
+
+`cn` (`@/utils/cn`) is the className-merging helper — use it instead of manual template strings.
 
 ## Component architecture
 

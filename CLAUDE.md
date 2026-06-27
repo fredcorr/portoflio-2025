@@ -17,7 +17,7 @@ When editing files under `apps/web/**`, also follow `apps/web/CLAUDE.md`. When e
 
 This is the most common source of drift, so it leads. Before writing UI from any design:
 
-1. **Reuse before you invent.** Map every element of the design onto an existing token, atom, or molecule first. New primitives are the exception. The inventory lives in `apps/web/CLAUDE.md` → *Component inventory*.
+1. **Reuse before you invent.** Map every element of the design onto an existing token, atom, or molecule first. New primitives are the exception. How to discover what exists is in `apps/web/CLAUDE.md` → *Reusing components*.
 2. **Tokens, not raw values.** Convert every hex/px/font from the design into its design token (`bg-primary-400`, `text-heading-1`, `font-heading`). Never paste raw values — they break dark mode. Token list is in `apps/web/CLAUDE.md` → *Design tokens*.
 3. **Pull the real Figma source** (via the Figma MCP) when a node/URL is given, rather than guessing from a screenshot.
 
