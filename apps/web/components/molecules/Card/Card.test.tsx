@@ -8,8 +8,11 @@ import { RichTextSize } from '@/components/atoms/RichText/RichText'
 import Card, { CardSpacing, CardTitleSize } from './Card'
 import type { PolymorphicProps } from '@/types'
 
-const AnimStub = ({ as: As = 'article' as React.ElementType, children, ...rest }: PolymorphicProps) =>
-  React.createElement(As as string, rest, children)
+const AnimStub = ({
+  as: As = 'article' as React.ElementType,
+  children,
+  ...rest
+}: PolymorphicProps) => React.createElement(As as string, rest, children)
 
 const block = (text: string): PortableTextBlock[] => [
   {
@@ -105,7 +108,11 @@ test('renders AnimationComponent as article when no href', () => {
 
 test('renders AnimationComponent as link when href is provided', () => {
   const markup = renderToStaticMarkup(
-    <Card title="Animated Link" href="/projects/test" AnimationComponent={AnimStub} />
+    <Card
+      title="Animated Link"
+      href="/projects/test"
+      AnimationComponent={AnimStub}
+    />
   )
 
   assert.match(markup, /href="\/projects\/test"/)
@@ -131,8 +138,14 @@ test('imageShadow applies shadow and hover shadow transition classes', () => {
     <Card title="Shadow" image={image} imageShadow />
   )
 
-  assert.match(markup, /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/)
-  assert.match(markup, /group-hover:shadow-\[24px_24px_48px_8px_rgba\(128,128,128,0\.69\)\]/)
+  assert.match(
+    markup,
+    /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/
+  )
+  assert.match(
+    markup,
+    /group-hover:shadow-\[24px_24px_48px_8px_rgba\(128,128,128,0\.69\)\]/
+  )
   assert.match(markup, /transition-shadow/)
   assert.match(markup, /duration-\[700ms\]/)
 })

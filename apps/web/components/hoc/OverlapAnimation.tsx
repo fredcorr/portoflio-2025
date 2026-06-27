@@ -9,7 +9,11 @@ interface OverlapAnimationProps {
   stickyClassName?: string
 }
 
-const OverlapAnimation = ({ children, className, stickyClassName }: OverlapAnimationProps) => {
+const OverlapAnimation = ({
+  children,
+  className,
+  stickyClassName,
+}: OverlapAnimationProps) => {
   const innerRef = useRef<HTMLDivElement>(null)
   const [outerHeight, setOuterHeight] = useState('200vh')
   const [stickyTop, setStickyTop] = useState(0)

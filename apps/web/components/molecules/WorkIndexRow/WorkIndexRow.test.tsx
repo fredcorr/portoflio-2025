@@ -14,9 +14,7 @@ const image = {
 }
 
 test('renders title', () => {
-  const markup = renderToStaticMarkup(
-    <WorkIndexRow title="Senta" index={0} />
-  )
+  const markup = renderToStaticMarkup(<WorkIndexRow title="Senta" index={0} />)
   assert.match(markup, /Senta/)
 })
 
@@ -43,7 +41,11 @@ test('renders tag pill', () => {
 
 test('renders description', () => {
   const markup = renderToStaticMarkup(
-    <WorkIndexRow title="Senta" description="Habit tracking with zero friction." index={0} />
+    <WorkIndexRow
+      title="Senta"
+      description="Habit tracking with zero friction."
+      index={0}
+    />
   )
   assert.match(markup, /Habit tracking with zero friction/)
 })
@@ -63,9 +65,7 @@ test('renders image when provided', () => {
 })
 
 test('does not render image element when no image', () => {
-  const markup = renderToStaticMarkup(
-    <WorkIndexRow title="Senta" index={0} />
-  )
+  const markup = renderToStaticMarkup(<WorkIndexRow title="Senta" index={0} />)
   assert.doesNotMatch(markup, /<img/)
 })
 
@@ -78,9 +78,7 @@ test('renders as link when href is provided', () => {
 })
 
 test('does not render aria-label when no href', () => {
-  const markup = renderToStaticMarkup(
-    <WorkIndexRow title="Senta" index={0} />
-  )
+  const markup = renderToStaticMarkup(<WorkIndexRow title="Senta" index={0} />)
   assert.doesNotMatch(markup, /aria-label="View Senta"/)
 })
 
@@ -88,19 +86,18 @@ test('renders shadow class on image wrapper', () => {
   const markup = renderToStaticMarkup(
     <WorkIndexRow title="Senta" image={image} index={0} />
   )
-  assert.match(markup, /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/)
+  assert.match(
+    markup,
+    /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/
+  )
 })
 
 test('first row has no top border', () => {
-  const markup = renderToStaticMarkup(
-    <WorkIndexRow title="Senta" index={0} />
-  )
+  const markup = renderToStaticMarkup(<WorkIndexRow title="Senta" index={0} />)
   assert.doesNotMatch(markup, /border-t border-black/)
 })
 
 test('subsequent rows have top border', () => {
-  const markup = renderToStaticMarkup(
-    <WorkIndexRow title="Crtly" index={1} />
-  )
+  const markup = renderToStaticMarkup(<WorkIndexRow title="Crtly" index={1} />)
   assert.match(markup, /border-t border-black/)
 })

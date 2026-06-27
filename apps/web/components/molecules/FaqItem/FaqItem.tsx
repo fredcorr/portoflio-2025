@@ -48,10 +48,7 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
   })
 
   return (
-    <FadeIn
-      className={cn('w-full', className)}
-      data-molecule="faq-item"
-    >
+    <FadeIn className={cn('w-full', className)} data-molecule="faq-item">
       <button
         id={buttonId}
         type="button"

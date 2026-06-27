@@ -16,7 +16,10 @@ export const journalsFeedMock: JournalsFeedComponent = {
       _id: 'article-1',
       _type: PageTypeName.ArticlePage,
       title: 'On the discipline of restraint.',
-      slug: { _type: 'slug', current: 'journal/on-the-discipline-of-restraint' },
+      slug: {
+        _type: 'slug',
+        current: 'journal/on-the-discipline-of-restraint',
+      },
       tags: ['Craft', 'Essay'],
       _createdAt: '2026-04-14T00:00:00.000Z',
       articleContent: [
@@ -40,7 +43,10 @@ export const journalsFeedMock: JournalsFeedComponent = {
       _id: 'article-2',
       _type: PageTypeName.ArticlePage,
       title: 'Designing for the second click.',
-      slug: { _type: 'slug', current: 'journal/designing-for-the-second-click' },
+      slug: {
+        _type: 'slug',
+        current: 'journal/designing-for-the-second-click',
+      },
       tags: ['UX', 'Essay'],
       _createdAt: '2026-04-02T00:00:00.000Z',
     },
@@ -48,7 +54,10 @@ export const journalsFeedMock: JournalsFeedComponent = {
       _id: 'article-3',
       _type: PageTypeName.ArticlePage,
       title: 'A field guide to quiet typography.',
-      slug: { _type: 'slug', current: 'journal/field-guide-to-quiet-typography' },
+      slug: {
+        _type: 'slug',
+        current: 'journal/field-guide-to-quiet-typography',
+      },
       tags: ['Typography', 'Notebook'],
       _createdAt: '2026-03-19T00:00:00.000Z',
     },

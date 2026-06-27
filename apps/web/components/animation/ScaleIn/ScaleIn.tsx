@@ -19,7 +19,10 @@ export type ScaleInProps<T extends React.ElementType = 'div'> = {
 } & ScaleInOwnProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ScaleInOwnProps | 'as'>
 
-type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & MotionProps, 'children'> & {
+type MotionTagProps = Omit<
+  React.HTMLAttributes<HTMLElement> & MotionProps,
+  'children'
+> & {
   children?: React.ReactNode
 }
 
@@ -35,7 +38,10 @@ const ScaleIn = <T extends React.ElementType = 'div'>({
 }: ScaleInProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionTag = React.useMemo(
-    () => motion.create((as ?? 'div') as React.ElementType) as React.ComponentType<MotionTagProps>,
+    () =>
+      motion.create(
+        (as ?? 'div') as React.ElementType
+      ) as React.ComponentType<MotionTagProps>,
     [as]
   )
 

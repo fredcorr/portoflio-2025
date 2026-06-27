@@ -133,5 +133,8 @@ test('cards use square image, shadow, and above-image badge classes', () => {
 
   assert.match(markup, /aspect-square/)
   assert.match(markup, /mix-blend-difference/)
-  assert.match(markup, /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/)
+  assert.match(
+    markup,
+    /shadow-\[16px_16px_36px_4px_rgba\(128,128,128,0\.54\)\]/
+  )
 })

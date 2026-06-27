@@ -5,7 +5,14 @@ import type { ProjectPageDocument } from '@portfolio/types/pages/project-page'
 import type { ContactPageDocument } from '@portfolio/types/pages/contact-page'
 import type { AboutPageDocument } from '@portfolio/types/pages/about-page'
 import type { HomePageDocument } from '@portfolio/types/pages/home-page'
-import type { ArticleSchema, ContactPageSchema, CreativeWorkSchema, ItemListSchema, ProfilePageSchema, WebSiteSchema } from '@/types/json-schema'
+import type {
+  ArticleSchema,
+  ContactPageSchema,
+  CreativeWorkSchema,
+  ItemListSchema,
+  ProfilePageSchema,
+  WebSiteSchema,
+} from '@/types/json-schema'
 import { PageTypeName } from '@portfolio/types/base'
 import { buildPageUrl } from '@/utils/slug'
 
@@ -36,7 +43,7 @@ export const buildItemListSchema = (
       position: index + 1,
       name: item.title!,
       url: buildPageUrl(siteUrl, item.slug!.current!),
-      ...(item.projectHero?.asset?.url ?? item.seoImage?.asset?.url
+      ...((item.projectHero?.asset?.url ?? item.seoImage?.asset?.url)
         ? { image: item.projectHero?.asset?.url ?? item.seoImage?.asset?.url }
         : {}),
     })),
@@ -77,7 +84,7 @@ const buildArticleSchema = (
         ? { logo: { '@type': 'ImageObject', url: article.seoImage.asset.url } }
         : {}),
     },
-    ...(article.heroImage?.asset?.url ?? article.seoImage?.asset?.url
+    ...((article.heroImage?.asset?.url ?? article.seoImage?.asset?.url)
       ? { image: article.heroImage?.asset?.url ?? article.seoImage?.asset?.url }
       : {}),
     ...(article.seoDescription ? { description: article.seoDescription } : {}),
@@ -109,7 +116,7 @@ const buildProjectSchema = (
       ...(settings.jobTitle ? { jobTitle: settings.jobTitle } : {}),
     },
     ...(project.year ? { dateCreated: String(project.year) } : {}),
-    ...(project.projectHero?.asset?.url ?? project.seoImage?.asset?.url
+    ...((project.projectHero?.asset?.url ?? project.seoImage?.asset?.url)
       ? {
           image:
             project.projectHero?.asset?.url ?? project.seoImage?.asset?.url,
@@ -237,7 +244,11 @@ export const getPageSchemas = (
     }
     case PageTypeName.AboutPage: {
       if (settings) {
-        const schema = buildAboutSchema(siteUrl, page as AboutPageDocument, settings)
+        const schema = buildAboutSchema(
+          siteUrl,
+          page as AboutPageDocument,
+          settings
+        )
         if (schema) schemas.push({ id: 'about-ld-json', schema })
       }
       break

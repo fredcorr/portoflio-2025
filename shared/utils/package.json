@@ -2,6 +2,9 @@
   "name": "@portfolio/utils",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "test": "tsx --test \"**/*.test.ts\" \"**/*.test.tsx\""
+  },
   "main": "./index.ts",
   "types": "./index.ts",
   "exports": {

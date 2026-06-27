@@ -102,7 +102,10 @@ const ArticleRelated: React.FC<Props> = ({ relatedArticles, className }) => {
   return (
     <ComponentLayout
       data-organism="article-related"
-      className={cn('border-b border-gray-100 bg-background dark:border-gray-100', className)}
+      className={cn(
+        'border-b border-gray-100 bg-background dark:border-gray-100',
+        className
+      )}
     >
       {/* Header */}
       <div className="md:col-span-12 flex flex-wrap items-end justify-between gap-6 border-b border-gray-100 pb-7 dark:border-gray-100">

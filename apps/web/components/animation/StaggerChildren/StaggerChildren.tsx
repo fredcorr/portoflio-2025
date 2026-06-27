@@ -19,7 +19,10 @@ export type StaggerChildrenProps<T extends React.ElementType = 'ul'> = {
 } & StaggerChildrenOwnProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof StaggerChildrenOwnProps | 'as'>
 
-type MotionTagProps = Omit<React.HTMLAttributes<HTMLElement> & import('framer-motion').MotionProps, 'children'> & {
+type MotionTagProps = Omit<
+  React.HTMLAttributes<HTMLElement> & import('framer-motion').MotionProps,
+  'children'
+> & {
   children?: React.ReactNode
 }
 
@@ -35,7 +38,10 @@ const StaggerChildren = <T extends React.ElementType = 'ul'>({
 }: StaggerChildrenProps<T>) => {
   const shouldReduce = useReducedMotion()
   const MotionParent = React.useMemo(
-    () => motion.create((as ?? 'ul') as React.ElementType) as React.ComponentType<MotionTagProps>,
+    () =>
+      motion.create(
+        (as ?? 'ul') as React.ElementType
+      ) as React.ComponentType<MotionTagProps>,
     [as]
   )
 

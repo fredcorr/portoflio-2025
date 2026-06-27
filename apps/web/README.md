@@ -120,12 +120,12 @@ All Sanity queries are located in `sanity/queries.ts`. Modify these based on you
 
 Required environment variables:
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your Sanity project ID |
-| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset name (e.g., production) |
-| `SANITY_API_READ_TOKEN` | Sanity read token for preview mode |
-| `SANITY_STUDIO_PREVIEW_SECRET` | Secret key for draft mode authentication |
+| Variable                        | Description                              |
+| ------------------------------- | ---------------------------------------- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your Sanity project ID                   |
+| `NEXT_PUBLIC_SANITY_DATASET`    | Sanity dataset name (e.g., production)   |
+| `SANITY_API_READ_TOKEN`         | Sanity read token for preview mode       |
+| `SANITY_STUDIO_PREVIEW_SECRET`  | Secret key for draft mode authentication |
 
 ## Learn More
 
