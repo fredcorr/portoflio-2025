@@ -36,9 +36,10 @@ const Article = defineType({
       description: 'Primary image used for the article header and cards.',
     }),
     Digit({
-      name: 'readTime',
-      title: 'Read time (minutes)',
-      description: 'Estimated reading time in minutes. Shown on article cards in the journal listing.',
+      name: 'editionNumber',
+      title: 'Edition number',
+      description: 'Auto-assigned sequential number at publish time. Not editable.',
+      readOnly: true,
     }),
     List({
       name: 'tags',

@@ -5,14 +5,14 @@ const title = titleFields('title')
 
 const PAGE_SIZE = 6
 
-const journalArticleFields = groq`
+export const journalArticleFields = groq`
   _id,
   title,
   slug,
   tags,
   _createdAt,
-  readTime,
-  "editionNumber": count(*[_type == "article" && _createdAt <= ^._createdAt]),
+  "articleContent": articleContent[],
+  "editionNumber": coalesce(editionNumber, count(*[_type == "article" && _createdAt <= ^._createdAt])),
   "cardImage": coalesce(heroImage, seoImage) {
     ${imageFields}
   }

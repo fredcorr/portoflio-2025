@@ -1,18 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import useSWR from 'swr'
 
 import Card from '@/components/molecules/Card/Card'
 import Button from '@/components/atoms/Button/Button'
+import Select from '@/components/atoms/Select/Select'
 import SkeletonCard from '@/components/molecules/SkeletonCard/SkeletonCard'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 import { FadeInStagger } from '@/components/animation/FadeIn/FadeInStagger'
 import { formatDate } from '@/utils/format-date'
+import useClickOutside from '@/utils/use-click-outside'
 import { cn } from '@/utils/cn'
 import type {
   JournalsListingArticle,
-  JournalsListingInitialData,
+  JournalsListingData,
 } from '@portfolio/types/components'
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
@@ -29,7 +31,7 @@ interface ApiResponse {
 }
 
 interface JournalsListingClientProps {
-  initialData: JournalsListingInitialData
+  initialData: JournalsListingData
   apiEndpoint: string
 }
 
@@ -39,13 +41,20 @@ const fetcher = async (url: string): Promise<ApiResponse> => {
   return res.json() as Promise<ApiResponse>
 }
 
-const buildKey = (apiEndpoint: string, category: string, page: number): string => {
+const buildKey = (
+  apiEndpoint: string,
+  categories: string[],
+  page: number
+): string => {
   const params = new URLSearchParams({ page: String(page) })
-  if (category !== 'All') params.set('category', category)
+  if (categories.length > 0) params.set('categories', categories.join(','))
   return `${apiEndpoint}?${params.toString()}`
 }
 
-const buildPageNumbers = (current: number, total: number): (number | '...')[] => {
+const buildPageNumbers = (
+  current: number,
+  total: number
+): (number | '...')[] => {
   const candidates = [1, total, current, current - 1, current + 1].filter(
     n => n >= 1 && n <= total
   )
@@ -58,7 +67,10 @@ const buildPageNumbers = (current: number, total: number): (number | '...')[] =>
   return result
 }
 
-const articleToCardProps = (article: JournalsListingArticle, index: number) => ({
+const articleToCardProps = (
+  article: JournalsListingArticle,
+  index: number
+) => ({
   href: article.slug?.current ? `/${article.slug.current}` : undefined,
   title: article.title,
   image: article.cardImage,
@@ -68,30 +80,48 @@ const articleToCardProps = (article: JournalsListingArticle, index: number) => (
       ? `N° ${String(article.editionNumber).padStart(3, '0')}`
       : undefined,
   tag: article.tags?.[0],
-  footerDate: formatDate({ value: article._createdAt, options: DATE_FORMAT }) ?? undefined,
+  footerDate:
+    formatDate({ value: article._createdAt, options: DATE_FORMAT }) ??
+    undefined,
   footerReadTime: article.readTime ?? undefined,
   priority: index < 3,
-  className: 'hover:-translate-y-[3px] hover:shadow-[0_12px_32px_rgba(0,0,0,0.09)]',
+  className:
+    'hover:-translate-y-[3px] hover:shadow-[0_12px_32px_rgba(0,0,0,0.09)]',
 })
 
 const JournalsListingClient = ({
   initialData,
   apiEndpoint,
 }: JournalsListingClientProps) => {
-  const [activeCategory, setActiveCategory] = useState('All')
+  const [activeCategories, setActiveCategories] = useState<string[]>([])
   const [page, setPage] = useState(1)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const isInitialState = activeCategory === 'All' && page === 1
+  const isInitialState = activeCategories.length === 0 && page === 1
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse>(
-    isInitialState ? null : buildKey(apiEndpoint, activeCategory, page),
+    isInitialState ? null : buildKey(apiEndpoint, activeCategories, page),
     fetcher
   )
 
-  const articles = isInitialState ? initialData.articles : (data?.articles ?? [])
-  const total = isInitialState ? initialData.total : (data?.total ?? 0)
-  const totalPages = Math.ceil(total / PAGE_SIZE)
-  const showSkeleton = !isInitialState && isLoading
+  useClickOutside({
+    active: isDropdownOpen,
+    containerRef: dropdownRef,
+    onOutsideClick: () => setIsDropdownOpen(false),
+  })
+
+  const toggleCategory = (cat: string) => {
+    setActiveCategories(prev =>
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    )
+    setPage(1)
+  }
+
+  const removeCategory = (cat: string) => {
+    setActiveCategories(prev => prev.filter(c => c !== cat))
+    setPage(1)
+  }
 
   const categoryCounts = initialData.allTags.reduce<Record<string, number>>(
     (acc, tag) => {
@@ -101,10 +131,12 @@ const JournalsListingClient = ({
     {}
   )
 
-  const handleCategoryChange = (category: string) => {
-    setActiveCategory(category)
-    setPage(1)
-  }
+  const articles = isInitialState
+    ? initialData.articles
+    : (data?.articles ?? [])
+  const total = isInitialState ? initialData.total : (data?.total ?? 0)
+  const totalPages = Math.ceil(total / PAGE_SIZE)
+  const showSkeleton = !isInitialState && isLoading
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
@@ -113,39 +145,100 @@ const JournalsListingClient = ({
 
   return (
     <div>
-      {/* Filter nav */}
+      {/* Filter */}
       <nav
-        className="overflow-x-auto border-b border-foreground/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        aria-label="Filter by category"
+        className="relative border-b border-foreground/10"
+        aria-label="Filter by topic"
       >
-        <ul className="flex" role="list">
-          {['All', ...initialData.categories].map(cat => {
-            const isActive = cat === activeCategory
-            const count = cat === 'All' ? initialData.total : (categoryCounts[cat] ?? 0)
-            return (
-              <li key={cat}>
-                <Button
-                  variant="ghost"
-                  aria-pressed={isActive}
-                  onClick={() => handleCategoryChange(cat)}
-                  className={cn(
-                    'relative flex-shrink-0 whitespace-nowrap py-5',
-                    'after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-foreground',
-                    'after:transition-transform after:duration-[250ms] after:ease-[cubic-bezier(0.22,1,0.36,1)]',
-                    isActive
-                      ? 'text-foreground after:scale-x-100'
-                      : 'text-foreground/55 hover:text-foreground after:scale-x-0'
-                  )}
-                >
-                  {cat}
-                  <span className="ml-1.5 inline-flex h-4 min-w-[18px] items-center justify-center bg-foreground/[0.06] px-1 font-heading text-[9px] tracking-[0.04em] text-foreground align-middle">
-                    {count}
-                  </span>
-                </Button>
-              </li>
+        {/* Mobile: native multi-select */}
+        <Select
+          multiple
+          wrapperClassName="md:hidden py-4"
+          label="Filter by topic"
+          options={initialData.categories.map(cat => ({
+            value: cat,
+            label: `${cat} (${categoryCounts[cat] ?? 0})`,
+          }))}
+          value={activeCategories}
+          onChange={e => {
+            setActiveCategories(
+              Array.from(
+                (e.target as HTMLSelectElement).selectedOptions,
+                o => o.value
+              )
             )
-          })}
-        </ul>
+            setPage(1)
+          }}
+        />
+
+        {/* Desktop: dropdown trigger + chips */}
+        <div
+          ref={dropdownRef}
+          className="relative hidden md:flex items-center gap-4"
+        >
+          <Button
+            variant="ghost"
+            onClick={() => setIsDropdownOpen(v => !v)}
+            className="inline-flex items-center gap-2 py-5"
+          >
+            Filter by Topic
+            <span aria-hidden="true" className="text-[10px]">
+              {isDropdownOpen ? '∧' : '∨'}
+            </span>
+          </Button>
+
+          {activeCategories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => removeCategory(cat)}
+              className={cn(
+                'relative py-5 font-heading text-body-md uppercase tracking-[0.14em] text-foreground',
+                'transition-colors hover:text-foreground/55',
+                'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-foreground'
+              )}
+            >
+              {cat}
+              <span aria-hidden="true" className="ml-1.5">
+                ×
+              </span>
+              <span className="sr-only">(remove filter)</span>
+            </button>
+          ))}
+
+          {isDropdownOpen && (
+            <ul
+              className="absolute left-0 top-full z-10 min-w-52 border border-foreground/10 bg-background"
+              role="listbox"
+              aria-multiselectable="true"
+              aria-label="Categories"
+            >
+              {initialData.categories.map(cat => {
+                const isSelected = activeCategories.includes(cat)
+                return (
+                  <li
+                    key={cat}
+                    className="border-b border-foreground/10 last:border-0"
+                  >
+                    <button
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => toggleCategory(cat)}
+                      className={cn(
+                        'flex w-full justify-between px-4 py-3 text-left',
+                        'font-heading text-body-md uppercase tracking-[0.14em]',
+                        'transition-colors',
+                        isSelected ? 'text-foreground/40' : 'text-foreground'
+                      )}
+                    >
+                      <span>{cat}</span>
+                      <span>{categoryCounts[cat] ?? 0}</span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </div>
       </nav>
 
       {/* Grid */}

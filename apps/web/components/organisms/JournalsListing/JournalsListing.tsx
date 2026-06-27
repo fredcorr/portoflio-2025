@@ -3,6 +3,7 @@ import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import JournalsListingClient from '@/components/hoc/JournalsListingClient'
 import { makeComponentId } from '@/utils/makeComponentId'
+import { toListingArticle } from '@/utils/to-listing-article'
 import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
@@ -55,11 +56,7 @@ export default function JournalsListing({
           )}
         </div>
 
-        <FadeIn
-          as="p"
-          delay={0.35}
-          className="self-start pt-2 text-right"
-        >
+        <FadeIn as="p" delay={0.35} className="self-start pt-2 text-right">
           <strong className="block font-heading text-[44px] font-normal leading-none tracking-[-0.03em]">
             {total}
           </strong>
@@ -70,7 +67,13 @@ export default function JournalsListing({
       </div>
 
       {initialData && (
-        <JournalsListingClient initialData={initialData} apiEndpoint="/api/journal" />
+        <JournalsListingClient
+          initialData={{
+            ...initialData,
+            articles: initialData.articles.map(toListingArticle),
+          }}
+          apiEndpoint="/api/journals"
+        />
       )}
     </ComponentLayout>
   )

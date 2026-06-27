@@ -29,7 +29,7 @@ const StaggerChildren = <T extends React.ElementType = 'ul'>({
   className,
   staggerDelay = 0.1,
   delay = 0,
-  once = true,
+  once = false,
   amount = 0.5,
   ...rest
 }: StaggerChildrenProps<T>) => {

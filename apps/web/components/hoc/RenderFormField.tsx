@@ -5,7 +5,7 @@ import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 import type { FormFieldItem } from '@portfolio/types/components/form'
 import { FormFieldType } from '@portfolio/types/components/form'
 import InputField from '@/components/atoms/Input/Input'
-import SelectField from '@/components/atoms/Select/Select'
+import Select from '@/components/atoms/Select/Select'
 import TextAreaField from '@/components/atoms/TextArea/TextArea'
 import CheckboxField from '@/components/atoms/Checkbox/Checkbox'
 import camelCase from '@/utils/camel-case'
@@ -39,7 +39,7 @@ export const RenderFormField = ({
       )
     case FormFieldType.Select:
       return (
-        <SelectField
+        <Select
           label={label}
           required={required}
           options={
