@@ -37,7 +37,7 @@ npm run format         # Prettier write
 npm run format:check   # Prettier check (CI)
 
 # Type checking
-turbo run typecheck
+npm run typecheck      # all workspaces (turbo run typecheck)
 
 # Build
 npm run build          # all workspaces
@@ -49,7 +49,7 @@ node --test shared/utils/makeID.test.ts          # single test file
 npx tsx --test shared/utils/someFile.test.ts     # if file uses TypeScript features
 ```
 
-> Full suite: `turbo run lint typecheck test build`
+> **Before considering any change complete**, run `turbo run lint typecheck build` (and `node --test` for touched utilities — tests are not a Turbo task). Strict TypeScript is enforced, so `typecheck` must pass with zero errors.
 
 ## Architecture
 
@@ -71,7 +71,7 @@ All pages are served through a single catch-all route `apps/web/app/[[...slug]]/
 2. The slug resolves via `getPage()` which dispatches `PAGE_BY_SLUG_QUERY` using either `client` or `previewClient`
 3. `RenderTemplate` inspects `page._type` and renders the matching template component
 4. Each template iterates its component array and renders each via `RenderOrganism`, which switches on `component._type`
-5. ISR is set to `revalidate = 10` seconds; draft mode bypasses the cache
+5. ISR is set via `revalidate` in `apps/web/app/[[...slug]]/page.tsx` (currently `3600` seconds); draft mode bypasses the cache
 
 ### Templates vs. organisms
 
