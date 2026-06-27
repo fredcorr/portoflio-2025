@@ -7,7 +7,6 @@ import type { FaqsComponent } from './faqs'
 import type { FormComponent } from './form'
 import type { HomePageHeroComponent } from './home-page-hero'
 import type { ImageGalleryComponent } from './image-gallery'
-import type { ImageGridComponent } from './image-grid'
 import type { ProcessComponent } from './process'
 import type { ProjectListingComponent } from './project-listing'
 import type { StatsComponent } from './stats'
@@ -35,7 +34,6 @@ export type { FaqItem } from './faqs'
 export type { FormComponent } from './form'
 export type { HomePageHeroComponent } from './home-page-hero'
 export type { ImageGalleryComponent } from './image-gallery'
-export type { ImageGridComponent } from './image-grid'
 export type { ProcessComponent } from './process'
 export type {
   ProjectListingComponent,
@@ -76,7 +74,6 @@ export type Components =
   | CollaborateHighlightsComponent
   | ProcessComponent
   | ImageGalleryComponent
-  | ImageGridComponent
   | StatsComponent
   | FaqsComponent
   | ToolSetComponent

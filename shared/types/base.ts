@@ -17,7 +17,6 @@ export enum ComponentTypeName {
   CollaborateHighlights = "collaborateHighlights",
   Process = "process",
   ImageGallery = "imageGallery",
-  ImageGrid = "imageGrid",
   Stats = "stats",
   Faqs = "faqs",
   ToolSet = "toolSet",

@@ -1,23 +1,5 @@
-import { ComponentTypeName } from '@portfolio/types/base'
 import type { PageComponent } from '@portfolio/types/pages'
-import ProjectListing from '../organisms/ProjectListing/ProjectListing'
-import WorkIndex from '../organisms/WorkIndex/WorkIndex'
-import Cards from '../organisms/Cards/Cards'
-import Testimonials from '../organisms/Testimonials/Testimonials'
-import {
-  AboutPageHero,
-  AnimatedStrapline,
-  BlockText,
-  CollaborateHighlights,
-  Faqs,
-  GetInTouch,
-  HomePageHero,
-  ImageGallery,
-  JournalsFeed,
-  Process,
-  Stats,
-  ToolSet,
-} from '@/components/organisms'
+import { organismComponents, type OrganismRenderer } from './organism-registry'
 
 interface RenderOrganismProps {
   component?: PageComponent | null
@@ -34,50 +16,7 @@ export const RenderOrganism = ({
     return null
   }
 
-  const componentWithContext: PageComponent = {
-    ...component,
-    componentIndex,
-  }
+  const render = organismComponents[component._type] as OrganismRenderer
 
-  switch (componentWithContext._type) {
-    case ComponentTypeName.HomePageHero:
-      return (
-        <HomePageHero
-          {...componentWithContext}
-          scrollTargetId={nextSectionId}
-        />
-      )
-    case ComponentTypeName.ProjectListing:
-      return <ProjectListing {...componentWithContext} />
-    case ComponentTypeName.Testimonials:
-      return <Testimonials {...componentWithContext} />
-    case ComponentTypeName.Cards:
-      return <Cards {...componentWithContext} />
-    case ComponentTypeName.BlockText:
-      return <BlockText {...componentWithContext} />
-    case ComponentTypeName.AboutPageHero:
-      return <AboutPageHero {...componentWithContext} />
-    case ComponentTypeName.CollaborateHighlights:
-      return <CollaborateHighlights {...componentWithContext} />
-    case ComponentTypeName.Process:
-      return <Process {...componentWithContext} />
-    case ComponentTypeName.ImageGallery:
-      return <ImageGallery {...componentWithContext} />
-    case ComponentTypeName.Stats:
-      return <Stats {...componentWithContext} />
-    case ComponentTypeName.Faqs:
-      return <Faqs {...componentWithContext} />
-    case ComponentTypeName.ToolSet:
-      return <ToolSet {...componentWithContext} />
-    case ComponentTypeName.Form:
-      return <GetInTouch {...componentWithContext} />
-    case ComponentTypeName.AnimatedStrapline:
-      return <AnimatedStrapline {...componentWithContext} />
-    case ComponentTypeName.WorkIndex:
-      return <WorkIndex {...componentWithContext} />
-    case ComponentTypeName.JournalsFeed:
-      return <JournalsFeed {...componentWithContext} />
-    default:
-      return null
-  }
+  return render({ ...component, componentIndex }, { nextSectionId })
 }

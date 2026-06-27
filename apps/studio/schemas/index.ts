@@ -16,7 +16,6 @@ import AboutPageHero from './components/organisms/about-page-hero'
 import CollaborateHighlights from './components/organisms/collaborate-highlights'
 import Process from './components/organisms/process'
 import ImageGallery from './components/organisms/image-gallery'
-import ImageGrid from './components/organisms/image-grid'
 import Stats from './components/organisms/stats'
 import Faqs from './components/organisms/faqs'
 import ToolSet from './components/organisms/tool-set'
@@ -44,7 +43,6 @@ export const schemaTypes = [
   CollaborateHighlights,
   Process,
   ImageGallery,
-  ImageGrid,
   Stats,
   Faqs,
   ToolSet,
