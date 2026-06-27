@@ -214,21 +214,21 @@ const Card = ({
               >
                 <Icon
                   name={iconName}
-                  className={cn('size-6 text-black', iconClassName)}
+                  className={cn('size-6 text-foreground', iconClassName)}
                   title={`${title} icon`}
                 />
               </span>
             )}
             {displayIndex && (
               <span
-                className="font-heading text-body-lg text-black/50"
+                className="font-heading text-body-lg text-foreground/60"
                 {...(!indexLabel && { 'aria-label': `Project ${Number(displayIndex)}` })}
               >
                 {displayIndex}
               </span>
             )}
             {tag && (
-              <span className="border border-foreground/20 px-2 py-0.5 font-heading text-[10px] uppercase tracking-[0.12em] text-foreground/55">
+              <span className="border border-foreground/30 px-2 py-0.5 font-heading text-[10px] uppercase tracking-[0.12em] text-foreground/60">
                 {tag}
               </span>
             )}
@@ -237,7 +237,7 @@ const Card = ({
 
         <p
           className={cn(
-            'font-heading font-medium leading-tight text-black',
+            'font-heading font-medium leading-tight text-foreground',
             titleSizeClassMap[titleSize]
           )}
         >
@@ -248,7 +248,7 @@ const Card = ({
           <RichText
             value={subtitleBlocks}
             size={subtitleSize ?? RichTextSize.Lg}
-            className="text-black/70"
+            className="text-foreground/70"
           />
         )}
 
@@ -260,7 +260,7 @@ const Card = ({
               </span>
             )}
             {footerReadTime != null && (
-              <span className="font-heading text-[11px] tracking-[0.04em] text-foreground/55">
+              <span className="font-heading text-[11px] tracking-[0.04em] text-foreground/60">
                 {footerReadTime} min read
               </span>
             )}

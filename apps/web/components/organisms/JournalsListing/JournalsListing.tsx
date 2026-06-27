@@ -32,13 +32,13 @@ export default function JournalsListing({
       contentClassName="col-span-full flex flex-col"
       aria-labelledby={headingId}
     >
-      <div className="grid grid-cols-[1fr_auto] items-end gap-8 border-b border-foreground/10 pb-10 pt-4">
+      <div className="grid grid-cols-[1fr_auto] items-end gap-8 border-b border-foreground/10 pb-6 pt-4 md:pb-10">
         <div className="flex flex-col gap-5">
           {kicker && (
             <SlideIn
               delay={0.1}
               as="span"
-              className="inline-flex items-center gap-2.5 font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/55 before:block before:size-1.5 before:rounded-full before:bg-foreground/50"
+              className="inline-flex items-center gap-2.5 font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/60 before:block before:size-1.5 before:rounded-full before:bg-foreground/60"
             >
               {kicker}
             </SlideIn>
@@ -60,7 +60,7 @@ export default function JournalsListing({
           <strong className="block font-heading text-[44px] font-normal leading-none tracking-[-0.03em]">
             {total}
           </strong>
-          <span className="font-heading text-[11px] tracking-[0.06em] text-foreground/55">
+          <span className="font-heading text-[11px] tracking-[0.06em] text-foreground/60">
             entries
           </span>
         </FadeIn>

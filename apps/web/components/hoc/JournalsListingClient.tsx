@@ -5,7 +5,6 @@ import useSWR from 'swr'
 
 import Card from '@/components/molecules/Card/Card'
 import Button from '@/components/atoms/Button/Button'
-import Select from '@/components/atoms/Select/Select'
 import SkeletonCard from '@/components/molecules/SkeletonCard/SkeletonCard'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 import { FadeInStagger } from '@/components/animation/FadeIn/FadeInStagger'
@@ -150,36 +149,16 @@ const JournalsListingClient = ({
         className="relative border-b border-foreground/10"
         aria-label="Filter by topic"
       >
-        {/* Mobile: native multi-select */}
-        <Select
-          multiple
-          wrapperClassName="md:hidden py-4"
-          label="Filter by topic"
-          options={initialData.categories.map(cat => ({
-            value: cat,
-            label: `${cat} (${categoryCounts[cat] ?? 0})`,
-          }))}
-          value={activeCategories}
-          onChange={e => {
-            setActiveCategories(
-              Array.from(
-                (e.target as HTMLSelectElement).selectedOptions,
-                o => o.value
-              )
-            )
-            setPage(1)
-          }}
-        />
-
-        {/* Desktop: dropdown trigger + chips */}
+        {/* Styled dropdown trigger + chips (all viewports) */}
         <div
           ref={dropdownRef}
-          className="relative hidden md:flex items-center gap-4"
+          className="relative flex flex-wrap items-center gap-x-5 gap-y-1 py-4"
         >
           <Button
             variant="ghost"
             onClick={() => setIsDropdownOpen(v => !v)}
-            className="inline-flex items-center gap-2 py-5"
+            aria-expanded={isDropdownOpen}
+            className="inline-flex shrink-0 items-center gap-2 py-2"
           >
             Filter by Topic
             <span aria-hidden="true" className="text-[10px]">
@@ -192,8 +171,8 @@ const JournalsListingClient = ({
               key={cat}
               onClick={() => removeCategory(cat)}
               className={cn(
-                'relative py-5 font-heading text-body-md uppercase tracking-[0.14em] text-foreground',
-                'transition-colors hover:text-foreground/55',
+                'relative py-2 font-heading text-body-md uppercase tracking-[0.14em] text-foreground',
+                'transition-colors hover:text-foreground/60',
                 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-foreground'
               )}
             >
@@ -207,7 +186,7 @@ const JournalsListingClient = ({
 
           {isDropdownOpen && (
             <ul
-              className="absolute left-0 top-full z-10 min-w-52 border border-foreground/10 bg-background"
+              className="absolute left-0 top-full z-10 w-[min(18rem,calc(100vw-2.5rem))] border border-foreground/10 bg-background"
               role="listbox"
               aria-multiselectable="true"
               aria-label="Categories"
@@ -227,7 +206,7 @@ const JournalsListingClient = ({
                         'flex w-full justify-between px-4 py-3 text-left',
                         'font-heading text-body-md uppercase tracking-[0.14em]',
                         'transition-colors',
-                        isSelected ? 'text-foreground/40' : 'text-foreground'
+                        isSelected ? 'text-foreground/60' : 'text-foreground'
                       )}
                     >
                       <span>{cat}</span>
@@ -251,7 +230,7 @@ const JournalsListingClient = ({
           </div>
         ) : error ? (
           <div className="flex flex-col items-start gap-4 py-20">
-            <p className="font-heading text-foreground/55">
+            <p className="font-heading text-foreground/60">
               Couldn&apos;t load articles — try again.
             </p>
             <Button variant="outline" onClick={() => void mutate()}>
@@ -259,7 +238,7 @@ const JournalsListingClient = ({
             </Button>
           </div>
         ) : articles.length === 0 ? (
-          <p className="py-20 font-heading text-[clamp(1.5rem,3vw,2.5rem)] font-normal tracking-[-0.02em] text-foreground/55">
+          <p className="py-20 font-heading text-[clamp(1.5rem,3vw,2.5rem)] font-normal tracking-[-0.02em] text-foreground/60">
             No entries in this category yet.
           </p>
         ) : (
@@ -309,7 +288,7 @@ const JournalsListingClient = ({
             item === '...' ? (
               <span
                 key={`sep-${i}`}
-                className="px-1.5 font-heading text-body-md text-foreground/55"
+                className="px-1.5 font-heading text-body-md text-foreground/60"
               >
                 …
               </span>
