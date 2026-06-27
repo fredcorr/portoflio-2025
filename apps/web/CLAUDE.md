@@ -2,12 +2,48 @@
 
 This workspace is a Next.js application using the App Router (`app/`).
 
+## Design-to-code workflow (read this before implementing any design)
+
+When you are handed a design — a Figma URL/node, a "Claude Design"/Vercel import, a screenshot, or a written spec — **do not start writing JSX.** Drift starts here. Follow this order every time:
+
+1. **Pull the real source.** If a Figma node/URL is referenced, read it with the Figma MCP (`get_design_context`, `get_variable_defs`, `get_screenshot`) before implementing. Don't reconstruct a design from memory or a thumbnail. Respect Figma variants and annotations tagged `development`.
+2. **Map the design onto what already exists — before creating anything.** For every element in the design, find the existing token / atom / molecule it corresponds to (see inventories below). Reuse beats re-invent. Creating a new primitive is the exception, not the default, and only when it is genuinely reusable across the design system.
+3. **Translate raw design values into tokens.** A design will give you hex colors, px sizes, and font names. Never paste those literally. Convert every one to its token (`bg-primary-400`, `text-heading-1`, `font-heading`, `text-accent-lavender`). If a value has no matching token, ask before introducing a new one — do not hardcode it.
+4. **Implement using the established conventions** (organism → `ComponentLayout`, etc. — see Architecture in the root `CLAUDE.md`).
+
+### Non-negotiables (the two most common corrections)
+
+- **Tokens, never raw values.** No `#1f1e1e`, no `text-[64px]`, no `font-['Play']`. If you're typing a hex code or an arbitrary `[...]` Tailwind value for color/typography, stop — there is almost certainly a token for it. Tokens carry light/dark mode automatically; raw values break dark mode.
+- **Reuse primitives, never re-invent.** Before writing a heading, image, icon, input, card, etc., check the inventory below and use the existing component. Do not create a parallel `<h2 className=...>` when `Heading` exists, a bare `<img>`/`next/image` when `Image` exists, or an inline SVG when `Icon` exists.
+
+## Design tokens (defined in `app/globals.css`)
+
+These are the single source of truth for color and type. Use the Tailwind utility that references the token (e.g. token `--color-primary-400` → `bg-primary-400` / `text-primary-400`). All colors have light/dark values applied at runtime — use the token and dark mode is free.
+
+**Colors:** `background`, `foreground`, `black` · `surface-1`, `surface-2` · `gray-50/100/200` · `primary-50/75/100/200/300/400/500/600/700` · `accent-orange`, `accent-lavender`, `accent-sussie`, `accent-blue-jeans` · `status-success`, `status-warning`, `status-error`
+
+**Typography (`text-*`):** `display-2xl`, `display-xl`, `display-lg` · `heading-1`…`heading-6` · `body-xl`, `body-lg`, `body-md` (each ships its own clamp + line-height — do not re-specify font-size/leading by hand)
+
+**Fonts (`font-*`):** `heading` / `display` (Play), `sans` / `body` (Inter), `accent` (Acworth)
+
+If a design needs a color or size outside this set, surface it to the user — don't silently hardcode.
+
+## Component inventory (reuse before creating)
+
+Atomic structure is `atoms → molecules → organisms`. Read a component's source for its real props before using it; this list is the map, not the API.
+
+- **Atoms** (`components/atoms/`): `Heading` (semantic `h1`–`h6` via `level`), `Image` (`next/image` wrapper, handles `fill`/sizing), `Icon` (renders a `lucide-react` icon by `name`), `RichText` (Portable Text, `RichTextSize` enum), `Input`, `TextArea`, `Select`, `Checkbox`, `Logo`, `ThemeToggle`, `PullQuote`, `Emphasis`, `CodeBlock`, `JsonLdSchema`, `VisualEditing`
+- **Molecules** (`components/molecules/`): `Card`, `Form`, `Modal`, `NavItem`, `Breadcrumbs`, `ArticleMeta`, `Shares`, `FaqItem`, `ToolCard`, `WorkIndexRow`, `AnimatedStatValue`, plus animated backgrounds (`ThreeBackgroundTunnel`, `AboutBackgroundHelixPulseCascade`)
+- **Organisms** (`components/organisms/`): CMS-driven page sections (see the full list in the folder). Adding one is the cross-workspace checklist in the root `CLAUDE.md`.
+- **Utilities:** className merging is `cn` from `@/utils/cn` — use it instead of manual template strings.
+
 ## Component architecture
 
 - Use the shared component types defined under `shared/types/components`
 - Reuse existing atoms before creating new ones
 - Create new atoms or molecules only when they are reusable across the design system
 - Follow the established atomic structure: atoms → molecules → organisms
+- Every organism wraps its output in `ComponentLayout` (from `@/components/hoc/ComponentLayout`) for padding, the 12-column grid, and section ID generation
 
 ## App Router conventions
 
@@ -45,6 +81,8 @@ This workspace is a Next.js application using the App Router (`app/`).
 ## Styling & accessibility
 
 - Use TailwindCSS best practices
+- Style with design tokens, not raw values — see "Design tokens" above. Arbitrary `[...]` values for color/spacing/type are a smell; reach for the token first
+- Use `cn` (`@/utils/cn`) to compose conditional classes
 - Respect semantic HTML
 - Meet WCAG AA accessibility by default
 

@@ -11,6 +11,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 When editing files under `apps/web/**`, also follow `apps/web/CLAUDE.md`. When editing files under `apps/studio/**`, also follow `apps/studio/CLAUDE.md`.
 
+> **These `CLAUDE.md` files are the single source of truth for agent rules.** `AGENT.md` is only a pointer here. Do not follow stale routing to `AGENTS.md` or per-workspace `AGENT.md` files — they don't exist.
+
+## Implementing a design (Figma / Claude Design / spec)
+
+This is the most common source of drift, so it leads. Before writing UI from any design:
+
+1. **Reuse before you invent.** Map every element of the design onto an existing token, atom, or molecule first. New primitives are the exception. The inventory lives in `apps/web/CLAUDE.md` → *Component inventory*.
+2. **Tokens, not raw values.** Convert every hex/px/font from the design into its design token (`bg-primary-400`, `text-heading-1`, `font-heading`). Never paste raw values — they break dark mode. Token list is in `apps/web/CLAUDE.md` → *Design tokens*.
+3. **Pull the real Figma source** (via the Figma MCP) when a node/URL is given, rather than guessing from a screenshot.
+
+The full workflow and inventories are in `apps/web/CLAUDE.md` → *Design-to-code workflow*. Read it before implementing.
+
 ## Commands
 
 ```bash
