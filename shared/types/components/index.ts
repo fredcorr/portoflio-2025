@@ -1,29 +1,3 @@
-import type { AboutPageHeroComponent } from './about-page-hero'
-import type { AnimatedStraplineComponent } from './animated-strapline'
-import type { BlockTextComponent } from './block-text'
-import type { CardsComponent } from './cards'
-import type { CollaborateHighlightsComponent } from './collaborate-highlights'
-import type { FaqsComponent } from './faqs'
-import type { FormComponent } from './form'
-import type { HomePageHeroComponent } from './home-page-hero'
-import type { ImageGalleryComponent } from './image-gallery'
-import type { ProcessComponent } from './process'
-import type { ProjectListingComponent } from './project-listing'
-import type { StatsComponent } from './stats'
-import type { TestimonialsComponent } from './testimonials'
-import type { ToolSetComponent } from './tool-set'
-import type { ProjectIntroProps } from './project-intro'
-import type { BreadcrumbItem } from './breadcrumbs'
-import type { NavigationData, NavigationItem } from './navigation'
-import type { LinkInternalReference, UrlPickerItem } from './link'
-import type { FooterProps } from './footer'
-import type { ArticleIntroProps } from './article-intro'
-import type { ArticleContentProps } from './article-content'
-import type { ArticleRelatedProps, RelatedArticle } from './article-related'
-import type { ArticleFeaturedImageProps } from './article-featured-image'
-import type { WorkIndexComponent, WorkIndexProject } from './work-index'
-import type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
-
 export type { AboutPageHeroComponent } from './about-page-hero'
 export type { AnimatedStraplineComponent } from './animated-strapline'
 export type { BlockTextComponent } from './block-text'
@@ -64,21 +38,3 @@ export type { ArticleRelatedProps, RelatedArticle } from './article-related'
 export type { ArticleFeaturedImageProps } from './article-featured-image'
 export type { WorkIndexComponent, WorkIndexProject } from './work-index'
 export type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
-
-export type Components =
-  | HomePageHeroComponent
-  | ProjectListingComponent
-  | TestimonialsComponent
-  | CardsComponent
-  | AboutPageHeroComponent
-  | CollaborateHighlightsComponent
-  | ProcessComponent
-  | ImageGalleryComponent
-  | StatsComponent
-  | FaqsComponent
-  | ToolSetComponent
-  | FormComponent
-  | AnimatedStraplineComponent
-  | BlockTextComponent
-  | WorkIndexComponent
-  | JournalsFeedComponent
