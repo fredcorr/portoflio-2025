@@ -56,6 +56,11 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   image?: SanityImage
   iconName?: string
   index?: number
+  indexLabel?: string
+  tag?: string
+  footerDate?: string
+  footerReadTime?: number
+  imageAspectClassName?: string
   className?: string
   iconWrapperClassName?: string
   iconClassName?: string
@@ -83,6 +88,11 @@ const Card = ({
   image,
   iconName,
   index,
+  indexLabel,
+  tag,
+  footerDate,
+  footerReadTime,
+  imageAspectClassName,
   className,
   iconWrapperClassName,
   iconClassName,
@@ -95,13 +105,16 @@ const Card = ({
   ...props
 }: CardProps) => {
   const formattedIndex = formatIndex(index)
-  const hasIconRow = !indexAboveImage && (iconName || formattedIndex)
+  const displayIndex = indexLabel ?? formattedIndex
+  const hasIconRow = !indexAboveImage && (iconName || displayIndex || tag)
   const iconRowClass =
-    iconName && formattedIndex
+    (iconName || displayIndex) && tag
       ? 'justify-between'
-      : iconName
-        ? 'justify-start'
-        : 'justify-end'
+      : tag
+        ? 'justify-end'
+        : iconName
+          ? 'justify-start'
+          : 'justify-end'
   const subtitleBlocks = normalizePortableText(subtitle)
 
   const isLinkedListItem = asProp !== 'article' && !!href
@@ -127,7 +140,7 @@ const Card = ({
   )
 
   const imageWrapperClassName = cn(
-    squareImage ? 'aspect-square rounded-none' : 'aspect-[1.18]',
+    imageAspectClassName ?? (squareImage ? 'aspect-square rounded-none' : 'aspect-[1.18]'),
     squareImage && [
       'md:blur-[4px]',
       'md:group-hover:blur-none',
@@ -184,10 +197,14 @@ const Card = ({
       )}
 
       <div
-        className={cn('flex flex-col px-3 pb-5', contentSpacingMap[spacing])}
+        className={cn(
+          'flex flex-col px-3 pb-5',
+          contentSpacingMap[spacing],
+          (footerDate || footerReadTime) && 'flex-1'
+        )}
       >
         {hasIconRow && (
-          <div className={cn('flex items-start gap-3', iconRowClass)}>
+          <div className={cn('flex items-center gap-3', iconRowClass)}>
             {iconName && (
               <span
                 className={cn(
@@ -197,17 +214,22 @@ const Card = ({
               >
                 <Icon
                   name={iconName}
-                  className={cn('size-6 text-black', iconClassName)}
+                  className={cn('size-6 text-foreground', iconClassName)}
                   title={`${title} icon`}
                 />
               </span>
             )}
-            {formattedIndex && (
+            {displayIndex && (
               <span
-                className="font-heading text-body-lg text-black/50"
-                aria-label={`Project ${Number(formattedIndex)}`}
+                className="font-heading text-body-lg text-foreground/60"
+                {...(!indexLabel && { 'aria-label': `Project ${Number(displayIndex)}` })}
               >
-                {formattedIndex}
+                {displayIndex}
+              </span>
+            )}
+            {tag && (
+              <span className="border border-foreground/30 px-2 py-0.5 font-heading text-[10px] uppercase tracking-[0.12em] text-foreground/60">
+                {tag}
               </span>
             )}
           </div>
@@ -215,7 +237,7 @@ const Card = ({
 
         <p
           className={cn(
-            'font-heading font-medium leading-tight text-black',
+            'font-heading font-medium leading-tight text-foreground',
             titleSizeClassMap[titleSize]
           )}
         >
@@ -226,8 +248,23 @@ const Card = ({
           <RichText
             value={subtitleBlocks}
             size={subtitleSize ?? RichTextSize.Lg}
-            className="text-black/70"
+            className="text-foreground/70"
           />
+        )}
+
+        {(footerDate || footerReadTime != null) && (
+          <div className="mt-auto flex items-center justify-between border-t border-foreground/10 pt-4">
+            {footerDate && (
+              <span className="font-heading text-[13px] tracking-[-0.01em] text-foreground">
+                {footerDate}
+              </span>
+            )}
+            {footerReadTime != null && (
+              <span className="font-heading text-[11px] tracking-[0.04em] text-foreground/60">
+                {footerReadTime} min read
+              </span>
+            )}
+          </div>
         )}
       </div>
     </>

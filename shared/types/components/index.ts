@@ -38,3 +38,10 @@ export type { ArticleRelatedProps, RelatedArticle } from './article-related'
 export type { ArticleFeaturedImageProps } from './article-featured-image'
 export type { WorkIndexComponent, WorkIndexProject } from './work-index'
 export type { JournalsFeedComponent, JournalsFeedArticle } from './journals-feed'
+export type {
+  JournalsListingComponent,
+  JournalsListingArticle,
+  JournalsListingArticleRaw,
+  JournalsListingData,
+  JournalsListingInitialData,
+} from './journals-listing'

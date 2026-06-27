@@ -48,7 +48,7 @@ const SlideIn = <T extends React.ElementType = 'div'>({
   distance = 24,
   duration = 0.5,
   delay = 0,
-  viewport = { once: true },
+  viewport = { once: false },
   ...rest
 }: SlideInProps<T>) => {
   const shouldReduce = useReducedMotion()

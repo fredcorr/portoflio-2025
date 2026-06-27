@@ -28,3 +28,18 @@ test('shows error text when provided', () => {
   assert.match(markup, /Selection required/)
   assert.match(markup, /aria-invalid="true"/)
 })
+
+test('multiple variant renders bare, without a placeholder option', () => {
+  const markup = renderToStaticMarkup(
+    <Select
+      multiple
+      label="Filter"
+      options={options}
+      value={['a']}
+      onChange={() => {}}
+    />
+  )
+
+  assert.match(markup, /multiple/)
+  assert.doesNotMatch(markup, /option value="" disabled/)
+})

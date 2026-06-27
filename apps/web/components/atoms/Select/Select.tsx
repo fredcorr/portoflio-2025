@@ -8,49 +8,83 @@ export interface SelectOption {
   value: string
 }
 
-export interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label: string
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options: SelectOption[]
+  label?: string
   error?: string
-  required?: boolean
+  /** Disabled placeholder option text for single-select fields. Defaults to `label`. */
+  placeholder?: string
+  /** Class applied to the wrapping element. */
+  wrapperClassName?: string
 }
 
-const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
-  ({ id, label, options, error, required, className, ...props }, ref) => {
+/**
+ * Native `<select>` atom.
+ *
+ * - Single-select renders as a styled form field: a disabled placeholder
+ *   option (from `placeholder` or `label`) plus optional error text.
+ * - Pass `multiple` for the bare, caller-styled variant used by filters and as
+ *   the mobile fallback for custom dropdowns (keeps the native iOS experience).
+ */
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  (
+    {
+      id,
+      label,
+      options,
+      error,
+      placeholder,
+      required,
+      multiple,
+      className,
+      wrapperClassName,
+      onChange,
+      ...props
+    },
+    ref
+  ) => {
     const fieldId = id || props.name || 'select'
     const errorId = `${fieldId}-error`
-    const [isPlaceholder, setIsPlaceholder] = React.useState(true)
+    const placeholderText = placeholder ?? label
+    const [isPlaceholder, setIsPlaceholder] = React.useState(!multiple)
 
     return (
-      <div className="w-full">
-        <label htmlFor={fieldId} className="sr-only">
-          {label}
-          {required && ' *'}
-        </label>
+      <div className={cn('w-full', wrapperClassName)}>
+        {label && (
+          <label htmlFor={fieldId} className="sr-only">
+            {label}
+            {required && ' *'}
+          </label>
+        )}
         <select
           id={fieldId}
           ref={ref}
+          multiple={multiple}
+          required={required}
           aria-required={required}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
+          defaultValue={multiple ? undefined : ''}
           onChange={event => {
-            props.onChange?.(event)
-            setIsPlaceholder(event.target.value === '')
+            onChange?.(event)
+            !multiple && setIsPlaceholder(event.target.value === '')
           }}
           className={cn(
-            'w-full appearance-none bg-gray-50 px-5 py-4 text-body-md dark:bg-gray-100',
-            isPlaceholder
-              ? 'text-black/40 dark:text-foreground/60'
-              : 'text-black dark:text-foreground',
-            'border border-transparent border-gray-100 focus:border-gray-200 focus:outline-none focus:ring-1 focus:ring-black',
+            !multiple &&
+              'w-full appearance-none border border-transparent border-gray-100 bg-gray-50 px-5 py-4 text-body-md focus:border-gray-200 focus:outline-none focus:ring-1 focus:ring-black dark:bg-gray-100',
+            !multiple &&
+              (isPlaceholder
+                ? 'text-black/40 dark:text-foreground/60'
+                : 'text-black dark:text-foreground'),
             className
           )}
-          defaultValue=""
           {...props}
         >
-          <option value="" disabled>
-            {label}
-          </option>
+          {!multiple && placeholderText && (
+            <option value="" disabled>
+              {placeholderText}
+            </option>
+          )}
           {options.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -71,6 +105,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
   }
 )
 
-SelectField.displayName = 'SelectField'
+Select.displayName = 'Select'
 
-export default SelectField
+export default Select
+export { Select }

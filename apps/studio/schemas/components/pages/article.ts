@@ -14,6 +14,7 @@ import Block from '@components/atoms/block'
 import Toggle from '@components/atoms/toggle'
 import PublishedLinkInput from '@components/atoms/published-link-input'
 import MediumSyndicationInput from '@components/atoms/medium-syndication-input'
+import Digit from '@components/atoms/digit'
 
 const Article = defineType({
   name: PageTypeName.ArticlePage,
@@ -33,6 +34,12 @@ const Article = defineType({
       name: 'heroImage',
       title: 'Hero image',
       description: 'Primary image used for the article header and cards.',
+    }),
+    Digit({
+      name: 'editionNumber',
+      title: 'Edition number',
+      description: 'Auto-assigned sequential number at publish time. Not editable.',
+      readOnly: true,
     }),
     List({
       name: 'tags',

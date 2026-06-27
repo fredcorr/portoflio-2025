@@ -1,0 +1,3 @@
+# Journal Listing holds filter state in React, not URL search params
+
+Filter and pagination state in the Journal Listing lives in React state, not URL search params. URL params via `useSearchParams` on the client would be safe and shareable, but using `searchParams` as a server prop on the catch-all route (`[[...slug]]`) forces dynamic rendering and breaks ISR for every page on the site. A dedicated dynamic route was considered but rejected to stay within Vercel's free tier function limits. The trade-off is that filtered views are not deep-linkable; this is acceptable for a personal portfolio at current scale.

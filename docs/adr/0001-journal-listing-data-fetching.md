@@ -1,0 +1,3 @@
+# Journal Listing fetches via Edge API route, not direct Sanity client
+
+The Journal Listing uses SWR to call a Next.js Edge API route (`/api/journal`) for filter and pagination changes, rather than querying Sanity directly from the browser. The existing Sanity client attaches a read token and uses server-only env vars — exposing it to the browser would leak the token. A dedicated browser-safe client was considered but rejected: an Edge API route is simpler, keeps auth concerns server-side, and adds only ~20–50ms latency which is imperceptible behind the skeleton loader. Edge runtime eliminates cold starts and uses Vercel's more generous 500k/month invocation limit.
