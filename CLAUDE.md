@@ -17,11 +17,11 @@ When editing files under `apps/web/**`, also follow `apps/web/CLAUDE.md`. When e
 
 This is the most common source of drift, so it leads. Before writing UI from any design:
 
-1. **Reuse before you invent.** Map every element of the design onto an existing token, atom, or molecule first. New primitives are the exception. How to discover what exists is in `apps/web/CLAUDE.md` → *Reusing components*.
-2. **Tokens, not raw values.** Convert every hex/px/font from the design into its design token (`bg-primary-400`, `text-heading-1`, `font-heading`). Never paste raw values — they break dark mode. Token list is in `apps/web/CLAUDE.md` → *Design tokens*.
+1. **Reuse before you invent.** Map every element of the design onto an existing token, atom, or molecule first. New primitives are the exception. How to discover what exists is in `apps/web/CLAUDE.md` → _Reusing components_.
+2. **Tokens, not raw values.** Convert every hex/px/font from the design into its design token (`bg-primary-400`, `text-heading-1`, `font-heading`). Never paste raw values — they break dark mode. Token list is in `apps/web/CLAUDE.md` → _Design tokens_.
 3. **Pull the real Figma source** (via the Figma MCP) when a node/URL is given, rather than guessing from a screenshot.
 
-The full workflow and inventories are in `apps/web/CLAUDE.md` → *Design-to-code workflow*. Read it before implementing.
+The full workflow and inventories are in `apps/web/CLAUDE.md` → _Design-to-code workflow_. Read it before implementing.
 
 ## Commands
 
@@ -44,12 +44,12 @@ npm run build          # all workspaces
 npm run build:web
 npm run build:studio
 
-# Tests (shared/utils uses Node's built-in test runner)
-node --test shared/utils/makeID.test.ts          # single test file
-npx tsx --test shared/utils/someFile.test.ts     # if file uses TypeScript features
+# Tests (Node's built-in test runner, run through tsx)
+npm run test                                     # all workspaces with tests (turbo run test)
+npx tsx --test shared/utils/makeID.test.ts       # a single file
 ```
 
-> **Before considering any change complete**, run `turbo run lint typecheck build` (and `node --test` for touched utilities — tests are not a Turbo task). Strict TypeScript is enforced, so `typecheck` must pass with zero errors.
+> **Before considering any change complete**, run `turbo run lint typecheck test build`. Strict TypeScript is enforced, so `typecheck` must pass with zero errors.
 
 ## Architecture
 
@@ -93,6 +93,7 @@ Adding a component type touches files in every workspace in this order:
 ### GROQ query organization
 
 Queries live in `apps/web/sanity/queries/`:
+
 - `base.ts` — `ALL_PAGES_QUERY`, `PAGE_BY_SLUG_QUERY`, and top-level fetches
 - `fragments.ts` — reusable field selections (e.g. `imageFields`, `basePageFields`)
 - `pages/` — one file per page type
@@ -103,6 +104,7 @@ Always compose from fragments. Never select fields you don't use.
 ### Draft mode / visual editing
 
 Two Sanity clients are defined in `apps/web/sanity/client.ts`:
+
 - **`client`** — CDN-enabled, `perspective: 'published'`, used for all static/ISR rendering
 - **`previewClient`** — no CDN, `perspective: 'drafts'`, stega encoding enabled, token-authenticated
 
@@ -111,10 +113,10 @@ Draft mode is activated via `/api/draft`. When `draftMode().isEnabled`, `getPage
 ### Shared types import paths
 
 ```ts
-import type { BaseDocument } from '@portfolio/types/base'
-import type { SanityImage } from '@portfolio/types/sanity'
-import type { CmsPages } from '@portfolio/types/pages'
-import type { CardComponent } from '@portfolio/types/components/card'
+import type { BaseDocument } from "@portfolio/types/base";
+import type { SanityImage } from "@portfolio/types/sanity";
+import type { CmsPages } from "@portfolio/types/pages";
+import type { CardComponent } from "@portfolio/types/components/card";
 ```
 
 The package is a pure TypeScript source package (no build step); `main` and `types` both point to `.ts` files resolved at compile time.
@@ -122,6 +124,7 @@ The package is a pure TypeScript source package (no build step); `main` and `typ
 ### Studio schema compositions
 
 Reusable field groups live in `apps/studio/schemas/compositions/`:
+
 - `component-fields.ts` — exports `componentFields.all`, which adds the `sectionId` anchor field. Spread into every organism schema.
 - `seoFields.ts` — SEO meta fields shared across page schemas.
 - `base-document-fields.ts` — fields common to all document types.
