@@ -112,7 +112,7 @@ const Card = ({
       ? '' // no overflow-hidden/rounded/translate — badge must protrude above
       : 'overflow-hidden hover:-translate-y-1',
     'transition',
-    articleSpacingMap[spacing],
+    articleSpacingMap[spacing]
   )
 
   const focusRingClassName =
@@ -123,15 +123,12 @@ const Card = ({
   const compClassName = cn(
     cardBaseClassName,
     href && focusRingClassName,
-    className,
+    className
   )
 
   const imageWrapperClassName = cn(
     squareImage ? 'aspect-square rounded-none' : 'aspect-[1.18]',
-    squareImage && [
-      'md:blur-[4px]',
-      'md:group-hover:blur-none',
-    ],
+    squareImage && ['md:blur-[4px]', 'md:group-hover:blur-none'],
     imageShadow && [
       'shadow-[16px_16px_36px_4px_rgba(128,128,128,0.54)]',
       'group-hover:shadow-[24px_24px_48px_8px_rgba(128,128,128,0.69)]',
@@ -147,8 +144,8 @@ const Card = ({
 
   const cardBody = (
     <>
-      {image?.asset.url && (
-        indexAboveImage ? (
+      {image?.asset.url &&
+        (indexAboveImage ? (
           <div className="relative mt-4">
             {formattedIndex && (
               <div
@@ -180,8 +177,7 @@ const Card = ({
             className={imageClassName}
             priority={priority}
           />
-        )
-      )}
+        ))}
 
       <div
         className={cn('flex flex-col px-3 pb-5', contentSpacingMap[spacing])}
@@ -234,7 +230,8 @@ const Card = ({
   )
 
   if (isLinkedListItem) {
-    const OuterComp = (AnimationComponent ?? asProp) as React.ComponentType<PolymorphicProps>
+    const OuterComp = (AnimationComponent ??
+      asProp) as React.ComponentType<PolymorphicProps>
     const outerProps: PolymorphicProps = {
       className,
       ...(AnimationComponent && { as: asProp }),
@@ -245,7 +242,11 @@ const Card = ({
         {...(animationProps as PolymorphicProps)}
         {...(props as PolymorphicProps)}
       >
-        <Link href={href} aria-label={`View ${title}`} className={linkClassName}>
+        <Link
+          href={href}
+          aria-label={`View ${title}`}
+          className={linkClassName}
+        >
           {cardBody}
         </Link>
       </OuterComp>

@@ -30,7 +30,6 @@ const Footer: React.FC<FooterProps> = ({
       )}
     >
       <div className="mx-auto w-full max-w-[1440px]">
-
         {/* ── Head: kicker + heading ← → email pill ─────────────── */}
         <div
           className={cn(
@@ -62,7 +61,11 @@ const Footer: React.FC<FooterProps> = ({
               )}
             >
               {email}
-              <Icon name="arrow-up-right" className="size-3.5" title="Send email" />
+              <Icon
+                name="arrow-up-right"
+                className="size-3.5"
+                title="Send email"
+              />
             </a>
           )}
         </div>
@@ -70,14 +73,13 @@ const Footer: React.FC<FooterProps> = ({
         {/* ── Link columns: Sitemap + Elsewhere ─────────────────── */}
         {(hasNavItems || hasSocialLinks) && (
           <div className="grid grid-cols-1 gap-8 pb-10 sm:grid-cols-2 md:gap-16 xl:grid-cols-3 xl:pb-14">
-
             {hasNavItems && (
               <div className="flex flex-col gap-4">
                 <span className="font-heading text-[10px] uppercase tracking-[0.18em] text-[rgba(245,245,245,0.5)]">
                   Sitemap
                 </span>
                 <ul className="flex flex-col gap-2.5">
-                  {navigationItems?.map((item) => (
+                  {navigationItems?.map(item => (
                     <li key={item._id}>
                       <a
                         href={`/${item.slug.current}`}
@@ -99,7 +101,8 @@ const Footer: React.FC<FooterProps> = ({
                 <ul className="flex flex-col gap-2.5">
                   {socialLinks?.map((link, index) => {
                     const href = getLinkHref(link)
-                    const label = link?.name || link?.internal_ref?.title || link?.url
+                    const label =
+                      link?.name || link?.internal_ref?.title || link?.url
                     const linkKey =
                       link?.internal_ref?._id ||
                       link?.url ||
@@ -112,7 +115,10 @@ const Footer: React.FC<FooterProps> = ({
                         <a
                           href={href}
                           className="inline-flex items-center gap-1.5 font-heading text-[15px] tracking-[-0.005em] text-[#f5f5f5] transition hover:opacity-55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f5f5]"
-                          {...(isExternal && { target: '_blank', rel: 'noreferrer' })}
+                          {...(isExternal && {
+                            target: '_blank',
+                            rel: 'noreferrer',
+                          })}
                         >
                           {label}
                           {isExternal && (
@@ -125,7 +131,6 @@ const Footer: React.FC<FooterProps> = ({
                 </ul>
               </div>
             )}
-
           </div>
         )}
 
@@ -145,7 +150,6 @@ const Footer: React.FC<FooterProps> = ({
             Back to top ↑
           </a>
         </div>
-
       </div>
     </footer>
   )

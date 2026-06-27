@@ -25,10 +25,7 @@ const block = (text: string): PortableTextBlock[] => [
 test('renders rich text with default size', () => {
   const markup = renderToStaticMarkup(<RichText value={block('Hello world')} />)
 
-  assert.match(
-    markup,
-    /class="font-body text-body-xl leading-relaxed mb-6/
-  )
+  assert.match(markup, /class="font-body text-body-xl leading-relaxed mb-6/)
   assert.match(markup, />Hello world<\/p>$/)
 })
 

@@ -17,7 +17,9 @@ const mockImage: SanityImage = {
 }
 
 test('renders image with alt text as caption', () => {
-  const markup = renderToStaticMarkup(<ArticleFeaturedImage heroImage={mockImage} />)
+  const markup = renderToStaticMarkup(
+    <ArticleFeaturedImage heroImage={mockImage} />
+  )
   assert.match(markup, /A misty morning in Lisbon/)
 })
 

@@ -79,39 +79,39 @@ const Faqs = ({
         componentKey={_key}
         componentIndex={componentIndex}
         {...(hasHeading && headingId && { 'aria-labelledby': headingId })}
-      className={'text-black dark:text-foreground'}
-      contentClassName="gap-y-10"
-      data-organism="faqs"
-      data-figma-node-id="75:1735"
-    >
-      {hasHeading && headingText && (
-        <Heading
-          id={headingId}
-          level={title?.headingLevel}
-          className="max-w-sm font-heading text-heading-2 font-medium tracking-tight md:col-span-4"
-        >
-          {headingText}
-        </Heading>
-      )}
+        className={'text-black dark:text-foreground'}
+        contentClassName="gap-y-10"
+        data-organism="faqs"
+        data-figma-node-id="75:1735"
+      >
+        {hasHeading && headingText && (
+          <Heading
+            id={headingId}
+            level={title?.headingLevel}
+            className="max-w-sm font-heading text-heading-2 font-medium tracking-tight md:col-span-4"
+          >
+            {headingText}
+          </Heading>
+        )}
 
-      {hasQuestions && questions && (
-        <StaggerChildren
-          className={cn(
-            cardColumnClassName,
-            'min-w-0 divide-y divide-black/10 p-6 md:p-0'
-          )}
-        >
-          {questions.map((item, index) => (
-            <FaqItem
-              key={item._key ?? `faq-${index}`}
-              _key={item._key}
-              question={item.question}
-              answer={item.answer}
-              {...(index === 0 && { className: '[&>button]:pt-0' })}
-            />
-          ))}
-        </StaggerChildren>
-      )}
+        {hasQuestions && questions && (
+          <StaggerChildren
+            className={cn(
+              cardColumnClassName,
+              'min-w-0 divide-y divide-black/10 p-6 md:p-0'
+            )}
+          >
+            {questions.map((item, index) => (
+              <FaqItem
+                key={item._key ?? `faq-${index}`}
+                _key={item._key}
+                question={item.question}
+                answer={item.answer}
+                {...(index === 0 && { className: '[&>button]:pt-0' })}
+              />
+            ))}
+          </StaggerChildren>
+        )}
       </ComponentLayout>
     </>
   )

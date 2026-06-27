@@ -31,9 +31,13 @@ test('renders with default div tag', () => {
   assert.match(markup, /<div/)
 })
 
-const Wrapper = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <article className={className}>{children}</article>
-)
+const Wrapper = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) => <article className={className}>{children}</article>
 
 test('renders with custom React component', () => {
   const markup = renderToStaticMarkup(<FadeIn as={Wrapper}>content</FadeIn>)

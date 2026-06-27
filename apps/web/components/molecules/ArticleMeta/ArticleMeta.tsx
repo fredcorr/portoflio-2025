@@ -70,10 +70,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
 
       {/* Published */}
       {dateLabel && (
-        <FadeIn
-          as="div"
-          className="flex flex-col gap-1.5 md:col-span-2"
-        >
+        <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Published
           </dt>
@@ -85,10 +82,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
 
       {/* Reading time */}
       {readTimeLabel && (
-        <FadeIn
-          as="div"
-          className="flex flex-col gap-1.5 md:col-span-2"
-        >
+        <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Reading time
           </dt>
@@ -100,10 +94,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
 
       {/* Topics */}
       {topicsLabel && (
-        <FadeIn
-          as="div"
-          className="flex flex-col gap-1.5 md:col-span-2"
-        >
+        <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Topics
           </dt>
@@ -115,10 +106,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
 
       {/* Edition */}
       {editionLabel && (
-        <FadeIn
-          as="div"
-          className="flex flex-col gap-1.5 md:col-span-2"
-        >
+        <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
           <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
             Edition
           </dt>

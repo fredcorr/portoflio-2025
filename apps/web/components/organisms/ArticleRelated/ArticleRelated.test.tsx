@@ -23,7 +23,9 @@ const articles: RelatedArticle[] = [
 ]
 
 test('renders related article titles', () => {
-  const markup = renderToStaticMarkup(<ArticleRelated relatedArticles={articles} />)
+  const markup = renderToStaticMarkup(
+    <ArticleRelated relatedArticles={articles} />
+  )
   assert.match(markup, /On the discipline of restraint/)
   assert.match(markup, /Typography that does not beg for attention/)
 })

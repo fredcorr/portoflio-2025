@@ -5,10 +5,26 @@ export const footerMock: FooterProps = {
   openForProjects: true,
   availabilityText: 'Q2 2026',
   navigationItems: [
-    { _id: 'nav-work', title: 'Work', slug: { _type: 'slug', current: 'work' } },
-    { _id: 'nav-about', title: 'About', slug: { _type: 'slug', current: 'about' } },
-    { _id: 'nav-journal', title: 'Journal', slug: { _type: 'slug', current: 'journal' } },
-    { _id: 'nav-contact', title: 'Contact', slug: { _type: 'slug', current: 'contact' } },
+    {
+      _id: 'nav-work',
+      title: 'Work',
+      slug: { _type: 'slug', current: 'work' },
+    },
+    {
+      _id: 'nav-about',
+      title: 'About',
+      slug: { _type: 'slug', current: 'about' },
+    },
+    {
+      _id: 'nav-journal',
+      title: 'Journal',
+      slug: { _type: 'slug', current: 'journal' },
+    },
+    {
+      _id: 'nav-contact',
+      title: 'Contact',
+      slug: { _type: 'slug', current: 'contact' },
+    },
   ],
   socialLinks: [
     {

@@ -33,12 +33,7 @@ export const Image = ({
   const resolvedHeight = fill ? undefined : (height ?? DEFAULT_HEIGHT)
 
   return (
-    <div
-      className={cn(
-        'relative overflow-hidden',
-        wrapperClassName
-      )}
-    >
+    <div className={cn('relative overflow-hidden', wrapperClassName)}>
       <NextImage
         src={src}
         alt={alt}

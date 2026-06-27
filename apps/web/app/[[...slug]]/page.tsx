@@ -111,7 +111,7 @@ export async function generateMetadata({
     const siteUrl = getSiteUrl()
     const url = buildPageUrl(siteUrl, page.slug?.current || slug)
     const openGraphImages = getOpenGraphImage(page)
-    const indexPage = process.env.ALLOW_CRAWLERS === 'true' && !isDraft    
+    const indexPage = process.env.ALLOW_CRAWLERS === 'true' && !isDraft
 
     return {
       title,

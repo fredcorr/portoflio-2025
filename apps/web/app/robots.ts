@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
   log(`Robots.txt - allowCrawlersEnv: ${allowCrawlersEnv}`)
 
   return {
-    ...(allowCrawlers && {sitemap: `${process.env.SITE_URL}/sitemap.xml`}),
+    ...(allowCrawlers && { sitemap: `${process.env.SITE_URL}/sitemap.xml` }),
     rules: allowCrawlers
       ? {
           userAgent: '*',

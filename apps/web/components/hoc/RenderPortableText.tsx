@@ -54,7 +54,11 @@ const buildDefaultComponents = (size: RichTextSize): PortableTextComponents => {
           <a
             href={href}
             target={isExternal && value?.openInNewTab ? '_blank' : '_self'}
-            rel={isExternal && value?.openInNewTab ? 'noopener noreferrer' : undefined}
+            rel={
+              isExternal && value?.openInNewTab
+                ? 'noopener noreferrer'
+                : undefined
+            }
             className="underline underline-offset-2 decoration-current/40 transition-all hover:decoration-current"
           >
             {children}

@@ -12,5 +12,6 @@ export const ThreeBackgroundTunnel = withNoSSR(
 )
 
 export const AboutBackgroundHelixPulseCascade = withNoSSR(
-  () => import('./AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade')
+  () =>
+    import('./AboutBackgroundHelixPulseCascade/AboutBackgroundHelixPulseCascade')
 )

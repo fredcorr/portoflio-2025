@@ -1,5 +1,8 @@
 import React from 'react'
-import type { PortableTextBlock, PortableTextComponents } from '@portabletext/react'
+import type {
+  PortableTextBlock,
+  PortableTextComponents,
+} from '@portabletext/react'
 import { RenderPortableText } from '@/components/hoc/RenderPortableText'
 
 export enum RichTextSize {
@@ -30,7 +33,9 @@ export const RichText = ({
     )
   }
 
-  return <RenderPortableText value={value} components={components} size={size} />
+  return (
+    <RenderPortableText value={value} components={components} size={size} />
+  )
 }
 
 export default RichText

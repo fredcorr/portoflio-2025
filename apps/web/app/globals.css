@@ -38,7 +38,6 @@
   --color-accent-lavender: #6e3cf5;
   --color-accent-sussie: #38e1f1;
   --color-accent-blue-jeans: #0082ff;
-
 }
 
 @theme inline {
@@ -145,7 +144,6 @@
   --color-accent-sussie: #65f1ff;
   --color-accent-blue-jeans: #4ca1ff;
 }
-
 
 @layer base {
   html {

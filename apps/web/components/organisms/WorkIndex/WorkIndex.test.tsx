@@ -31,10 +31,20 @@ const createWorkIndex = (
       clientName: 'Senta',
       title: 'Mobile App & Branding',
       slug: { _type: 'slug', current: 'projects/senta' },
-      projectTags: [{ _id: 'tag-1', _type: 'media.tag' as const, name: { _type: 'slug' as const, current: 'mobile-app' } }],
+      projectTags: [
+        {
+          _id: 'tag-1',
+          _type: 'media.tag' as const,
+          name: { _type: 'slug' as const, current: 'mobile-app' },
+        },
+      ],
       seoDescription: 'Habit tracking with zero friction.',
       year: 2025,
-      projectHero: { _type: 'image', asset: { _type: 'reference', _ref: 'img-1', url: '/senta.jpg' }, alt: 'Senta' },
+      projectHero: {
+        _type: 'image',
+        asset: { _type: 'reference', _ref: 'img-1', url: '/senta.jpg' },
+        alt: 'Senta',
+      },
     },
     {
       _id: 'project-2',
@@ -42,10 +52,20 @@ const createWorkIndex = (
       clientName: 'Crtly',
       title: 'Web App',
       slug: { _type: 'slug', current: 'projects/crtly' },
-      projectTags: [{ _id: 'tag-2', _type: 'media.tag' as const, name: { _type: 'slug' as const, current: 'web-app' } }],
+      projectTags: [
+        {
+          _id: 'tag-2',
+          _type: 'media.tag' as const,
+          name: { _type: 'slug' as const, current: 'web-app' },
+        },
+      ],
       seoDescription: 'Creator monetisation, stripped back.',
       year: 2024,
-      projectHero: { _type: 'image', asset: { _type: 'reference', _ref: 'img-2', url: '/crtly.jpg' }, alt: 'Crtly' },
+      projectHero: {
+        _type: 'image',
+        asset: { _type: 'reference', _ref: 'img-2', url: '/crtly.jpg' },
+        alt: 'Crtly',
+      },
     },
   ],
   ...overrides,
