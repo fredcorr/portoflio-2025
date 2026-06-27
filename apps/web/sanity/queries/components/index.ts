@@ -9,7 +9,6 @@ import { formFields } from './form'
 import { faqsFields } from './faqs'
 import { homepageHeroFields } from './homepage-hero'
 import { imageGalleryFields } from './image-gallery'
-import { imageGridFields } from './image-grid'
 import { processFields } from './process'
 import { projectListingFields } from './project-listing'
 import { statsFields } from './stats'
@@ -19,83 +18,42 @@ import { workIndexFields } from './work-index'
 import { journalsFeedFields } from './journals-feed'
 import { journalsListingFields } from './journals-listing'
 
-export {
-  homepageHeroFields,
-  aboutPageHeroFields,
-  animatedStraplineFields,
-  blockTextFields,
-  cardsFields,
-  collaborateHighlightsFields,
-  formFields,
-  faqsFields,
-  imageGalleryFields,
-  imageGridFields,
-  processFields,
-  projectListingFields,
-  statsFields,
-  testimonialsFields,
-  toolSetFields,
-  workIndexFields,
-  journalsFeedFields,
-  journalsListingFields,
+/**
+ * Single keyed registry of organism GROQ fragments. Typing it as
+ * `Record<ComponentTypeName, string>` forces a fragment for every component type —
+ * omit one and this file fails to compile. `pageComponentFields` is generated from
+ * it, so the query and the enum cannot drift apart. Plain strings only: no React is
+ * pulled into the query layer's import graph.
+ */
+export const organismFragments: Record<ComponentTypeName, string> = {
+  [ComponentTypeName.HomePageHero]: homepageHeroFields,
+  [ComponentTypeName.ProjectListing]: projectListingFields,
+  [ComponentTypeName.Testimonials]: testimonialsFields,
+  [ComponentTypeName.Cards]: cardsFields,
+  [ComponentTypeName.BlockText]: blockTextFields,
+  [ComponentTypeName.AboutPageHero]: aboutPageHeroFields,
+  [ComponentTypeName.CollaborateHighlights]: collaborateHighlightsFields,
+  [ComponentTypeName.Process]: processFields,
+  [ComponentTypeName.ImageGallery]: imageGalleryFields,
+  [ComponentTypeName.Stats]: statsFields,
+  [ComponentTypeName.Faqs]: faqsFields,
+  [ComponentTypeName.ToolSet]: toolSetFields,
+  [ComponentTypeName.Form]: formFields,
+  [ComponentTypeName.AnimatedStrapline]: animatedStraplineFields,
+  [ComponentTypeName.WorkIndex]: workIndexFields,
+  [ComponentTypeName.JournalsFeed]: journalsFeedFields,
+  [ComponentTypeName.JournalsListing]: journalsListingFields,
 }
+
+const componentSelectBranches = Object.entries(organismFragments)
+  .map(
+    ([type, fragment]) => `_type == "${type}" => {\n      ${fragment}\n    }`
+  )
+  .join(',\n    ')
 
 export const pageComponentFields = groq`
   ...select(
-    _type == "${ComponentTypeName.HomePageHero}" => {
-      ${homepageHeroFields}
-    },
-    _type == "${ComponentTypeName.ProjectListing}" => {
-      ${projectListingFields}
-    },
-    _type == "${ComponentTypeName.Testimonials}" => {
-      ${testimonialsFields}
-    },
-    _type == "${ComponentTypeName.Cards}" => {
-      ${cardsFields}
-    },
-    _type == "${ComponentTypeName.BlockText}" => {
-      ${blockTextFields}
-    },
-    _type == "${ComponentTypeName.AboutPageHero}" => {
-      ${aboutPageHeroFields}
-    },
-    _type == "${ComponentTypeName.CollaborateHighlights}" => {
-      ${collaborateHighlightsFields}
-    },
-    _type == "${ComponentTypeName.Process}" => {
-      ${processFields}
-    },
-    _type == "${ComponentTypeName.ImageGallery}" => {
-      ${imageGalleryFields}
-    },
-    _type == "${ComponentTypeName.ImageGrid}" => {
-      ${imageGridFields}
-    },
-    _type == "${ComponentTypeName.Stats}" => {
-      ${statsFields}
-    },
-    _type == "${ComponentTypeName.Faqs}" => {
-      ${faqsFields}
-    },
-    _type == "${ComponentTypeName.ToolSet}" => {
-      ${toolSetFields}
-    },
-    _type == "${ComponentTypeName.Form}" => {
-      ${formFields}
-    },
-    _type == "${ComponentTypeName.AnimatedStrapline}" => {
-      ${animatedStraplineFields}
-    },
-    _type == "${ComponentTypeName.WorkIndex}" => {
-      ${workIndexFields}
-    },
-    _type == "${ComponentTypeName.JournalsFeed}" => {
-      ${journalsFeedFields}
-    },
-    _type == "${ComponentTypeName.JournalsListing}" => {
-      ${journalsListingFields}
-    },
+    ${componentSelectBranches},
     true => {
       _type
     }
