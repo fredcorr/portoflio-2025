@@ -45,6 +45,12 @@
       ],
       "outputs": []
     },
+    "typecheck": {
+      "dependsOn": [
+        "^typecheck"
+      ],
+      "outputs": []
+    },
     "format": {
       "outputs": []
     },
