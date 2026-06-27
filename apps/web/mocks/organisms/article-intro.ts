@@ -2,6 +2,7 @@ import type { ArticleIntroProps } from '@portfolio/types/components'
 
 export const articleIntroMock: ArticleIntroProps = {
   title: 'On the discipline of restraint',
+  author: { firstName: 'Federico', secondName: 'Corradi' },
   dateLabel: 'April 14, 2026',
   readTimeLabel: '9 min read',
   tags: ['Essay', 'Craft', 'UI'],

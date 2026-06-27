@@ -10,9 +10,9 @@ test('renders heading and testimonials', () => {
   const markup = renderToStaticMarkup(<Testimonials {...testimonialsMock} />)
 
   assert.match(markup, /What clients say/)
-  assert.match(markup, /Design Partner/)
-  assert.match(markup, /Design Partner/)
+  assert.match(markup, /Working with Joey was seamless/)
   assert.match(markup, /Alex Rivera/)
+  assert.match(markup, /VP Product, Crtly/)
 })
 
 test('renders fallback when no testimonials', () => {

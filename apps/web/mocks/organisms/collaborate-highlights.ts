@@ -12,18 +12,21 @@ export const collaborateHighlightsMock: CollaborateHighlightsComponent = {
     {
       _key: 'client-centric',
       title: 'Client-Centric',
+      icon: 'sparkles',
       subtitle:
         'Your goals are our focus. We listen, understand, and work closely with you to achieve your vision.',
     },
     {
       _key: 'tailored',
       title: 'Tailored Solutions',
+      icon: 'layers',
       subtitle:
         'We do not do one-size-fits-all. We craft solutions that are unique to your business, ensuring you stand out in your industry.',
     },
     {
       _key: 'innovation',
       title: 'Creative Innovation',
+      icon: 'lightbulb',
       subtitle:
         'We stay ahead of design and branding trends to offer fresh and innovative ideas that set you apart.',
     },

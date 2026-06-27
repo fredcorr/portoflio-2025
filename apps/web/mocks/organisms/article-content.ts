@@ -23,6 +23,7 @@ const block = (
 export const articleContentMock: ArticleContentProps = {
   shareUrl: 'https://example.com/articles/design-systems',
   shareTitle: 'Design systems in practice',
+  author: { firstName: 'Federico', secondName: 'Corradi' },
   content: [
     block(
       'Joey is a remarkable artist. He grasps abstract ideas and transforms them into exceptional visuals.',

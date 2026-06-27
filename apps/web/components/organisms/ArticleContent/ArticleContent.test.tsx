@@ -12,6 +12,7 @@ test('renders share rail, rich text, and sign-off', () => {
       content={articleContentMock.content}
       shareUrl={articleContentMock.shareUrl}
       shareTitle={articleContentMock.shareTitle}
+      author={articleContentMock.author}
       tags={['Design', 'Craft']}
     />
   )
@@ -24,11 +25,11 @@ test('renders share rail, rich text, and sign-off', () => {
   assert.match(markup, /Design/)
 })
 
-test('renders sign-off even without content', () => {
+test('returns null when there is no content, even if a share url is provided', () => {
   const markup = renderToStaticMarkup(
     <ArticleContent shareUrl="https://example.com/a" />
   )
-  assert.match(markup, /Federico Corradi/)
+  assert.equal(markup, '')
 })
 
 test('returns empty markup when no content and no shareUrl', () => {

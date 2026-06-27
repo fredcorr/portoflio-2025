@@ -47,6 +47,10 @@ const FaqItem = ({ _key, question, answer, className }: FaqItemProps) => {
     onResize: updateContentHeight,
   })
 
+  if (!hasQuestion && !hasAnswer) {
+    return null
+  }
+
   return (
     <FadeIn className={cn('w-full', className)} data-molecule="faq-item">
       <button

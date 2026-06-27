@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint --max-warnings=0 .",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test \"**/*.test.ts\" \"**/*.test.tsx\"",
+    "test": "tsx --require ./test-utils/ignore-assets.cjs --test \"**/*.test.ts\" \"**/*.test.tsx\"",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css}\""
   },

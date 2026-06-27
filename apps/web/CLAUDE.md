@@ -95,8 +95,9 @@ Only create a new atom/molecule when nothing existing fits and it's genuinely re
 
 ## Testing
 
-- Run tests with `npm run test` (from the repo root, or per workspace). They use Node's built-in runner via `tsx`; component tests render through `react-dom/server`'s `renderToStaticMarkup`, so no DOM/jsdom is needed. The runner globs `**/*.test.ts` and `**/*.test.tsx`.
-- **Known state:** `shared/utils` is green. The `apps/web` component suite was historically never wired to a runner and currently has **pre-existing failures** (≈11 failing assertions, plus `ArticleContent.test.tsx` and `Testimonials.test.tsx` failing to parse) awaiting a dedicated cleanup. Don't add new failures, and don't assume a green suite — check what your change touches.
+- Run tests with `npm run test`. They use Node's built-in runner via `tsx`; component tests render through `react-dom/server`'s `renderToStaticMarkup`, so no DOM/jsdom is needed. The runner globs `**/*.test.ts` and `**/*.test.tsx`. The suite is green — keep it that way.
+- `test-utils/ignore-assets.cjs` stubs CSS/asset imports (`import './x.css'`). The bundler handles those in the real app, but the Node test runner can't execute them, so any component that imports CSS (e.g. via `highlight.js` or `swiper`) would otherwise crash the runner.
+- For **async Server Components that read from Sanity** (e.g. anything calling `getSettings()`), stub `client.fetch`, `await` the component to resolve its element, then `renderToStaticMarkup` it — see `components/organisms/HomePageHero/HomePageHero.test.tsx`.
 - Write a unit test for each new component
 - If mock data is required:
   - Store it under `mocks/`

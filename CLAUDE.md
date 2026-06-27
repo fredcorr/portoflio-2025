@@ -49,7 +49,7 @@ npm run test                                     # all workspaces with tests (tu
 npx tsx --test shared/utils/makeID.test.ts       # a single file
 ```
 
-> **Before considering any change complete**, run `turbo run lint typecheck build` — all must pass (strict TypeScript means zero `typecheck` errors). Also run `npm run test`: `shared/utils` is green, but the `apps/web` component suite has **known pre-existing failures** (see `apps/web/CLAUDE.md` → Testing), so don't treat a non-green test run as your regression — just don't add new failures.
+> **Before considering any change complete**, run `turbo run lint typecheck test build` — all must pass (strict TypeScript means zero `typecheck` errors, and the test suite is green). `build` additionally needs Sanity env vars to complete static generation.
 
 ## Architecture
 
