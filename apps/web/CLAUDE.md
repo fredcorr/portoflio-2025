@@ -16,17 +16,13 @@ When you are handed a design — a Figma URL/node, a "Claude Design"/Vercel impo
 - **Tokens, never raw values.** No `#1f1e1e`, no `text-[64px]`, no `font-['Play']`. If you're typing a hex code or an arbitrary `[...]` Tailwind value for color/typography, stop — there is almost certainly a token for it. Tokens carry light/dark mode automatically; raw values break dark mode.
 - **Reuse primitives, never re-invent.** Before writing a heading, image, icon, input, card, etc., check the inventory below and use the existing component. Do not create a parallel `<h2 className=...>` when `Heading` exists, a bare `<img>`/`next/image` when `Image` exists, or an inline SVG when `Icon` exists.
 
-## Design tokens (defined in `app/globals.css`)
+## Design tokens
 
-These are the single source of truth for color and type. Use the Tailwind utility that references the token (e.g. token `--color-primary-400` → `bg-primary-400` / `text-primary-400`). All colors have light/dark values applied at runtime — use the token and dark mode is free.
+**`app/globals.css` is the single source of truth for every color and type token. Read the `@theme` blocks there before styling — that file is the list, this doc does not copy it.**
 
-**Colors:** `background`, `foreground`, `black` · `surface-1`, `surface-2` · `gray-50/100/200` · `primary-50/75/100/200/300/400/500/600/700` · `accent-orange`, `accent-lavender`, `accent-sussie`, `accent-blue-jeans` · `status-success`, `status-warning`, `status-error`
+How they map: a CSS token becomes a Tailwind utility by dropping the `--color-` / `--text-` / `--font-` prefix — e.g. `--color-primary-400` → `bg-primary-400` / `text-primary-400`, `--text-heading-1` → `text-heading-1`, `--font-heading` → `font-heading`. Colors have light/dark values applied at runtime, so using the token gives you dark mode for free; type tokens ship their own clamp + line-height, so don't re-specify font-size/leading by hand.
 
-**Typography (`text-*`):** `display-2xl`, `display-xl`, `display-lg` · `heading-1`…`heading-6` · `body-xl`, `body-lg`, `body-md` (each ships its own clamp + line-height — do not re-specify font-size/leading by hand)
-
-**Fonts (`font-*`):** `heading` / `display` (Play), `sans` / `body` (Inter), `accent` (Acworth)
-
-If a design needs a color or size outside this set, surface it to the user — don't silently hardcode.
+If a design needs a color or size that isn't defined in `globals.css`, surface it to the user — don't silently hardcode a raw hex/px value.
 
 ## Component inventory (reuse before creating)
 
