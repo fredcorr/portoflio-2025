@@ -16,6 +16,7 @@ import { testimonialsFields } from './testimonials'
 import { toolSetFields } from './tool-set'
 import { workIndexFields } from './work-index'
 import { journalsFeedFields } from './journals-feed'
+import { journalsListingFields } from './journals-listing'
 
 /**
  * Single keyed registry of organism GROQ fragments. Typing it as
@@ -41,6 +42,7 @@ export const organismFragments: Record<ComponentTypeName, string> = {
   [ComponentTypeName.AnimatedStrapline]: animatedStraplineFields,
   [ComponentTypeName.WorkIndex]: workIndexFields,
   [ComponentTypeName.JournalsFeed]: journalsFeedFields,
+  [ComponentTypeName.JournalsListing]: journalsListingFields,
 }
 
 const componentSelectBranches = Object.entries(organismFragments)

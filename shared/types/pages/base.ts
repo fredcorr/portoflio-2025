@@ -17,6 +17,7 @@ import type {
   AnimatedStraplineComponent,
   WorkIndexComponent,
   JournalsFeedComponent,
+  JournalsListingComponent,
 } from '../components'
 
 export type PageComponent =
@@ -36,6 +37,7 @@ export type PageComponent =
   | AnimatedStraplineComponent
   | WorkIndexComponent
   | JournalsFeedComponent
+  | JournalsListingComponent
 
 /**
  * Compile-time guard: every `ComponentTypeName` must be represented in the

@@ -14,7 +14,7 @@ export type BaseDocumentFieldsConfig = {
 // Note: "validation" and "options" are excluded because each field type has its own specific signatures.
 export type CommonFieldProps = Pick<
   FieldDefinition,
-  'name' | 'title' | 'description' | 'hidden' | 'fieldset'
+  'name' | 'title' | 'description' | 'hidden' | 'fieldset' | 'readOnly'
 >
 
 export type Slugifier = (

@@ -128,7 +128,7 @@ test('squareImage applies aspect-square, rounded-none, blur and scale transition
   assert.match(markup, /rounded-none/)
   // blur is on wrapper (md: prefix for desktop only)
   assert.match(markup, /md:blur-\[4px\]/)
-  assert.match(markup, /md:group-hover:blur-0/)
+  assert.match(markup, /md:group-hover:blur-none/)
   assert.match(markup, /md:group-hover:scale-105/)
   assert.match(markup, /duration-\[700ms\]/)
 })

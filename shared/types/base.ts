@@ -24,6 +24,7 @@ export enum ComponentTypeName {
   AnimatedStrapline = "animatedStrapline",
   WorkIndex = "workIndex",
   JournalsFeed = "journalsFeed",
+  JournalsListing = "journalsListing",
 }
 
 export enum GlobalItemsType {

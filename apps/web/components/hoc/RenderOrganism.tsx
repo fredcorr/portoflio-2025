@@ -15,6 +15,7 @@ import {
   HomePageHero,
   ImageGallery,
   JournalsFeed,
+  JournalsListing,
   Process,
   Stats,
   ToolSet,
@@ -77,6 +78,9 @@ const organismComponents: OrganismComponents = {
   [ComponentTypeName.WorkIndex]: component => <WorkIndex {...component} />,
   [ComponentTypeName.JournalsFeed]: component => (
     <JournalsFeed {...component} />
+  ),
+  [ComponentTypeName.JournalsListing]: component => (
+    <JournalsListing {...component} />
   ),
 }
 
