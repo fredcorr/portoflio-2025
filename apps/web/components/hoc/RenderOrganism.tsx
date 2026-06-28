@@ -110,8 +110,7 @@ export const RenderOrganism = ({
   // another branch). Fall back to rendering nothing, matching the previous switch's
   // `default: return null` rather than crashing the render.
   const render = organismComponents[component._type] as
-    | OrganismRenderer
-    | undefined
+    OrganismRenderer | undefined
 
   if (!render) {
     return null
