@@ -1,16 +1,17 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import useSWR from 'swr'
 
 import Card from '@/components/molecules/Card/Card'
 import Button from '@/components/atoms/Button/Button'
+import Select from '@/components/atoms/Select/Select'
 import Pagination from '@/components/atoms/Pagination/Pagination'
 import SkeletonCard from '@/components/molecules/SkeletonCard/SkeletonCard'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 import { FadeInStagger } from '@/components/animation/FadeIn/FadeInStagger'
 import { formatDate } from '@/utils/format-date'
-import useClickOutside from '@/utils/use-click-outside'
+import { JOURNALS_PAGE_SIZE } from '@/utils/journals-pagination'
 import { cn } from '@/utils/cn'
 import type {
   JournalsListingArticle,
@@ -23,11 +24,10 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-const PAGE_SIZE = 6
-
 interface ApiResponse {
   articles: JournalsListingArticle[]
   total: number
+  totalPages: number
 }
 
 interface JournalsListingClientProps {
@@ -79,8 +79,6 @@ const JournalsListingClient = ({
 }: JournalsListingClientProps) => {
   const [activeCategories, setActiveCategories] = useState<string[]>([])
   const [page, setPage] = useState(1)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const isInitialState = activeCategories.length === 0 && page === 1
 
@@ -88,19 +86,6 @@ const JournalsListingClient = ({
     isInitialState ? null : buildKey(apiEndpoint, activeCategories, page),
     fetcher
   )
-
-  useClickOutside({
-    active: isDropdownOpen,
-    containerRef: dropdownRef,
-    onOutsideClick: () => setIsDropdownOpen(false),
-  })
-
-  const toggleCategory = (cat: string) => {
-    setActiveCategories(prev =>
-      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
-    )
-    setPage(1)
-  }
 
   const removeCategory = (cat: string) => {
     setActiveCategories(prev => prev.filter(c => c !== cat))
@@ -115,11 +100,18 @@ const JournalsListingClient = ({
     {}
   )
 
+  const categoryOptions = initialData.categories.map(cat => ({
+    value: cat,
+    label: cat,
+    count: categoryCounts[cat] ?? 0,
+  }))
+
   const articles = isInitialState
     ? initialData.articles
     : (data?.articles ?? [])
-  const total = isInitialState ? initialData.total : (data?.total ?? 0)
-  const totalPages = Math.ceil(total / PAGE_SIZE)
+  const totalPages = isInitialState
+    ? initialData.totalPages
+    : (data?.totalPages ?? 0)
   const showSkeleton = !isInitialState && isLoading
 
   const handlePageChange = (newPage: number) => {
@@ -129,87 +121,53 @@ const JournalsListingClient = ({
 
   return (
     <div>
-      {/* Filter */}
+      {/* Filter: react-select control + chips rendered outside the control */}
       <nav
-        className="relative border-b border-foreground/10"
+        className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-foreground/10 py-4"
         aria-label="Filter by topic"
       >
-        {/* Styled dropdown trigger + chips (all viewports) */}
-        <div
-          ref={dropdownRef}
-          className="relative flex flex-wrap items-center gap-x-5 gap-y-1 py-4"
-        >
-          <Button
-            variant="ghost"
-            onClick={() => setIsDropdownOpen(v => !v)}
-            aria-expanded={isDropdownOpen}
-            className="inline-flex shrink-0 items-center gap-2 py-2"
+        <Select
+          isMulti
+          options={categoryOptions}
+          value={activeCategories}
+          onChange={values => {
+            setActiveCategories(values)
+            setPage(1)
+          }}
+          placeholder="Filter by Topic"
+          instanceId="journal-topic-filter"
+          aria-label="Filter by topic"
+          controlShouldRenderValue={false}
+          hideSelectedOptions={false}
+          closeMenuOnSelect={false}
+          wrapperClassName="w-auto"
+          controlClassName="min-w-[16rem] border-foreground/15 bg-transparent px-3 py-2"
+        />
+
+        {activeCategories.map(cat => (
+          <button
+            key={cat}
+            onClick={() => removeCategory(cat)}
+            aria-label={`Remove ${cat} filter`}
+            className={cn(
+              'relative py-2 font-heading text-body-md uppercase tracking-[0.14em] text-foreground',
+              'transition-colors hover:text-foreground/60',
+              'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-foreground'
+            )}
           >
-            Filter by Topic
-            <span aria-hidden="true" className="text-[10px]">
-              {isDropdownOpen ? '∧' : '∨'}
+            {cat}
+            <span aria-hidden="true" className="ml-1.5">
+              ×
             </span>
-          </Button>
-
-          {activeCategories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => removeCategory(cat)}
-              className={cn(
-                'relative py-2 font-heading text-body-md uppercase tracking-[0.14em] text-foreground',
-                'transition-colors hover:text-foreground/60',
-                'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-foreground'
-              )}
-            >
-              {cat}
-              <span aria-hidden="true" className="ml-1.5">
-                ×
-              </span>
-              <span className="sr-only">(remove filter)</span>
-            </button>
-          ))}
-
-          {isDropdownOpen && (
-            <ul
-              className="absolute left-0 top-full z-10 w-[min(18rem,calc(100vw-2.5rem))] border border-foreground/10 bg-background"
-              role="listbox"
-              aria-multiselectable="true"
-              aria-label="Categories"
-            >
-              {initialData.categories.map(cat => {
-                const isSelected = activeCategories.includes(cat)
-                return (
-                  <li
-                    key={cat}
-                    className="border-b border-foreground/10 last:border-0"
-                  >
-                    <button
-                      role="option"
-                      aria-selected={isSelected}
-                      onClick={() => toggleCategory(cat)}
-                      className={cn(
-                        'flex w-full justify-between px-4 py-3 text-left',
-                        'font-heading text-body-md uppercase tracking-[0.14em]',
-                        'transition-colors',
-                        isSelected ? 'text-foreground/60' : 'text-foreground'
-                      )}
-                    >
-                      <span>{cat}</span>
-                      <span>{categoryCounts[cat] ?? 0}</span>
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
-          )}
-        </div>
+          </button>
+        ))}
       </nav>
 
       {/* Grid */}
       <div className="py-12">
         {showSkeleton ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+            {Array.from({ length: JOURNALS_PAGE_SIZE }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </div>

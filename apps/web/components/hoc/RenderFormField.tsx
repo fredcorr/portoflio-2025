@@ -1,7 +1,12 @@
 'use client'
 
 import React from 'react'
-import type { FieldErrors, UseFormRegister } from 'react-hook-form'
+import {
+  Controller,
+  type Control,
+  type FieldErrors,
+  type UseFormRegister,
+} from 'react-hook-form'
 import type { FormFieldItem } from '@portfolio/types/components/form'
 import { FormFieldType } from '@portfolio/types/components/form'
 import InputField from '@/components/atoms/Input/Input'
@@ -13,12 +18,14 @@ import camelCase from '@/utils/camel-case'
 export interface RenderFormFieldProps {
   field: FormFieldItem
   register: UseFormRegister<Record<string, unknown>>
+  control: Control<Record<string, unknown>>
   errors: FieldErrors<Record<string, unknown>>
 }
 
 export const RenderFormField = ({
   field,
   register,
+  control,
   errors,
 }: RenderFormFieldProps) => {
   const { label, placeholder, required, type, options } = field
@@ -39,17 +46,26 @@ export const RenderFormField = ({
       )
     case FormFieldType.Select:
       return (
-        <Select
-          label={label}
-          required={required}
-          options={
-            options?.map(option => ({
-              label: option.label,
-              value: option.value,
-            })) ?? []
-          }
-          error={error}
-          {...register(labelKey)}
+        <Controller
+          name={labelKey}
+          control={control}
+          render={({ field: { value, onChange, name } }) => (
+            <Select
+              name={name}
+              label={label}
+              placeholder={placeholder}
+              required={required}
+              options={
+                options?.map(option => ({
+                  label: option.label,
+                  value: option.value,
+                })) ?? []
+              }
+              value={typeof value === 'string' ? value : ''}
+              onChange={onChange}
+              error={error}
+            />
+          )}
         />
       )
     case FormFieldType.Textarea:

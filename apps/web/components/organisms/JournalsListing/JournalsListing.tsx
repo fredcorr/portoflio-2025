@@ -4,6 +4,7 @@ import { toHeadingTag } from '@/components/atoms/Heading/Heading'
 import JournalsListingClient from '@/components/hoc/JournalsListingClient'
 import { makeComponentId } from '@/utils/makeComponentId'
 import { toListingArticle } from '@/utils/to-listing-article'
+import { JOURNALS_PAGE_SIZE } from '@/utils/journals-pagination'
 import { SlideIn } from '@/components/animation/SlideIn/SlideIn'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
@@ -71,6 +72,9 @@ export default function JournalsListing({
           initialData={{
             ...initialData,
             articles: initialData.articles.map(toListingArticle),
+            totalPages: Math.ceil(
+              (initialData.total ?? 0) / JOURNALS_PAGE_SIZE
+            ),
           }}
           apiEndpoint="/api/journals"
         />

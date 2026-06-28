@@ -39,6 +39,7 @@ export const Form = ({
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
@@ -107,6 +108,7 @@ export const Form = ({
             key={field.label}
             field={field}
             register={register}
+            control={control}
             errors={errors}
           />
         ))}

@@ -10,36 +10,55 @@ const options = [
   { label: 'Option B', value: 'b' },
 ]
 
-test('renders select with placeholder label', () => {
+test('renders the placeholder when nothing is selected', () => {
   const markup = renderToStaticMarkup(
-    <Select label="Choose one" options={options} required />
+    <Select
+      instanceId="t"
+      label="Choose one"
+      placeholder="Pick…"
+      options={options}
+    />
   )
 
+  assert.match(markup, /Pick…/)
+  // sr-only associated label
   assert.match(markup, /Choose one/)
-  assert.match(markup, /option value=""/)
-  assert.match(markup, /aria-required="true"/)
 })
 
-test('shows error text when provided', () => {
+test('renders the selected single value', () => {
   const markup = renderToStaticMarkup(
-    <Select label="Choose one" options={options} error="Selection required" />
+    <Select instanceId="t" label="Choose one" options={options} value="a" />
+  )
+
+  assert.match(markup, /Option A/)
+})
+
+test('exposes the error via an alert', () => {
+  const markup = renderToStaticMarkup(
+    <Select
+      instanceId="t"
+      label="Choose one"
+      options={options}
+      error="Selection required"
+    />
   )
 
   assert.match(markup, /Selection required/)
-  assert.match(markup, /aria-invalid="true"/)
+  assert.match(markup, /role="alert"/)
 })
 
-test('multiple variant renders bare, without a placeholder option', () => {
+test('multi variant renders selected values', () => {
   const markup = renderToStaticMarkup(
     <Select
-      multiple
-      label="Filter"
+      instanceId="t"
+      isMulti
+      aria-label="Filter"
       options={options}
-      value={['a']}
+      value={['a', 'b']}
       onChange={() => {}}
     />
   )
 
-  assert.match(markup, /multiple/)
-  assert.doesNotMatch(markup, /option value="" disabled/)
+  assert.match(markup, /Option A/)
+  assert.match(markup, /Option B/)
 })

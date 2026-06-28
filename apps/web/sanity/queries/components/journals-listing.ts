@@ -5,10 +5,9 @@ import {
   titleFields,
   PUBLISHED_FILTER,
 } from '../fragments'
+import { JOURNALS_PAGE_SIZE } from '@/utils/journals-pagination'
 
 const title = titleFields('title')
-
-const PAGE_SIZE = 6
 
 export const journalArticleFields = groq`
   _id,
@@ -30,7 +29,7 @@ export const journalsListingFields = groq`
   "title": ${title},
   kicker,
   "initialData": {
-    "articles": *[${articleBase}] | order(_createdAt desc) [0...${PAGE_SIZE}] {
+    "articles": *[${articleBase}] | order(_createdAt desc) [0...${JOURNALS_PAGE_SIZE}] {
       ${journalArticleFields}
     },
     "total": count(*[${articleBase}]),

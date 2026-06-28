@@ -4,9 +4,8 @@ import { NextRequest } from 'next/server'
 import { createClient } from '@sanity/client'
 import { journalArticleFields } from '@/sanity/queries/components/journals-listing'
 import { toListingArticle } from '@/utils/to-listing-article'
+import { JOURNALS_PAGE_SIZE } from '@/utils/journals-pagination'
 import type { JournalsListingArticleRaw } from '@portfolio/types/components'
-
-const PAGE_SIZE = 6
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
@@ -15,7 +14,7 @@ export async function GET(request: NextRequest) {
     ? categoriesParam.split(',').filter(Boolean)
     : []
   const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10))
-  const offset = (page - 1) * PAGE_SIZE
+  const offset = (page - 1) * JOURNALS_PAGE_SIZE
 
   const projectId = process.env.SANITY_PROJECT_ID
   const dataset = process.env.SANITY_DATASET
@@ -47,10 +46,15 @@ export async function GET(request: NextRequest) {
         "articles": *[${baseFilter}] | order(_createdAt desc) [$offset...$end] { ${journalArticleFields} },
         "total": count(*[${baseFilter}])
       }`,
-      { offset, end: offset + PAGE_SIZE, ...params }
+      { offset, end: offset + JOURNALS_PAGE_SIZE, ...params }
     )
 
-    return Response.json({ articles: articles.map(toListingArticle), total })
+    const totalPages = Math.ceil(total / JOURNALS_PAGE_SIZE)
+    return Response.json({
+      articles: articles.map(toListingArticle),
+      total,
+      totalPages,
+    })
   } catch {
     return Response.json({ error: 'Failed to fetch articles' }, { status: 500 })
   }

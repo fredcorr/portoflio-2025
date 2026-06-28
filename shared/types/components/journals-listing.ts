@@ -26,13 +26,18 @@ export interface JournalsListingArticleRaw
 export interface JournalsListingData {
   articles: JournalsListingArticle[]
   total: number
+  /** Server-derived page count, so the client never recomputes it from `total`. */
+  totalPages: number
   categories: string[]
   allTags: string[]
 }
 
-/** Raw listing payload as returned by the page-level GROQ query. */
+/**
+ * Raw listing payload as returned by the page-level GROQ query. `totalPages` is
+ * derived server-side in the organism (GROQ has no `ceil`), so it is omitted here.
+ */
 export interface JournalsListingInitialData
-  extends Omit<JournalsListingData, 'articles'> {
+  extends Omit<JournalsListingData, 'articles' | 'totalPages'> {
   articles: JournalsListingArticleRaw[]
 }
 
