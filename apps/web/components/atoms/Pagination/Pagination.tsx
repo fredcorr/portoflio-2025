@@ -60,7 +60,7 @@ const Pagination = ({
 
   return (
     <nav
-      className={cn('flex items-center justify-end gap-1', className)}
+      className={cn('flex items-center justify-center md:justify-end gap-1', className)}
       aria-label="Pagination"
     >
       <Button
