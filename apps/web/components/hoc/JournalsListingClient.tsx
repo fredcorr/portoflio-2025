@@ -5,6 +5,7 @@ import useSWR from 'swr'
 
 import Card from '@/components/molecules/Card/Card'
 import Button from '@/components/atoms/Button/Button'
+import Pagination from '@/components/atoms/Pagination/Pagination'
 import SkeletonCard from '@/components/molecules/SkeletonCard/SkeletonCard'
 import { StaggerChildren } from '@/components/animation/StaggerChildren/StaggerChildren'
 import { FadeInStagger } from '@/components/animation/FadeIn/FadeInStagger'
@@ -48,22 +49,6 @@ const buildKey = (
   const params = new URLSearchParams({ page: String(page) })
   if (categories.length > 0) params.set('categories', categories.join(','))
   return `${apiEndpoint}?${params.toString()}`
-}
-
-const buildPageNumbers = (
-  current: number,
-  total: number
-): (number | '...')[] => {
-  const candidates = [1, total, current, current - 1, current + 1].filter(
-    n => n >= 1 && n <= total
-  )
-  const show = Array.from(new Set(candidates)).sort((a, b) => a - b)
-  const result: (number | '...')[] = []
-  show.forEach((n, i) => {
-    if (i > 0 && n - show[i - 1] > 1) result.push('...')
-    result.push(n)
-  })
-  return result
 }
 
 const articleToCardProps = (
@@ -260,75 +245,12 @@ const JournalsListingClient = ({
       </div>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <nav
-          className="flex items-center justify-end gap-1 pb-16"
-          aria-label="Pagination"
-        >
-          <Button
-            variant="outline"
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 1}
-            className="inline-flex items-center gap-2 px-[18px]"
-          >
-            <svg
-              className="size-3"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              aria-hidden="true"
-            >
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-            Prev
-          </Button>
-
-          {buildPageNumbers(page, totalPages).map((item, i) =>
-            item === '...' ? (
-              <span
-                key={`sep-${i}`}
-                className="px-1.5 font-heading text-body-md text-foreground/60"
-              >
-                …
-              </span>
-            ) : (
-              <Button
-                key={item}
-                variant="outline"
-                onClick={() => handlePageChange(item as number)}
-                aria-current={item === page ? 'page' : undefined}
-                className={cn(
-                  'inline-flex size-10 items-center justify-center p-0',
-                  item === page &&
-                    'border-foreground bg-foreground text-background hover:border-foreground hover:text-background'
-                )}
-              >
-                {item}
-              </Button>
-            )
-          )}
-
-          <Button
-            variant="outline"
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages}
-            className="inline-flex items-center gap-2 px-[18px]"
-          >
-            Next
-            <svg
-              className="size-3"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              aria-hidden="true"
-            >
-              <polyline points="9 6 15 12 9 18" />
-            </svg>
-          </Button>
-        </nav>
-      )}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        className="pb-16"
+      />
     </div>
   )
 }
