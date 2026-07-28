@@ -9,6 +9,7 @@ import Footer from '@/components/organisms/Footer/Footer'
 import Navigation from '@/components/organisms/Navigation/Navigation'
 import SettingsProvider from '@/context/settings-context'
 import VisualEditingEnabled from '@/components/atoms/VisualEditing/VisualEditing'
+import CookieBanner from '@/components/atoms/CookieBanner/CookieBanner'
 import getSettings from '@/utils/get-settings'
 import { getSiteUrl } from '@/utils/get-site-url'
 
@@ -66,6 +67,7 @@ export default async function RootLayout({
             availabilityText={settings?.availabilityText}
           />
           <ThemeToggle />
+          <CookieBanner />
           <Analytics />
           <SpeedInsights />
         </SettingsProvider>

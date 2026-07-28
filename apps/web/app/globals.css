@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'vanilla-cookieconsent/dist/cookieconsent.css';
 /* Class-based dark mode (replaces v3's darkMode: ['class']) */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -215,6 +216,72 @@
   .animate-page-transition {
     animation: none !important;
   }
+}
+
+/* Cookie consent banner — design-token overrides */
+#cc-main {
+  --cc-font-family: var(--font-sans);
+  --cc-modal-border-radius: 0rem;
+  --cc-btn-border-radius: 0rem;
+  --cc-modal-transition-duration: 0.15s;
+  --cc-z-index: 9999;
+
+  /* Surfaces */
+  --cc-bg: var(--color-surface-1);
+  --cc-primary-color: var(--color-foreground);
+  --cc-secondary-color: var(--color-primary-100);
+
+  /* Primary button (Accept all) */
+  --cc-btn-primary-bg: var(--color-foreground);
+  --cc-btn-primary-color: var(--color-background);
+  --cc-btn-primary-border-color: var(--color-foreground);
+  --cc-btn-primary-hover-bg: var(--color-primary-300);
+  --cc-btn-primary-hover-color: var(--color-background);
+  --cc-btn-primary-hover-border-color: var(--color-primary-300);
+
+  /* Secondary button (Reject / Manage) */
+  --cc-btn-secondary-bg: transparent;
+  --cc-btn-secondary-color: var(--color-foreground);
+  --cc-btn-secondary-border-color: var(--color-gray-100);
+  --cc-btn-secondary-hover-bg: var(--color-gray-100);
+  --cc-btn-secondary-hover-color: var(--color-foreground);
+  --cc-btn-secondary-hover-border-color: var(--color-gray-100);
+
+  /* Toggles */
+  --cc-toggle-on-bg: var(--color-foreground);
+  --cc-toggle-off-bg: var(--color-primary-100);
+  --cc-toggle-on-knob-bg: var(--color-background);
+  --cc-toggle-off-knob-bg: var(--color-background);
+  --cc-toggle-readonly-bg: var(--color-gray-100);
+  --cc-toggle-readonly-knob-bg: var(--color-surface-1);
+  --cc-toggle-disabled-icon-color: var(--color-primary-100);
+  --cc-toggle-enabled-icon-color: var(--color-background);
+  --cc-toggle-readonly-knob-icon-color: var(--color-primary-100);
+
+  /* Category blocks */
+  --cc-cookie-category-block-bg: var(--color-surface-2);
+  --cc-cookie-category-block-border: var(--color-gray-100);
+  --cc-cookie-category-block-hover-bg: var(--color-surface-2);
+  --cc-cookie-category-block-hover-border: var(--color-gray-100);
+  --cc-cookie-category-expanded-block-bg: var(--color-surface-2);
+  --cc-cookie-category-expanded-block-hover-bg: var(--color-surface-2);
+  --cc-section-category-border: var(--color-gray-100);
+
+  /* Footer and separators */
+  --cc-footer-bg: var(--color-surface-1);
+  --cc-footer-color: var(--color-foreground);
+  --cc-footer-border-color: var(--color-gray-100);
+  --cc-separator-border-color: var(--color-gray-100);
+
+  /* Links */
+  --cc-link-color: var(--color-foreground);
+
+  /* Overlay */
+  --cc-overlay-bg: rgba(0, 0, 0, 0.4);
+
+  /* Scrollbar */
+  --cc-webkit-scrollbar-bg: var(--color-surface-2);
+  --cc-webkit-scrollbar-hover-bg: var(--color-gray-100);
 }
 
 /* Article body — CSS counter for chapter numbering */
