@@ -133,6 +133,31 @@ Reusable field groups live in `apps/studio/schemas/compositions/`:
 
 Dashboard widgets live in `apps/studio/dashboard/` and are registered in `apps/studio/dashboard/index.ts`. The dashboard tool must remain the first plugin in the Studio config so Studio loads with operational context. Keep widgets lightweight — fetch only what they need.
 
+### Environment variables (Turborepo cache scoping)
+
+`turbo.json` uses **per-package task configs** to scope env vars to the workspace that actually consumes them. This keeps cache invalidation precise — a secret rotation in one app does not bust the other app's build cache.
+
+**Rule: never add a new var to `globalEnv`.** Instead, add it to the `env` array of the correct package task:
+
+```jsonc
+// turbo.json
+"web#build": {
+  "env": ["MY_NEW_WEB_VAR"]   // only invalidates the web build cache
+},
+"studio#build": {
+  "env": ["MY_NEW_STUDIO_VAR"] // only invalidates the studio build cache
+}
+```
+
+**Current split:**
+
+| Package | Task key | Owns |
+|---|---|---|
+| `apps/web` | `web#build` | `ALLOW_CRAWLERS`, `NEXT_PUBLIC_*`, `RECAPTCHA_*`, `MAIL_APP_ENDPOINT`, `SUBMISSION_SECRET`, `SITE_URL`, `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_READ_TOKEN` |
+| `apps/studio` | `studio#build` | `SANITY_STUDIO_*` |
+
+`dev` tasks have `"cache": false` so they don't need env declarations. `lint`, `typecheck`, and `test` tasks don't vary by env var, so they also don't need entries.
+
 ## General rules
 
 - Prefer the smallest change that solves the problem
