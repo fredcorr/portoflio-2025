@@ -23,6 +23,10 @@ if (!process.env.SANITY_STUDIO_DATASET) {
   throw new Error('Missing SANITY_STUDIO_DATASET environment variable')
 }
 
+const previewBase = (
+  process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+).replace(/\/$/, '')
+
 export default defineConfig({
   name: 'default',
   title: 'Portfolio Studio',
@@ -37,10 +41,9 @@ export default defineConfig({
     presentationTool({
       resolve: { locations: locate },
       previewUrl: {
-        initial:
-          process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
+        initial: previewBase,
         previewMode: {
-          enable: `${process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'}/api/draft`,
+          enable: '/api/draft',
         },
       },
     }),
