@@ -40,7 +40,7 @@ export default defineConfig({
         initial:
           process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
         previewMode: {
-          enable: '/api/draft',
+          enable: `${process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'}/api/draft`,
         },
       },
     }),
