@@ -219,7 +219,9 @@ const Card = ({
             {displayIndex && (
               <span
                 className="font-heading text-body-lg text-foreground/60"
-                {...(!indexLabel && { 'aria-label': `Project ${Number(displayIndex)}` })}
+                {...(!indexLabel && {
+                  'aria-label': `Project ${Number(displayIndex)}`,
+                })}
               >
                 {displayIndex}
               </span>

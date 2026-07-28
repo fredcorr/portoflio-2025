@@ -1,4 +1,4 @@
-import type { PortableTextBlock } from '@portabletext/react'
+import type { PortableTextBlock } from '@portabletext/types'
 import { PageTypeName } from '../base'
 import type { SanityImage } from '../sanity'
 import type { BasePageDocument, PageComponent } from './base'

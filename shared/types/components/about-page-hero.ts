@@ -1,6 +1,6 @@
 import { ComponentTypeName } from "../base";
 import type { SanityComponentBase } from "./base-component";
-import { PortableTextBlock } from "@portabletext/react";
+import { PortableTextBlock } from "@portabletext/types";
 import type { ComponentHeading } from "./title";
 
 export interface AboutPageHeroComponent
