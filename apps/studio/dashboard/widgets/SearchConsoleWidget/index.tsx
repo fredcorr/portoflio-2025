@@ -1,7 +1,6 @@
 'use client'
 
 import { DashboardWidgetContainer } from '@sanity/dashboard'
-import { SyncIcon } from '@sanity/icons'
 import { Box, Button, Card, Flex, Spinner, Stack, Text } from '@sanity/ui'
 import { type CSSProperties, useCallback, useEffect, useState } from 'react'
 import {
@@ -182,7 +181,6 @@ export const SearchConsoleWidget = () => {
         <Flex justify="flex-end" padding={2}>
           <Button
             fontSize={1}
-            icon={SyncIcon}
             mode="ghost"
             onClick={load}
             padding={2}
