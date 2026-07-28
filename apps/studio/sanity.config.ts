@@ -23,9 +23,15 @@ if (!process.env.SANITY_STUDIO_DATASET) {
   throw new Error('Missing SANITY_STUDIO_DATASET environment variable')
 }
 
-const previewBase = (
+// A schemeless value (e.g. "fred-corr.com") is resolved by the Presentation
+// tool as a path against the Studio's own origin, silently producing
+// <studio-host>/fred-corr.com/api/draft. Force an absolute URL.
+const rawPreviewUrl =
   process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
-).replace(/\/$/, '')
+
+const previewBase = (
+  /^https?:\/\//i.test(rawPreviewUrl) ? rawPreviewUrl : `https://${rawPreviewUrl}`
+).replace(/\/+$/, '')
 
 export default defineConfig({
   name: 'default',
