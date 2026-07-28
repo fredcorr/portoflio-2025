@@ -52,6 +52,15 @@ export default defineConfig({
           enable: '/api/draft',
         },
       },
+      // Without this only the origin of `initial` is trusted for Comlink.
+      // The apex/www pair and Vercel preview deployments are separate
+      // origins, so a redirect between them silently breaks the connection.
+      allowOrigins: [
+        'http://localhost:*',
+        'https://fred-corr.com',
+        'https://www.fred-corr.com',
+        'https://*.vercel.app',
+      ],
     }),
     structureTool({
       structure: (S, context) => structure(S, context),
