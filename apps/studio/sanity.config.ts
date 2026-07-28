@@ -3,14 +3,10 @@ import { dashboardTool } from '@sanity/dashboard'
 import { presentationTool } from 'sanity/presentation'
 import { locate } from './presentation/locate'
 import { structureTool } from 'sanity/structure'
-import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import { lucideIconPicker } from '@fredcorr/sanity-plugin-lucide-icon-picker'
-import { media, mediaAssetSource } from 'sanity-plugin-media'
-import {
-  unsplashImageAsset,
-  unsplashAssetSource,
-} from 'sanity-plugin-asset-source-unsplash'
+import { media } from 'sanity-plugin-media'
+import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 import { dashboardWidgets } from './dashboard'
@@ -51,7 +47,6 @@ export default defineConfig({
       structure: (S, context) => structure(S, context),
     }),
     lucideIconPicker(),
-    visionTool(),
     media(),
     unsplashImageAsset(),
   ],
@@ -73,16 +68,6 @@ export default defineConfig({
         )
       }
       return prev
-    },
-  },
-
-  form: {
-    image: {
-      assetSources: previousAssetSources => [
-        ...previousAssetSources,
-        mediaAssetSource,
-        unsplashAssetSource,
-      ],
     },
   },
 
