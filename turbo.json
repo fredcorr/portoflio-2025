@@ -1,32 +1,41 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [],
-  "globalEnv": [
-    "ALLOW_CRAWLERS",
-    "NEXT_PUBLIC_CONTACT_EMAIL",
-    "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
-    "RECAPTCHA_SECRET_KEY",
-    "MAIL_APP_ENDPOINT",
-    "SUBMISSION_SECRET",
-    "SITE_URL",
-    "SANITY_PROJECT_ID",
-    "SANITY_DATASET",
-    "SANITY_API_READ_TOKEN",
-    "SANITY_STUDIO_PROJECT_ID",
-    "SANITY_STUDIO_DATASET",
-    "SANITY_STUDIO_PREVIEW_URL",
-    "SANITY_STUDIO_PREVIEW_SECRET",
-    "SUBMISSION_SECRET",
-    "MAIL_APP_ENDPOINT",
-    "SANITY_STUDIO_URL",
-    "SANITY_STUDIO_GSC_SERVICE_ACCOUNT_EMAIL",
-    "SANITY_STUDIO_GSC_PRIVATE_KEY",
-    "SANITY_STUDIO_GSC_SITE_URL"
-  ],
+  "globalEnv": [],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "web#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "ALLOW_CRAWLERS",
+        "NEXT_PUBLIC_CONTACT_EMAIL",
+        "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
+        "RECAPTCHA_SECRET_KEY",
+        "MAIL_APP_ENDPOINT",
+        "SUBMISSION_SECRET",
+        "SITE_URL",
+        "SANITY_PROJECT_ID",
+        "SANITY_DATASET",
+        "SANITY_API_READ_TOKEN"
+      ]
+    },
+    "studio#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "env": [
+        "SANITY_STUDIO_PROJECT_ID",
+        "SANITY_STUDIO_DATASET",
+        "SANITY_STUDIO_PREVIEW_URL",
+        "SANITY_STUDIO_PREVIEW_SECRET",
+        "SANITY_STUDIO_URL",
+        "SANITY_STUDIO_GSC_SERVICE_ACCOUNT_EMAIL",
+        "SANITY_STUDIO_GSC_PRIVATE_KEY",
+        "SANITY_STUDIO_GSC_SITE_URL"
+      ]
     },
     "dev": {
       "cache": false,
