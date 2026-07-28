@@ -16,6 +16,7 @@ import AnimatedStrapline from './organisms/animated-strapline'
 import WorkIndex from './organisms/work-index'
 import JournalsFeed from './organisms/journals-feed'
 import JournalsListing from './organisms/journals-listing'
+import PaidPersona from './organisms/paid-persona'
 
 import { type ObjectDefinition } from 'sanity'
 import List from './atoms/list'
@@ -44,6 +45,7 @@ const componentSchemas: Record<ComponentTypeName, ObjectDefinition> = {
   [ComponentTypeName.WorkIndex]: WorkIndex,
   [ComponentTypeName.JournalsFeed]: JournalsFeed,
   [ComponentTypeName.JournalsListing]: JournalsListing,
+  [ComponentTypeName.PaidPersona]: PaidPersona,
 }
 
 export const components: ObjectDefinition[] = Object.values(componentSchemas)

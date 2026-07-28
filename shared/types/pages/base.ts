@@ -18,6 +18,7 @@ import type {
   WorkIndexComponent,
   JournalsFeedComponent,
   JournalsListingComponent,
+  PaidPersonaComponent,
 } from '../components'
 
 export type PageComponent =
@@ -38,6 +39,7 @@ export type PageComponent =
   | WorkIndexComponent
   | JournalsFeedComponent
   | JournalsListingComponent
+  | PaidPersonaComponent
 
 /**
  * Compile-time guard: every `ComponentTypeName` must be represented in the

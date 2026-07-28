@@ -25,6 +25,7 @@ export enum ComponentTypeName {
   WorkIndex = "workIndex",
   JournalsFeed = "journalsFeed",
   JournalsListing = "journalsListing",
+  PaidPersona = "paidPersona",
 }
 
 export enum GlobalItemsType {

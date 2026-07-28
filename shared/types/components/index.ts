@@ -45,3 +45,4 @@ export type {
   JournalsListingData,
   JournalsListingInitialData,
 } from './journals-listing'
+export type { PaidPersonaComponent } from './paid-persona'
