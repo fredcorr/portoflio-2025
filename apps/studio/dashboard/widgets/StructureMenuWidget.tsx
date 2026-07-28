@@ -1,7 +1,7 @@
 'use client'
 
 import { DashboardWidgetContainer } from '@sanity/dashboard'
-import { DocumentsIcon } from '@sanity/icons'
+import { DocumentsIcon } from '@sanity/icons/Documents'
 import { Button, Card, Stack, Text } from '@sanity/ui'
 
 const shortcuts = [
