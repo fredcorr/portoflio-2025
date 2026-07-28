@@ -43,7 +43,7 @@ export default defineConfig({
       previewUrl: {
         initial: previewBase,
         previewMode: {
-          enable: `${previewBase}/api/draft`,
+          enable: '/api/draft',
         },
       },
     }),
