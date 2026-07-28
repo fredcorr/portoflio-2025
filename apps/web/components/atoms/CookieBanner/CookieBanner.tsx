@@ -68,6 +68,20 @@ export default function CookieBanner() {
           flipButtons: false,
         },
       },
+      onConsent: () => {
+        window.gtag?.('consent', 'update', {
+          analytics_storage: CookieConsent.acceptedCategory('analytics')
+            ? 'granted'
+            : 'denied',
+        })
+      },
+      onChange: () => {
+        window.gtag?.('consent', 'update', {
+          analytics_storage: CookieConsent.acceptedCategory('analytics')
+            ? 'granted'
+            : 'denied',
+        })
+      },
     })
   }, [])
 
