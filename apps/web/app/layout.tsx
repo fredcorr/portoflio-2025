@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { Play } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { GoogleTagManager } from '@next/third-parties/google'
-import Script from 'next/script'
 import { draftMode } from 'next/headers'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
@@ -12,10 +10,9 @@ import Navigation from '@/components/organisms/Navigation/Navigation'
 import SettingsProvider from '@/context/settings-context'
 import VisualEditingEnabled from '@/components/atoms/VisualEditing/VisualEditing'
 import CookieBanner from '@/components/atoms/CookieBanner/CookieBanner'
+import GtmProvider from '@/components/atoms/GtmProvider/GtmProvider'
 import getSettings from '@/utils/get-settings'
 import { getSiteUrl } from '@/utils/get-site-url'
-
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -71,17 +68,8 @@ export default async function RootLayout({
             availabilityText={settings?.availabilityText}
           />
           <ThemeToggle />
-          {GTM_ID && (
-            <Script
-              id="gtm-consent-default"
-              strategy="beforeInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied'})`,
-              }}
-            />
-          )}
+          <GtmProvider />
           <CookieBanner />
-          {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
           <Analytics />
           <SpeedInsights />
         </SettingsProvider>
