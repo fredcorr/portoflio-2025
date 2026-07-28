@@ -77,7 +77,7 @@ export const fetchGSCData = async (): Promise<GSCData> => {
     fetch(endpoint, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ startDate, endDate, dimensions: [] }),
+      body: JSON.stringify({ startDate, endDate }),
     }),
     fetch(endpoint, {
       method: 'POST',
@@ -95,7 +95,19 @@ export const fetchGSCData = async (): Promise<GSCData> => {
     totalsRes.json(),
     queriesRes.json(),
     trendRes.json(),
-  ])) as [{ rows?: GSCApiRow[] }, { rows?: GSCApiRow[] }, { rows?: GSCApiRow[] }]
+  ])) as [
+    { rows?: GSCApiRow[]; error?: { message?: string } },
+    { rows?: GSCApiRow[]; error?: { message?: string } },
+    { rows?: GSCApiRow[]; error?: { message?: string } },
+  ]
+
+  if (!totalsRes.ok || !queriesRes.ok || !trendRes.ok) {
+    const err = totalsBody.error ?? queriesBody.error ?? trendBody.error
+    throw new Error(
+      err?.message ??
+        `GSC API error (${[totalsRes.status, queriesRes.status, trendRes.status].join('/')}) — check that SANITY_STUDIO_GSC_SITE_URL exactly matches a verified property in Search Console.`,
+    )
+  }
 
   const t = totalsBody.rows?.[0]
 
