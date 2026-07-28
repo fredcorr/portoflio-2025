@@ -1,0 +1,22 @@
+{
+  "name": "@fredcorr/ui",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./atoms": "./atoms/index.ts",
+    "./utils/cn": "./utils/cn.ts"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "lucide-react": ">=0.400.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "react-select": "^5.8.3",
+    "tailwind-merge": "^2.5.4"
+  }
+}

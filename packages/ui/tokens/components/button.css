@@ -1,0 +1,6 @@
+:root {
+  --button-bg: var(--color-brand-primary, #000);
+  --button-fg: var(--color-brand-on-primary, #fff);
+  --button-bg-hover: var(--color-brand-primary-hover, #222);
+  --button-radius: 0.375rem;
+}
