@@ -8,7 +8,7 @@ import { PageTypeName } from '@portfolio/types/base'
 import { QuickLinksWidget } from './widgets/QuickLinksWidget'
 import { StructureMenuWidget } from './widgets/StructureMenuWidget'
 
-const projectContentTypes = [PageTypeName.ProjectPage, 'article']
+const projectContentTypes = [PageTypeName.ProjectPage, PageTypeName.ArticlePage]
 
 export const dashboardWidgets: DashboardWidget[] = [
   projectInfoWidget({
