@@ -7,7 +7,7 @@ import { PageTypeName } from '@portfolio/types/base'
 import { StructureMenuWidget } from './widgets/StructureMenuWidget'
 import { SearchConsoleWidget } from './widgets/SearchConsoleWidget'
 
-const projectContentTypes = [PageTypeName.ProjectPage, 'article']
+const projectContentTypes = [PageTypeName.ProjectPage, PageTypeName.ArticlePage]
 
 export const dashboardWidgets: DashboardWidget[] = [
   projectInfoWidget({

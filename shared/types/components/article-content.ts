@@ -1,4 +1,4 @@
-import type { PortableTextBlock } from '@portabletext/react'
+import type { PortableTextBlock } from '@portabletext/types'
 import type { AuthorData } from '../settings'
 
 export interface ArticleContentProps {

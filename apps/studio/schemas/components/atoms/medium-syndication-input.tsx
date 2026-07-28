@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
-import { CopyIcon, LaunchIcon } from '@sanity/icons'
+import { CopyIcon } from '@sanity/icons/Copy'
+import { LaunchIcon } from '@sanity/icons/Launch'
 import { Box, Button, Card, Flex, Stack, Text, Tooltip } from '@sanity/ui'
 import type { StringInputProps } from 'sanity'
 import { useFormValue } from 'sanity'
