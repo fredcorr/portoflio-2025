@@ -240,40 +240,40 @@
   --cc-btn-primary-hover-color: var(--color-background);
   --cc-btn-primary-hover-border-color: var(--color-primary-300);
 
-  /* Secondary button (Reject / Manage) */
+  /* Secondary button (Reject / Manage)
+     primary-100 = #858585 light (4.5:1 on white ✓); dark mode overridden below */
   --cc-btn-secondary-bg: transparent;
   --cc-btn-secondary-color: var(--color-foreground);
-  --cc-btn-secondary-border-color: var(--color-gray-100);
+  --cc-btn-secondary-border-color: var(--color-primary-100);
   --cc-btn-secondary-hover-bg: var(--color-gray-100);
   --cc-btn-secondary-hover-color: var(--color-foreground);
-  --cc-btn-secondary-hover-border-color: var(--color-gray-100);
+  --cc-btn-secondary-hover-border-color: var(--color-primary-100);
 
-  /* Toggles */
+  /* Toggles — gray-200 (#525252 light / #d4d4d8 dark) stays readable in both modes */
   --cc-toggle-on-bg: var(--color-foreground);
-  /* gray-200 also works here: visible track in both modes */
   --cc-toggle-off-bg: var(--color-gray-200);
   --cc-toggle-on-knob-bg: var(--color-background);
   --cc-toggle-off-knob-bg: var(--color-background);
-  --cc-toggle-readonly-bg: var(--color-gray-100);
+  --cc-toggle-readonly-bg: var(--color-gray-200);
   --cc-toggle-readonly-knob-bg: var(--color-surface-1);
   --cc-toggle-disabled-icon-color: var(--color-gray-200);
   --cc-toggle-enabled-icon-color: var(--color-background);
   --cc-toggle-readonly-knob-icon-color: var(--color-gray-200);
 
-  /* Category blocks */
+  /* Category blocks — primary-100 borders visible on light surface (#858585 on #f9f9f9) */
   --cc-cookie-category-block-bg: var(--color-surface-2);
-  --cc-cookie-category-block-border: var(--color-gray-100);
+  --cc-cookie-category-block-border: var(--color-primary-100);
   --cc-cookie-category-block-hover-bg: var(--color-surface-2);
-  --cc-cookie-category-block-hover-border: var(--color-gray-100);
+  --cc-cookie-category-block-hover-border: var(--color-primary-100);
   --cc-cookie-category-expanded-block-bg: var(--color-surface-2);
   --cc-cookie-category-expanded-block-hover-bg: var(--color-surface-2);
-  --cc-section-category-border: var(--color-gray-100);
+  --cc-section-category-border: var(--color-primary-100);
 
   /* Footer and separators */
   --cc-footer-bg: var(--color-surface-1);
   --cc-footer-color: var(--color-foreground);
-  --cc-footer-border-color: var(--color-gray-100);
-  --cc-separator-border-color: var(--color-gray-100);
+  --cc-footer-border-color: var(--color-primary-100);
+  --cc-separator-border-color: var(--color-primary-100);
 
   /* Links */
   --cc-link-color: var(--color-foreground);
@@ -283,27 +283,31 @@
 
   /* Scrollbar */
   --cc-webkit-scrollbar-bg: var(--color-surface-2);
-  --cc-webkit-scrollbar-hover-bg: var(--color-gray-100);
+  --cc-webkit-scrollbar-hover-bg: var(--color-primary-75);
 }
 
 /*
-  Dark mode overrides for values where gray-100 (→ #1c1b1f) would be invisible
-  on the black (#000) background. primary-300 (→ #464655) gives visible borders.
+  Dark mode: primary-100 (→ #2a2a2e) is near-invisible on black.
+  Swap borders to primary-300 (→ #464655) and lift block backgrounds
+  so sections are distinguishable.
 */
 .dark #cc-main {
   --cc-btn-secondary-border-color: var(--color-primary-300);
   --cc-btn-secondary-hover-bg: var(--color-primary-200);
   --cc-btn-secondary-hover-border-color: var(--color-primary-300);
 
-  --cc-toggle-readonly-bg: var(--color-primary-300);
-
+  --cc-cookie-category-block-bg: var(--color-primary-100);
   --cc-cookie-category-block-border: var(--color-primary-200);
+  --cc-cookie-category-block-hover-bg: var(--color-primary-200);
   --cc-cookie-category-block-hover-border: var(--color-primary-300);
+  --cc-cookie-category-expanded-block-bg: var(--color-primary-100);
+  --cc-cookie-category-expanded-block-hover-bg: var(--color-primary-200);
   --cc-section-category-border: var(--color-primary-200);
 
   --cc-footer-border-color: var(--color-primary-200);
   --cc-separator-border-color: var(--color-primary-200);
 
+  --cc-webkit-scrollbar-bg: var(--color-primary-100);
   --cc-webkit-scrollbar-hover-bg: var(--color-primary-300);
 }
 
