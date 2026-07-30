@@ -98,7 +98,7 @@ const NavItem = ({
                 'inline-flex size-4 items-center justify-center text-[10px] font-semibold',
                 blendMode
                   ? 'border border-current text-current bg-transparent'
-                  : 'bg-black text-white'
+                  : 'bg-black text-background'
               )}
             >
               {projectCount}

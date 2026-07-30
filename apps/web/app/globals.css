@@ -33,7 +33,7 @@
 
   --color-status-success: #29ae29;
   --color-status-warning: #ffc62a;
-  --color-status-error: #ed2a2a;
+  --color-status-error: #d42525;
 
   --color-accent-orange: #ed7615;
   --color-accent-lavender: #6e3cf5;
@@ -111,7 +111,7 @@
   --color-surface-2: #f9f9f9;
   --color-status-success: #29ae29;
   --color-status-warning: #ffc62a;
-  --color-status-error: #ed2a2a;
+  --color-status-error: #d42525;
   --color-accent-orange: #ed7615;
   --color-accent-lavender: #6e3cf5;
   --color-accent-sussie: #38e1f1;
