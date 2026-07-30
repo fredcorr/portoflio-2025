@@ -151,7 +151,7 @@ const JournalsListingClient = ({
             aria-label={`Remove ${cat} filter`}
             className={cn(
               'relative py-2 font-heading text-body-md uppercase tracking-[0.14em] text-foreground',
-              'transition-colors hover:text-foreground/60',
+              'transition-colors hover:text-foreground/70',
               'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-foreground'
             )}
           >
@@ -173,7 +173,7 @@ const JournalsListingClient = ({
           </div>
         ) : error ? (
           <div className="flex flex-col items-start gap-4 py-20">
-            <p className="font-heading text-foreground/60">
+            <p className="font-heading text-foreground/70">
               Couldn&apos;t load articles — try again.
             </p>
             <Button variant="outline" onClick={() => void mutate()}>
@@ -181,7 +181,7 @@ const JournalsListingClient = ({
             </Button>
           </div>
         ) : articles.length === 0 ? (
-          <p className="py-20 font-heading text-[clamp(1.5rem,3vw,2.5rem)] font-normal tracking-[-0.02em] text-foreground/60">
+          <p className="py-20 font-heading text-[clamp(1.5rem,3vw,2.5rem)] font-normal tracking-[-0.02em] text-foreground/70">
             No entries in this category yet.
           </p>
         ) : (

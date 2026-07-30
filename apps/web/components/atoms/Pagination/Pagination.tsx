@@ -80,7 +80,7 @@ const Pagination = ({
         item === '...' ? (
           <span
             key={`gap-${i}`}
-            className="px-1.5 font-heading text-body-md text-foreground/60"
+            className="px-1.5 font-heading text-body-md text-foreground/70"
           >
             …
           </span>

@@ -116,13 +116,13 @@ const Select = (props: SelectProps) => {
       ),
     valueContainer: () => 'flex flex-wrap items-center gap-1',
     placeholder: () =>
-      'font-heading text-body-md text-foreground/60 uppercase tracking-[0.14em]',
+      'font-heading text-body-md text-foreground/70 uppercase tracking-[0.14em]',
     singleValue: () => 'font-heading text-body-md text-foreground',
     input: () => 'text-foreground',
     indicatorsContainer: () => 'flex items-center',
     indicatorSeparator: () => 'hidden',
-    dropdownIndicator: () => 'px-1 text-foreground/60',
-    clearIndicator: () => 'px-1 text-foreground/60 cursor-pointer',
+    dropdownIndicator: () => 'px-1 text-foreground/70',
+    clearIndicator: () => 'px-1 text-foreground/70 cursor-pointer',
     menu: () =>
       'absolute z-20 mt-1 w-[min(18rem,calc(100vw-2.5rem))] border border-foreground/10 bg-background',
     menuList: () => 'max-h-72 overflow-auto',
@@ -130,10 +130,10 @@ const Select = (props: SelectProps) => {
       cn(
         'flex cursor-pointer justify-between gap-3 px-4 py-3 font-heading text-body-md uppercase tracking-[0.14em] transition-colors',
         isFocused && 'bg-foreground/5',
-        isSelected ? 'text-foreground/60' : 'text-foreground'
+        isSelected ? 'text-foreground/70' : 'text-foreground'
       ),
     noOptionsMessage: () =>
-      'px-4 py-3 font-heading text-body-md text-foreground/60',
+      'px-4 py-3 font-heading text-body-md text-foreground/70',
   }
 
   return (

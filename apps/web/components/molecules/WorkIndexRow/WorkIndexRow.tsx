@@ -53,7 +53,7 @@ const WorkIndexRow = ({
     <>
       <div className="flex flex-col md:w-[31%] md:pr-8">
         {formattedTag && (
-          <span className="inline-flex self-start border border-black/25 px-2 py-0.5 font-heading text-[10px] uppercase tracking-[0.12em]">
+          <span className="inline-flex self-start border border-black/25 px-2 py-0.5 font-heading text-label uppercase tracking-[0.12em]">
             {formattedTag}
           </span>
         )}
@@ -61,7 +61,7 @@ const WorkIndexRow = ({
           {title}
         </p>
         {description && (
-          <p className="mt-2 line-clamp-3 text-body-lg text-black/50">
+          <p className="mt-2 line-clamp-3 text-body-lg text-black/70">
             {description}
           </p>
         )}

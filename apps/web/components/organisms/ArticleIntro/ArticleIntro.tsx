@@ -41,7 +41,7 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
         duration={0.6}
         delay={0}
         viewport={{ once: true, amount: 0.3 }}
-        className="md:col-span-12 flex items-center gap-3 font-heading text-[11px] uppercase tracking-[0.12em] text-black/55 dark:text-foreground/55"
+        className="md:col-span-12 flex items-center gap-3 font-heading text-label uppercase tracking-[0.12em] text-black/70 dark:text-foreground/70"
       >
         <span>Journal</span>
         {firstTag && (

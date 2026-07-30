@@ -218,7 +218,7 @@ const Card = ({
             )}
             {displayIndex && (
               <span
-                className="font-heading text-body-lg text-foreground/60"
+                className="font-heading text-body-lg text-foreground/70"
                 {...(!indexLabel && {
                   'aria-label': `Project ${Number(displayIndex)}`,
                 })}
@@ -227,7 +227,7 @@ const Card = ({
               </span>
             )}
             {tag && (
-              <span className="border border-foreground/30 px-2 py-0.5 font-heading text-[10px] uppercase tracking-[0.12em] text-foreground/60">
+              <span className="border border-foreground/30 px-2 py-0.5 font-heading text-label uppercase tracking-[0.12em] text-foreground/70">
                 {tag}
               </span>
             )}
@@ -259,7 +259,7 @@ const Card = ({
               </span>
             )}
             {footerReadTime != null && (
-              <span className="font-heading text-[11px] tracking-[0.04em] text-foreground/60">
+              <span className="font-heading text-label tracking-[0.04em] text-foreground/70">
                 {footerReadTime} min read
               </span>
             )}

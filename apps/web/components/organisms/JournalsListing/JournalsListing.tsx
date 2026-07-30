@@ -39,7 +39,7 @@ export default function JournalsListing({
             <SlideIn
               delay={0.1}
               as="span"
-              className="inline-flex items-center gap-2.5 font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/60 before:block before:size-1.5 before:rounded-full before:bg-foreground/60"
+              className="inline-flex items-center gap-2.5 font-heading text-label uppercase tracking-[0.14em] text-foreground/70 before:block before:size-1.5 before:rounded-full before:bg-foreground/70"
             >
               {kicker}
             </SlideIn>
@@ -61,7 +61,7 @@ export default function JournalsListing({
           <strong className="block font-heading text-[44px] font-normal leading-none tracking-[-0.03em]">
             {total}
           </strong>
-          <span className="font-heading text-[11px] tracking-[0.06em] text-foreground/60">
+          <span className="font-heading text-label tracking-[0.06em] text-foreground/70">
             entries
           </span>
         </FadeIn>

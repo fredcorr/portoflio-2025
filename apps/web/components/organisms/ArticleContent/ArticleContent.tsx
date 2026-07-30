@@ -84,7 +84,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
                       style={{ counterIncrement: 'chapter' }}
                     >
                       <div
-                        className="mb-3 flex items-center gap-3.5 font-heading text-[11px] uppercase tracking-[0.18em] text-black/55 dark:text-foreground/55"
+                        className="mb-3 flex items-center gap-3.5 font-heading text-label uppercase tracking-[0.18em] text-black/70 dark:text-foreground/70"
                         aria-hidden="true"
                         style={
                           {
@@ -126,7 +126,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
             {/* End mark */}
             <div
               aria-hidden="true"
-              className="my-14 text-center font-heading text-[11px] uppercase tracking-[0.18em] text-black/55 dark:text-foreground/55"
+              className="my-14 text-center font-heading text-label uppercase tracking-[0.18em] text-black/70 dark:text-foreground/70"
             >
               <span className="mb-3 block text-sm leading-none">■</span>
               End

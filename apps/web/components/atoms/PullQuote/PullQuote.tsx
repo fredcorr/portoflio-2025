@@ -7,7 +7,7 @@ const PullQuote: React.FC<PullQuoteProps> = ({ text, attribution }) => (
       {text}
     </blockquote>
     {attribution && (
-      <figcaption className="mt-3 font-body text-sm text-black/55 dark:text-foreground/55">
+      <figcaption className="mt-3 font-body text-sm text-black/70 dark:text-foreground/70">
         — {attribution}
       </figcaption>
     )}

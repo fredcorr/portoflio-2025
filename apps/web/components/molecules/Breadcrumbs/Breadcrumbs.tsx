@@ -33,7 +33,7 @@ const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
                 <Link
                   href={item.href}
                   className={cn(
-                    'text-black/60 transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:text-foreground/70 dark:hover:text-foreground dark:focus-visible:outline-white'
+                    'text-black/70 transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:text-foreground/70 dark:hover:text-foreground dark:focus-visible:outline-white'
                   )}
                 >
                   {item.label}
@@ -43,7 +43,7 @@ const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
                 <span
                   className={cn(
                     'text-black dark:text-foreground',
-                    !isCurrent && 'text-black/60 dark:text-foreground/70'
+                    !isCurrent && 'text-black/70 dark:text-foreground/70'
                   )}
                   {...(isCurrent && { 'aria-current': 'page' })}
                 >
@@ -53,7 +53,7 @@ const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
               {!isLast && (
                 <span
                   aria-hidden="true"
-                  className="mx-2 text-black/50 dark:text-foreground/50"
+                  className="mx-2 text-black/70 dark:text-foreground/70"
                 >
                   →
                 </span>
