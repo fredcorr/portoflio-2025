@@ -41,7 +41,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   return (
     <figure className="my-8 overflow-hidden rounded-sm border border-black/8 dark:border-white/10">
       {filename && (
-        <div className="border-b border-black/8 bg-black/[0.03] px-4 py-2 font-mono text-xs text-black/50 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/50">
+        <div className="border-b border-black/8 bg-black/[0.03] px-4 py-2 font-mono text-xs text-black/70 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70">
           {filename}
         </div>
       )}

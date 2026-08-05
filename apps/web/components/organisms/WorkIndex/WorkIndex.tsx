@@ -45,12 +45,12 @@ const WorkIndex = ({
         <div className="mb-8">
           <div className="flex items-center justify-between border-t-2 border-black pt-3">
             {label && (
-              <span className="font-heading text-[11px] uppercase tracking-[0.18em] text-black/40">
+              <span className="font-heading text-label uppercase tracking-[0.18em] text-black/70">
                 {label}
               </span>
             )}
             {categoryLabel && (
-              <span className="font-heading text-[11px] uppercase tracking-[0.18em] text-black/40">
+              <span className="font-heading text-label uppercase tracking-[0.18em] text-black/70">
                 {categoryLabel}
               </span>
             )}
@@ -66,7 +66,7 @@ const WorkIndex = ({
               </p>
             )}
             {subtitle && (
-              <p className="max-w-xs font-heading text-[20px] leading-[1.4] tracking-[-0.01em] text-black/60 md:text-right">
+              <p className="max-w-xs font-heading text-[20px] leading-[1.4] tracking-[-0.01em] text-black/70 md:text-right">
                 {subtitle}
               </p>
             )}
@@ -94,7 +94,7 @@ const WorkIndex = ({
             ))}
           </>
         ) : (
-          <div className="border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/60">
+          <div className="border border-dashed border-black/10 bg-gray-50 px-6 py-10 text-center font-body text-body-lg text-black/70">
             Projects will appear here once they are published.
           </div>
         )}

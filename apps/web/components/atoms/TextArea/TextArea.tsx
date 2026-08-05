@@ -28,9 +28,9 @@ const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(
           aria-describedby={error ? errorId : undefined}
           rows={rows}
           className={cn(
-            'w-full bg-gray-50 px-5 py-4 text-body-md text-black placeholder:text-black/40',
+            'w-full bg-gray-50 px-5 py-4 text-body-md text-black placeholder:text-black/70',
             'border border-transparent border-gray-100 focus:border-gray-200 focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black',
-            'dark:bg-gray-100 dark:text-foreground dark:placeholder:text-foreground/60',
+            'dark:bg-gray-100 dark:text-foreground dark:placeholder:text-foreground/70',
             className
           )}
           {...props}

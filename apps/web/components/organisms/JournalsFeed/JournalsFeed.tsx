@@ -66,7 +66,7 @@ const JournalsFeed = ({
       {/* Section header */}
       <div className="grid grid-cols-[auto_1fr_auto] items-end gap-x-8 border-b-[0.5px] border-foreground/10 pb-7">
         {kicker && (
-          <span className="inline-flex items-center gap-3 font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/55 before:block before:size-1.5 before:rounded-full before:bg-foreground before:opacity-60">
+          <span className="inline-flex items-center gap-3 font-heading text-label uppercase tracking-[0.14em] text-foreground/70 before:block before:size-1.5 before:rounded-full before:bg-foreground before:opacity-70">
             {kicker}
           </span>
         )}
@@ -101,7 +101,7 @@ const JournalsFeed = ({
             ({ source, num, href, date, readTime, topic }) => {
               const row = (
                 <>
-                  <p className="font-heading text-[11px] tracking-[0.14em] text-foreground/55">
+                  <p className="font-heading text-label tracking-[0.14em] text-foreground/70">
                     {num}
                   </p>
 
@@ -110,7 +110,7 @@ const JournalsFeed = ({
                   </p>
 
                   {topic && (
-                    <p className="hidden font-heading text-[11px] uppercase tracking-[0.14em] text-foreground/55 md:block">
+                    <p className="hidden font-heading text-label uppercase tracking-[0.14em] text-foreground/70 md:block">
                       {topic}
                     </p>
                   )}
@@ -122,7 +122,7 @@ const JournalsFeed = ({
                       </p>
                     )}
                     {readTime && (
-                      <p className="font-heading text-[11px] tracking-[0.04em] text-foreground/55">
+                      <p className="font-heading text-label tracking-[0.04em] text-foreground/70">
                         {readTime}
                       </p>
                     )}
@@ -155,7 +155,7 @@ const JournalsFeed = ({
           )}
         </ol>
       ) : (
-        <div className="rounded-3xl bg-foreground/5 px-6 py-10 text-foreground/60">
+        <div className="rounded-3xl bg-foreground/5 px-6 py-10 text-foreground/70">
           Articles will appear here once they are published.
         </div>
       )}

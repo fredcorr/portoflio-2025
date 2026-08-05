@@ -15,9 +15,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className={cn(
         'font-heading uppercase tracking-[0.14em] transition-colors duration-200 disabled:cursor-default disabled:opacity-25',
         size === 'sm' && 'px-5 py-2.5 text-body-md',
-        variant === 'ghost' && 'text-foreground/55 hover:text-foreground',
+        variant === 'ghost' && 'text-foreground/70 hover:text-foreground',
         variant === 'outline' && [
-          'border border-foreground/10 text-foreground/55',
+          'border border-foreground/10 text-foreground/70',
           'hover:border-foreground hover:text-foreground',
         ],
         className

@@ -39,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({
         >
           <div className="flex flex-col gap-5">
             {openForProjects && (
-              <span className="inline-flex items-center gap-2.5 font-heading text-[11px] uppercase tracking-[0.14em] text-[rgba(245,245,245,0.55)]">
+              <span className="inline-flex items-center gap-2.5 font-heading text-label uppercase tracking-[0.14em] text-[rgba(245,245,245,0.7)]">
                 <span className="size-[7px] rounded-full bg-status-success shadow-[0_0_0_4px_rgba(41,174,41,0.18)]" />
                 {availabilityLabel}
               </span>
@@ -75,7 +75,7 @@ const Footer: React.FC<FooterProps> = ({
           <div className="grid grid-cols-1 gap-8 pb-10 sm:grid-cols-2 md:gap-16 xl:grid-cols-3 xl:pb-14">
             {hasNavItems && (
               <div className="flex flex-col gap-4">
-                <span className="font-heading text-[10px] uppercase tracking-[0.18em] text-[rgba(245,245,245,0.5)]">
+                <span className="font-heading text-label uppercase tracking-[0.18em] text-[rgba(245,245,245,0.7)]">
                   Sitemap
                 </span>
                 <ul className="flex flex-col gap-2.5">
@@ -95,7 +95,7 @@ const Footer: React.FC<FooterProps> = ({
 
             {hasSocialLinks && (
               <div className="flex flex-col gap-4">
-                <span className="font-heading text-[10px] uppercase tracking-[0.18em] text-[rgba(245,245,245,0.5)]">
+                <span className="font-heading text-label uppercase tracking-[0.18em] text-[rgba(245,245,245,0.7)]">
                   Elsewhere
                 </span>
                 <ul className="flex flex-col gap-2.5">
@@ -122,7 +122,7 @@ const Footer: React.FC<FooterProps> = ({
                         >
                           {label}
                           {isExternal && (
-                            <span className="text-[11px] opacity-50">↗</span>
+                            <span className="text-label opacity-50">↗</span>
                           )}
                         </a>
                       </li>
@@ -138,7 +138,7 @@ const Footer: React.FC<FooterProps> = ({
         <div
           className={cn(
             'grid grid-cols-1 items-center gap-3 border-t border-[rgba(245,245,245,0.12)] py-6 pb-9',
-            'font-heading text-[12px] tracking-[0.02em] text-[rgba(245,245,245,0.55)]',
+            'font-heading text-[12px] tracking-[0.02em] text-[rgba(245,245,245,0.7)]',
             'md:grid-cols-[1fr_auto] md:gap-6'
           )}
         >

@@ -12,7 +12,7 @@ test('renders a button element', () => {
 
 test('ghost variant applies text color classes', () => {
   const markup = renderToStaticMarkup(<Button variant="ghost">Ghost</Button>)
-  assert.match(markup, /text-foreground\/55/)
+  assert.match(markup, /text-foreground\/70/)
 })
 
 test('outline variant applies border classes', () => {

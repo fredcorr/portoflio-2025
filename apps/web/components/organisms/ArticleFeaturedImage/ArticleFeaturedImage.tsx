@@ -36,7 +36,7 @@ const ArticleFeaturedImage: React.FC<Props> = ({ heroImage, className }) => {
           />
         </div>
         {imageAlt && (
-          <figcaption className="mt-3.5 flex items-center justify-between gap-4 font-heading text-[11px] uppercase tracking-[0.12em] text-black/55 dark:text-foreground/55">
+          <figcaption className="mt-3.5 flex items-center justify-between gap-4 font-heading text-label uppercase tracking-[0.12em] text-black/70 dark:text-foreground/70">
             <span>{imageAlt}</span>
           </figcaption>
         )}

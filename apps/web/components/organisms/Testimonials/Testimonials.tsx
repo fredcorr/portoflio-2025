@@ -60,14 +60,14 @@ const Testimonials = ({
       contentClassName="gap-y-8 lg:gap-y-10"
     >
       {total === 0 ? (
-        <div className="md:col-span-12 border border-dashed border-background/10 bg-background/5 px-6 py-10 text-center font-body text-body-lg text-background/60">
+        <div className="md:col-span-12 border border-dashed border-background/10 bg-background/5 px-6 py-10 text-center font-body text-body-lg text-background/70">
           Testimonials will appear here once they are published.
         </div>
       ) : (
         <div className="md:col-span-12 flex flex-col gap-y-8 lg:gap-y-10">
           {/* Section header */}
           <header className="flex flex-col gap-4 border-b border-background/12 pb-7">
-            <span className="flex items-center gap-3 font-heading text-[11px] tracking-[0.14em] uppercase text-background/55 before:inline-block before:w-1.5 before:h-1.5 before:rounded-full before:bg-background before:opacity-60">
+            <span className="flex items-center gap-3 font-heading text-label tracking-[0.14em] uppercase text-background/70 before:inline-block before:w-1.5 before:h-1.5 before:rounded-full before:bg-background before:opacity-70">
               Testimonials
             </span>
             {title?.heading && (
@@ -81,7 +81,7 @@ const Testimonials = ({
           </header>
 
           {/* Counter bar */}
-          <div className="flex items-center gap-6 font-heading text-[11px] tracking-[0.14em] uppercase text-background/55">
+          <div className="flex items-center gap-6 font-heading text-label tracking-[0.14em] uppercase text-background/70">
             <span className="text-background text-[12px] tracking-[0.14em]">
               {String(activeIdx + 1).padStart(2, '0')} /{' '}
               {String(total).padStart(2, '0')}
@@ -173,7 +173,7 @@ const Testimonials = ({
                       {list[activeIdx]?.author?.name}
                     </span>
                     {list[activeIdx]?.author?.role && (
-                      <span className="font-heading text-[11px] tracking-[0.14em] uppercase text-background/55">
+                      <span className="font-heading text-label tracking-[0.14em] uppercase text-background/70">
                         {list[activeIdx]?.author?.role}
                       </span>
                     )}
