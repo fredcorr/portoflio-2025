@@ -1,5 +1,6 @@
 import { GoogleTagManager } from '@next/third-parties/google'
 import Script from 'next/script'
+import WebVitals from '@/components/atoms/WebVitals/WebVitals'
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
@@ -17,6 +18,7 @@ export default function GtmProvider() {
         }}
       />
       <GoogleTagManager gtmId={GTM_ID} />
+      <WebVitals />
     </>
   )
 }
