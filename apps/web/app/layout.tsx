@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Play } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { draftMode } from 'next/headers'
 import './globals.css'
 import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle'
 import Footer from '@/components/organisms/Footer/Footer'
@@ -13,6 +12,7 @@ import CookieBanner from '@/components/atoms/CookieBanner/CookieBanner'
 import GtmProvider from '@/components/atoms/GtmProvider/GtmProvider'
 import getSettings from '@/utils/get-settings'
 import getCopyrightYear from '@/utils/get-copyright-year'
+import getIsDraft from '@/utils/get-is-draft'
 import { getSiteUrl } from '@/utils/get-site-url'
 
 export const metadata: Metadata = {
@@ -32,6 +32,17 @@ const play = Play({
   display: 'optional',
 })
 
+/**
+ * Cached so the Draft Mode read stays inside a cache scope. This one sat in the
+ * root layout, so reading it directly cost *every* route its static rendering.
+ */
+async function VisualEditingWhenDrafting() {
+  'use cache'
+  const isDraft = await getIsDraft()
+
+  return isDraft ? <VisualEditingEnabled /> : null
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -39,7 +50,6 @@ export default async function RootLayout({
 }>) {
   const { settings, projectCount } = await getSettings()
   const items = settings?.navigationItems ?? []
-  const { isEnabled: isDraftMode } = await draftMode()
   const copyrightYear = await getCopyrightYear()
 
   return (
@@ -76,7 +86,7 @@ export default async function RootLayout({
           <Analytics />
           <SpeedInsights />
         </SettingsProvider>
-        {isDraftMode && <VisualEditingEnabled />}
+        <VisualEditingWhenDrafting />
       </body>
     </html>
   )
