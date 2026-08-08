@@ -3,7 +3,6 @@ import { cacheLife, cacheTag } from 'next/cache'
 import { PAGE_BY_SLUG_QUERY } from '@/sanity/queries/base'
 import { client, previewClient } from '@/sanity/client'
 import { chunkCacheTags, collectCacheTags } from '@/utils/collect-cache-tags'
-import getIsDraft from '@/utils/get-is-draft'
 import type { CmsPages } from '@portfolio/types/pages'
 
 /**
@@ -18,22 +17,12 @@ import type { CmsPages } from '@portfolio/types/pages'
  * type (`*[_type == "article"]`). A webhook for an edited project carries that
  * project's own id, which `sanity:page:${slug}` would never match.
  */
-async function fetchPage(slug: string) {
+async function fetchPublishedPage(slug: string) {
   'use cache'
   cacheLife('cmsPage')
   cacheTag('sanity:page', `sanity:page:${slug}`)
 
-  // Selecting the client inside the cache scope is what keeps routes static.
-  // Reading Draft Mode in the component instead put a dynamic hole in every
-  // route. It is safe here because a draft request bypasses `use cache`
-  // entirely — the scope re-executes and its result is discarded — so preview
-  // content is never served from, or written to, the shared cache.
-  const isDraft = await getIsDraft()
-  const activeClient = isDraft ? previewClient : client
-
-  const page = await activeClient.fetch<CmsPages | null>(PAGE_BY_SLUG_QUERY, {
-    slug,
-  })
+  const page = await client.fetch<CmsPages | null>(PAGE_BY_SLUG_QUERY, { slug })
 
   // Tagging from the returned payload is what Next documents for data-derived
   // tags, and it is the only way to know which documents this page actually
@@ -45,6 +34,14 @@ async function fetchPage(slug: string) {
   return page
 }
 
-const getPage = cache(fetchPage)
+const getPage = cache(async (slug: string, isDraft: boolean) => {
+  // Draft reads stay outside the cache scope deliberately — preview content
+  // must never be served from, or written to, the shared cache.
+  if (isDraft) {
+    return previewClient.fetch<CmsPages | null>(PAGE_BY_SLUG_QUERY, { slug })
+  }
+
+  return fetchPublishedPage(slug)
+})
 
 export default getPage

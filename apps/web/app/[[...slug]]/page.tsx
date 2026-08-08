@@ -4,9 +4,9 @@ import { ALL_PAGES_QUERY } from '@/sanity/queries/base'
 import { CmsPages } from '@portfolio/types/pages'
 import { notFound } from 'next/navigation'
 import { client } from '@/sanity/client'
+import { draftMode } from 'next/headers'
 import type { Metadata } from 'next'
 import getPage from '@/utils/get-page'
-import getIsDraft from '@/utils/get-is-draft'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
 import { getPageHeroImage } from '@/utils/get-page-hero-image'
@@ -39,22 +39,13 @@ const getOpenGraphImage = (page: CmsPages) => {
   ]
 }
 
-/**
- * The banner is its own cached component so the Draft Mode read stays inside a
- * cache scope. Reading it in `Page` would make the whole route dynamic.
- */
-async function DraftPreviewBanner() {
-  'use cache'
-  const isDraft = await getIsDraft()
-
-  return isDraft ? <PreviewBanner /> : null
-}
-
 export default async function Page({ params }: PageProps) {
   const resolvedParams = await params
   const slug = resolvedParams.slug?.join('/') || '/'
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
 
-  const page = await getPage(slug)
+  const page = await getPage(slug, isDraft)
 
   if (!page) {
     notFound()
@@ -74,7 +65,7 @@ export default async function Page({ params }: PageProps) {
       {pageSchemas.map(({ id, schema }) => (
         <JsonLdSchema key={id} id={id} schema={schema} />
       ))}
-      <DraftPreviewBanner />
+      {isDraft && <PreviewBanner />}
       <RenderTemplate page={page} />
     </>
   )
@@ -99,10 +90,11 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const resolvedParams = await params
   const slug = resolvedParams.slug?.join('/') || '/'
-  const isDraft = await getIsDraft()
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
 
   try {
-    const page = await getPage(slug)
+    const page = await getPage(slug, isDraft)
 
     if (!page) {
       return {}
