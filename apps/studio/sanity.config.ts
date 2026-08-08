@@ -1,4 +1,4 @@
-import { defineConfig } from 'sanity'
+import { defineConfig, type WorkspaceOptions } from 'sanity'
 import { dashboardTool } from '@sanity/dashboard'
 import { presentationTool } from 'sanity/presentation'
 import { locate } from './presentation/locate'
@@ -10,34 +10,63 @@ import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import structure from './structure'
 import { SINGLETON_ACTIONS, SINGLETON_TYPES } from './constants'
 import { dashboardWidgets } from './dashboard'
+import { SanityDataset } from '@portfolio/types/base'
 
 if (!process.env.SANITY_STUDIO_PROJECT_ID) {
   throw new Error('Missing SANITY_STUDIO_PROJECT_ID environment variable')
 }
 
-if (!process.env.SANITY_STUDIO_DATASET) {
-  throw new Error('Missing SANITY_STUDIO_DATASET environment variable')
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID
+
+const stripTrailingSlash = (url: string) => url.replace(/\/$/, '')
+
+const developPreviewUrl = stripTrailingSlash(
+  process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+)
+
+// Prod previews point at the live site. Falls back to the develop preview URL
+// so a local Studio without the extra var still loads.
+const prodPreviewUrl = stripTrailingSlash(
+  process.env.SANITY_STUDIO_PREVIEW_URL_PROD ||
+    process.env.SANITY_STUDIO_PREVIEW_URL ||
+    'http://localhost:3000'
+)
+
+interface StudioWorkspaceOptions {
+  name: string
+  title: string
+  basePath: string
+  dataset: SanityDataset
+  previewUrl: string
 }
 
-const previewBase = (
-  process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
-).replace(/\/$/, '')
+/**
+ * Both workspaces share every plugin, schema and document rule — only the
+ * dataset and the preview target differ.
+ */
+const createWorkspace = ({
+  name,
+  title,
+  basePath,
+  dataset,
+  previewUrl,
+}: StudioWorkspaceOptions): WorkspaceOptions => ({
+  name,
+  title,
+  basePath,
 
-export default defineConfig({
-  name: 'default',
-  title: 'Portfolio Studio',
-
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-  dataset: process.env.SANITY_STUDIO_DATASET,
+  projectId,
+  dataset,
 
   plugins: [
+    // The dashboard must stay first so Studio opens with operational context.
     dashboardTool({
       widgets: dashboardWidgets,
     }),
     presentationTool({
       resolve: { locations: locate },
       previewUrl: {
-        initial: previewBase,
+        initial: previewUrl,
         previewMode: {
           enable: '/api/draft',
         },
@@ -75,3 +104,20 @@ export default defineConfig({
     types: schemaTypes,
   },
 })
+
+export default defineConfig([
+  createWorkspace({
+    name: SanityDataset.Develop,
+    title: 'Portfolio Studio — Develop',
+    basePath: '/develop',
+    dataset: SanityDataset.Develop,
+    previewUrl: developPreviewUrl,
+  }),
+  createWorkspace({
+    name: SanityDataset.Prod,
+    title: 'Portfolio Studio — Production',
+    basePath: '/prod',
+    dataset: SanityDataset.Prod,
+    previewUrl: prodPreviewUrl,
+  }),
+])

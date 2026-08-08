@@ -2,8 +2,9 @@ import { defineBlueprint, defineDocumentFunction } from '@sanity/blueprints'
 
 // No explicit `resource` block: the function runs against its own project's
 // datasets by default, which avoids hardcoding a project ID (a mismatch there
-// breaks the event rule). If you later need to scope to a single dataset, add
-// `&& sanity::dataset() == "<name>"` to the filter rather than a resource block.
+// breaks the event rule). Because it is project-wide, the filter must scope
+// itself to a single dataset with `sanity::dataset()` — without that, an
+// article published in both develop and prod would syndicate to Dev.to twice.
 export default defineBlueprint({
   resources: [
     defineDocumentFunction({
@@ -12,7 +13,7 @@ export default defineBlueprint({
       event: {
         on: ['create', 'update'],
         filter:
-          '_type == "article" && (devtoSyndicate == true || defined(devtoArticleId))',
+          '_type == "article" && sanity::dataset() == "prod" && (devtoSyndicate == true || defined(devtoArticleId))',
         projection:
           '{_id, title, slug, tags, articleContent, devtoSyndicate, devtoPublishedUrl, devtoArticleId}',
       },
