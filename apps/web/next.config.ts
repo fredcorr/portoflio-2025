@@ -6,12 +6,6 @@ const nextConfig: NextConfig = {
   // Set the workspace root for the monorepo
   outputFileTracingRoot: path.join(__dirname, '../../'),
 
-  // The OG route reads these at runtime via readFile, which tracing cannot
-  // detect on its own, so they have to be declared explicitly.
-  outputFileTracingIncludes: {
-    '/api/og': ['./assets/fonts/**'],
-  },
-
   images: {
     remotePatterns: [
       {

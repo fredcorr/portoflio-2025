@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import { Play } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { draftMode } from 'next/headers'
@@ -24,21 +24,9 @@ export const metadata: Metadata = {
     'Portfolio of Federico Corradi — frontend developer and designer.',
 }
 
-// Served from the repo rather than next/font/google so the OG image route can
-// read the same files — next/font only exposes a class name, not font data.
-const play = localFont({
-  src: [
-    {
-      path: '../assets/fonts/Play-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../assets/fonts/Play-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
+const play = Play({
+  subsets: ['latin'],
+  weight: ['400', '700'],
   variable: '--font-play',
   display: 'optional',
 })

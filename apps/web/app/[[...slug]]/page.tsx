@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import getPage from '@/utils/get-page'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
-import { getPageHeroImage } from '@/utils/get-page-hero-image'
+import { getOpenGraphImage } from '@/utils/get-open-graph-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
 import { getPageSchemas } from '@/utils/get-page-schemas'
 import getSettings from '@/utils/get-settings'
@@ -21,43 +21,6 @@ interface PageProps {
   params: Promise<{
     slug?: string[]
   }>
-}
-
-const getOpenGraphImage = (
-  page: CmsPages,
-  siteUrl: string,
-  title: string | undefined
-) => {
-  const image = page.seoImage ?? getPageHeroImage(page)
-  const imageUrl = image?.asset?.url
-  const fallbackAlt = page.seoTitle ?? page.title ?? 'Portfolio'
-
-  if (!imageUrl) {
-    // No editor-chosen image, so fall back to a generated card rather than
-    // shipping a page with no social image at all.
-    const generated = new URL('/api/og', siteUrl)
-    if (title) {
-      generated.searchParams.set('title', title)
-    }
-
-    return [
-      {
-        url: generated.toString(),
-        width: 1200,
-        height: 630,
-        alt: fallbackAlt,
-      },
-    ]
-  }
-
-  return [
-    {
-      url: imageUrl,
-      width: image.asset?.metadata?.dimensions?.width,
-      height: image.asset?.metadata?.dimensions?.height,
-      alt: image.alt ?? fallbackAlt,
-    },
-  ]
 }
 
 export default async function Page({ params }: PageProps) {
@@ -129,7 +92,7 @@ export async function generateMetadata({
     const description = page.seoDescription
     const siteUrl = getSiteUrl()
     const url = buildPageUrl(siteUrl, page.slug?.current || slug)
-    const openGraphImages = getOpenGraphImage(page, siteUrl, title)
+    const openGraphImages = getOpenGraphImage(page)
     const indexPage = process.env.ALLOW_CRAWLERS === 'true' && !isDraft
 
     return {
