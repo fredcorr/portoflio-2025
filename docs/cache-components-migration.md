@@ -1,6 +1,6 @@
 # Cache Components migration — evaluation and plan
 
-**Status:** Phases 1–3 implemented and verified by build. Phase 4 (regression sweep) needs a preview deploy.
+**Status:** Phases 1–3 implemented; CI green against live Sanity ([#47](https://github.com/fredcorr/portoflio-2025/pull/47)). Phase 4 (regression sweep) still needs a manual pass on the preview.
 **Target:** `apps/web` on Next.js 16.3 ([#44](https://github.com/fredcorr/portoflio-2025/pull/44), merged)
 **Date:** 2026-08-08
 
@@ -21,7 +21,9 @@ I ran real `next build`s against Next.js **16.3.0** (installed from PR #44's loc
 **What that means for confidence:**
 
 - **Verified by build output:** every blocker in the table below, the route-classification changes, and the revalidate/expire numbers.
-- **Not verified:** anything requiring live Sanity data. This container's egress allowlist rejects `*.apicdn.sanity.io`, so the data layer was stubbed. Nothing in the findings depends on query _results_ — but the runtime behaviour of draft mode and visual editing was **not** exercised and needs a preview deploy to confirm.
+- **Verified in CI against live Sanity:** the final build is green, 33/33 pages generated, with `Revalidate` / `Expire` matching the baseline on every route.
+- **Still not verified:** draft mode, stega, and visual editing were never exercised — the dev sandbox's egress allowlist rejects `*.apicdn.sanity.io`, and CI only proves the build. These need a manual pass on the preview deploy.
+- **Local builds here are weak evidence.** They run against a stubbed data layer, and the stub silently rendered no organisms for most of this work (wrong page-components key, and a query matcher that caught `PAGE_BY_SLUG_QUERY` as well as `ALL_PAGES_QUERY`). Blocker 7 was missed twice as a result. Trust the CI build over a local one.
 - **Now verified during implementation:** the cached-server-function fix for the Footer year prerenders cleanly, and the final route table reproduces the pre-migration `Revalidate` / `Expire` values exactly.
 
 ---
@@ -62,6 +64,19 @@ All six confirmed by build failure, and all six now fixed.
 
 Blocker 6 is the awkward one: it is **synchronous IO during prerender**, which `instant = false` explicitly does _not_ defer. It cannot be postponed to a later phase, and because `Footer` sits in the root layout it blocks _every_ route.
 
+### Blocker 7 — found only in CI: `new Date()` inside a dependency
+
+`components/organisms/Testimonials/Testimonials.tsx` renders Swiper, and Swiper's **Autoplay module reads `new Date()` as soon as it initialises**. `modules` always includes `Autoplay`, so setting `autoplay={false}` does not avoid it. Every page carrying a testimonials section failed to prerender.
+
+This one is worth understanding because static analysis cannot find it — the offending call is in `node_modules`, and the build's stack trace reports it as "ignore-listed frames" with no component named. Two passes of grepping the app for `new Date()` found nothing. What produced the answer was `next build --debug-prerender`, which the build output itself recommends:
+
+- The first attempt **ran out of heap** before reaching the error — `--debug-prerender` forces `NODE_ENV=development` plus server source maps, and 33 pages does not fit a 2-core build machine.
+- Narrowing `generateStaticParams` to the single failing page got the trace out, naming `Testimonials.tsx:94`.
+
+**Fix: mount the carousel after hydration**, not `<Suspense>`. Suspense is Next's first suggestion, but it would put a dynamic hole in every page with testimonials and cost an origin request per visit — the same trade rejected for the footer year. A shared `TestimonialQuote` component renders the first quote server-side, so content stays in the HTML for crawlers and no-JS visitors, and Swiper needs JavaScript regardless.
+
+**Generalise this:** any client component reading current time, randomness, or UUIDs blocks the prerender — including ones you don't own. Swiper was the only case here, but a future dependency upgrade could introduce another, and it will surface as a CI-only failure.
+
 ---
 
 ## Before / after
@@ -78,16 +93,16 @@ Both tables are real build output, same stubbed data, Next 16.3.0.
 └ ○ /sitemap.xml                1w      1y
 ```
 
-**As shipped (`'use cache'` + custom `cacheLife` profiles):**
+**As shipped** — from the green Vercel build against live Sanity, 33/33 pages generated:
 
 ```
-┌ ○ /_not-found                 1h      1y
-├   /[[...slug]]                1h      1y
-│ ├ ◐ /[[...slug]]              1h      1y   ← new: App Shell for unknown slugs
-│ └ ○ /                         1h      1y
-├ ƒ /api/revalidate                          ← new: webhook receiver
-├ ○ /llms.txt                   1w      1y
-└ ○ /sitemap.xml                1w      1y
+├   /[[...slug]]                                    1h      1y
+│ ├ ○ /journals/headless-isnt-the-decision           1h      1y
+│ └ ◐ [+19 more paths]                                            ← App Shell
+├ ƒ /api/revalidate                                                ← webhook receiver
+├ ○ /llms.txt                                       1w      1y
+├ ○ /robots.txt
+└ ○ /sitemap.xml                                    1w      1y
 ```
 
 `Revalidate` and `Expire` match the baseline on every route — the migration is a no-op on caching behaviour, which is what makes any change in production metrics a real signal rather than a tuning artifact.
