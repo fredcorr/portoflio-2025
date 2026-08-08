@@ -92,6 +92,7 @@ const ImageGallery = ({
                     alt={altText}
                     width={dimensions?.width}
                     height={dimensions?.height}
+                    blurDataURL={image.asset?.metadata?.lqip}
                     sizes={
                       (isSingleImage && '(min-width: 1024px) 1216px, 100vw') ||
                       (isLastOddItem && '(min-width: 1024px) 1216px, 100vw') ||

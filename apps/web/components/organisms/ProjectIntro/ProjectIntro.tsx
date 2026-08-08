@@ -66,6 +66,7 @@ const ProjectIntro = ({
             alt={heroImage.alt || ''}
             width={heroImage.asset.metadata?.dimensions?.width || 1200}
             height={heroImage.asset.metadata?.dimensions?.height || 1024}
+            blurDataURL={heroImage.asset.metadata?.lqip}
             className="transition duration-300 group-hover:scale-[1.01]"
             wrapperClassName="w-full max-h-[100vh]"
           />
