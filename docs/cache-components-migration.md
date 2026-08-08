@@ -81,33 +81,40 @@ This one is worth understanding because static analysis cannot find it — the o
 
 ## Before / after
 
-Baseline is local build output against stubbed data; the shipped table is the green CI build against live Sanity. Both Next 16.3.0.
+Both tables below are real Vercel builds against live Sanity, on Next 16.3.0.
 
-**Baseline (current code):**
+> An earlier revision compared a **local build against stubbed data** (which returned a single page) with the live CI build (33 pages), and concluded from it that the migration was "a no-op on caching behaviour". That comparison was invalid — the route lists differed because of the data source, not the migration — and the conclusion it supported was wrong. Replaced below with develop's own deployment at `de2216a`, this branch's exact base.
+
+**Baseline** — `develop` @ `de2216a`, 30/30 pages:
 
 ```
-┌ ○ /_not-found
 ├   /[[...slug]]
-│ └ ● /                         1h      1y
-├ ○ /llms.txt                   1w      1y
-└ ○ /sitemap.xml                1w      1y
+│ ├ ● /journals/what-frontend-architecture-actually-costs          1h      1y
+│ ├ ● /journals/headless-isnt-the-decision                         1h      1y
+│ ├ ● /journals/most-interview-processes-are-broken                1h      1y
+│ └ ● [+18 more paths]
+├ ○ /llms.txt                                                      1w      1y
+└ ○ /sitemap.xml                                                   1w      1y
 ```
 
-**As shipped** — from the green Vercel build against live Sanity, 33/33 pages generated:
+**As shipped** — this branch, 33/33 pages:
 
 ```
-├   /[[...slug]]                                    1h      1y
-│ ├ ○ /journals/headless-isnt-the-decision           1h      1y
-│ └ ◐ [+19 more paths]                                            ← App Shell
-├ ƒ /api/revalidate                                                ← webhook receiver
-├ ○ /llms.txt                                       1w      1y
-├ ○ /robots.txt
-└ ○ /sitemap.xml                                    1w      1y
+├   /[[...slug]]                                                   1h      1y
+│ ├ ◐ /[[...slug]]                                                 1h      1y
+│ ├ ○ /journals/what-frontend-architecture-actually-costs          1h      1y
+│ ├ ○ /journals/headless-isnt-the-decision                         1h      1y
+│ └ ◐ [+19 more paths]
+├ ƒ /api/revalidate                                                          ← webhook receiver
+├ ○ /llms.txt                                                      1w      1y
+└ ○ /sitemap.xml                                                   1w      1y
 ```
 
-`Revalidate` and `Expire` match the baseline on every route — the migration is a no-op on caching behaviour, which is what makes any change in production metrics a real signal rather than a tuning artifact.
+`Revalidate` and `Expire` match the baseline on every route. **The rendering mode does not.** All 21 concrete paths were `●` (SSG, fully prerendered); now 2 are `○` and 19 are `◐` — _"prerendered as static HTML with dynamic server-streamed content"_. A `◐` route serves a static shell from the CDN but needs origin compute per request for the dynamic hole, where a `●` route was pure CDN delivery.
 
-The `◐` row is a genuine win: slugs not covered by `generateStaticParams` previously **blocked** on first visit; they now get an App Shell instantly and upgrade in the background.
+The mechanism is `draftMode()`, a dynamic API, in the shared render path — `page.tsx` (component and `generateMetadata`) and `layout.tsx`. The claim elsewhere in this document that draft mode "does not force the route dynamic" holds only in the narrow sense that routes are not `ƒ`.
+
+**Open:** why 2 paths remained `○` while 19 did not. A dynamic read on the shared path should affect all of them equally, so the split is not yet explained. Unresolved — do not treat the `◐` change as understood.
 
 Using the stock presets instead would have produced `1h/1d` and `1w/30d` here. See R1.
 
@@ -262,25 +269,59 @@ Per-slug tags alone are **wrong** for this schema. The page queries dereference 
 | `queries/settings.ts`, `queries/navigation.ts` | `navigationItems[]->`             | Nav items are separate documents                          |
 | `queries/fragments.ts`                         | `asset->`                         | Image swaps                                               |
 
-A webhook for an edited _project_ fires with that project's `_id` — never the slug of the homepage listing it. So add one coarse tag to **every** cached Sanity fetch and invalidate it on any publish:
+A webhook for an edited _project_ fires with that project's `_id` — never the slug of the homepage listing it.
 
-```ts
-cacheTag("sanity:content", "sanity:page", `sanity:page:${slug}`);
+An earlier revision of this plan answered that with a single coarse `sanity:content` tag on every cached fetch, invalidated on any publish. That was rejected in review, correctly. It was not merely broad: because the coarse tag fired on _every_ publish and sat on _every_ entry, the finer tags beside it (`sanity:page:${slug}`, `sanity:settings`, `sanity:sitemap`, `sanity:llms`) could never change an outcome. Fixing a typo in one article invalidated all 33 pages, the sitemap, llms.txt, settings and navigation.
+
+**The shipped strategy pairs two tag kinds**, because neither is sufficient alone:
+
+| Tag                  | Applied by                                 | Covers                                       |
+| -------------------- | ------------------------------------------ | -------------------------------------------- |
+| `sanity:id:<id>`     | walking the query result for every `_id`   | **edits** to a document already in the entry |
+| `sanity:type:<type>` | the same walk, for _nested_ documents only | **creates and deletes**                      |
+
+The type tag is not redundant. A newly published article has an id that was never in any cache entry, so no id tag can match it — only a listing that recorded "this entry depends on articles collectively" gets invalidated. Conversely the id tag is what keeps an edit from touching unrelated pages.
+
+Two rules make the pairing correct:
+
+- **The root document's own `_type` is excluded.** An article page's result is rooted on that article; tagging `sanity:type:article` there would invalidate every article page whenever any single article changed — reintroducing the problem. The root is addressed precisely by its id tag.
+- **Only real document types get type tags.** Nested `_type` values are mostly not documents — portable text blocks, spans, images and the objects inside `pageComponents` all carry one — and tagging those produces tags no webhook can fire.
+
+Three tags stay explicit because they cannot be derived from a result:
+
+| Tag               | Why it cannot be derived                                                                                                                      |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sanity:settings` | `NAVIGATION_QUERY` projects `navigationItems[]->` _without_ the settings document, so a settings publish carries an id the entry never cached |
+| `sanity:sitemap`  | listing changes on create/delete, which no id already in the result can signal                                                                |
+| `sanity:llms`     | same                                                                                                                                          |
+
+Regeneration stays lazy — per the docs, `revalidateTag` _"marks tagged data as stale, but fresh data is only fetched when pages using that tag are next visited... will not immediately trigger many revalidations at once."_
+
+| Event                              | Tags invalidated                                            |
+| ---------------------------------- | ----------------------------------------------------------- |
+| Any document publish/update/delete | `sanity:id:${_id}`, `sanity:type:${_type}`                  |
+| Page-like doc with a slug          | also `sanity:page:${slug}`, `sanity:sitemap`, `sanity:llms` |
+| `settings` document                | also `sanity:settings`                                      |
+| Payload with neither id nor type   | `sanity:content` (fallback — over-invalidates deliberately) |
+
+**Implementation:** `utils/collect-cache-tags.ts` does the walk; `app/api/revalidate/route.ts` receives the webhook, signature-verified with `@sanity/webhook`. Two constraints the implementation handles:
+
+- **`cacheTag` accepts at most 128 tags per call** and silently drops the rest, so tags are chunked across calls. A listing page with more than 128 referenced documents would otherwise lose invalidation with only a console warning.
+- **Sanity addresses drafts as `drafts.<id>`.** Cache entries are built from published reads, so webhook ids are normalised or a publish would never match what was cached.
+
+Tagging from the fetched payload is the documented pattern — Next's `cacheTag` reference has a "Creating tags from external data" section showing `cacheTag('bookings-data', data.id)` after the await.
+
+The webhook projection must now include `_id`:
+
+```
+{"_id": _id, "_type": _type, "slug": slug.current}
 ```
 
-This has no correctness holes because it doesn't attempt to model the reference graph. The usual objection doesn't apply at this size — per the docs, `revalidateTag` _"marks tagged data as stale, but fresh data is only fetched when pages using that tag are next visited... will not immediately trigger many revalidations at once."_ Regeneration is lazy, so a publish costs at most one background re-fetch per page, whenever that page is next visited.
+Without it every publish falls back to type-level tags — still correct, but coarser than necessary.
 
-| Event                                  | Tags to invalidate                                          |
-| -------------------------------------- | ----------------------------------------------------------- |
-| **Any** document publish/update/delete | `sanity:content`                                            |
-| Page-like doc with a slug              | also `sanity:page:${slug}`, `sanity:sitemap`, `sanity:llms` |
-| `settings` document                    | also `sanity:settings`                                      |
-
-**Implementation:** new route `app/api/revalidate/route.ts`, signature-verified with `@sanity/webhook`'s `parseBody` (new dependency) rather than hand-rolled. Add `SANITY_REVALIDATE_SECRET` to the `web#build` env array in `turbo.json` per the convention in `CLAUDE.md` — never `globalEnv` — plus the Vercel project env. Configure the webhook in Sanity's API settings to POST on create/update/delete with a projection including `_type` and `slug.current`.
+Note this supersedes the source-map alternative previously parked here: `@sanity/client`'s `resultSourceMap` is unnecessary, because the queries already project `_id` on every dereference.
 
 **Cross-instance check.** `use cache` entries are in-memory and not inherently shared between instances; Vercel is expected to supply a shared cache handler, so this should just work — but the failure mode reads as flakiness rather than breakage, so confirm it. On preview: publish a change, then hit the same URL repeatedly. If the fresh value appears and disappears between requests, invalidation is only reaching one instance — switch the cached fetches to `'use cache: remote'`.
-
-**If Sanity read volume ever becomes a concern**, the precise alternative is source-map–derived tags: `@sanity/client` can return a `resultSourceMap` listing every document that contributed to a result, tagged as `sanity:doc:${_id}` and invalidated by changed `_id`. The repo already uses stega, which rides the same machinery — but confirm it works on the CDN-backed published client first. Not worth the complexity at current scale.
 
 ### Phase 4 — regression sweep
 

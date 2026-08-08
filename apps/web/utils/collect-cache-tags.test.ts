@@ -1,0 +1,111 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
+
+import {
+  chunkCacheTags,
+  collectCacheTags,
+  normaliseDocumentId,
+} from './collect-cache-tags'
+
+test('tags the root document by id but never by type', () => {
+  const tags = collectCacheTags({
+    _id: 'article-1',
+    _type: 'article',
+    title: 'Restraint',
+  })
+
+  assert.deepEqual(tags, ['sanity:id:article-1'])
+})
+
+test('tags nested documents by both id and type', () => {
+  const tags = collectCacheTags({
+    _id: 'page-1',
+    _type: 'page',
+    pageComponents: [
+      {
+        _type: 'journalsFeed',
+        articles: [
+          { _id: 'article-1', _type: 'article' },
+          { _id: 'article-2', _type: 'article' },
+        ],
+      },
+    ],
+  })
+
+  assert.ok(tags.includes('sanity:id:page-1'))
+  assert.ok(tags.includes('sanity:id:article-1'))
+  assert.ok(tags.includes('sanity:id:article-2'))
+  assert.ok(tags.includes('sanity:type:article'))
+  // The root's own type stays out, or editing one page would invalidate every
+  // page.
+  assert.ok(!tags.includes('sanity:type:page'))
+})
+
+test('ignores _type values that are not documents', () => {
+  const tags = collectCacheTags({
+    _id: 'page-1',
+    _type: 'page',
+    body: [
+      { _type: 'block', children: [{ _type: 'span', text: 'hello' }] },
+      { _type: 'image', asset: { _type: 'sanity.imageAsset' } },
+    ],
+  })
+
+  assert.deepEqual(tags, ['sanity:id:page-1'])
+})
+
+test('treats every element of an array root as nested', () => {
+  const tags = collectCacheTags([
+    { _id: 'page-1', _type: 'page' },
+    { _id: 'article-1', _type: 'article' },
+  ])
+
+  assert.ok(tags.includes('sanity:type:page'))
+  assert.ok(tags.includes('sanity:type:article'))
+})
+
+test('normalises draft ids so they match the published entry', () => {
+  assert.equal(normaliseDocumentId('drafts.article-1'), 'article-1')
+  assert.equal(normaliseDocumentId('article-1'), 'article-1')
+
+  const tags = collectCacheTags({ _id: 'drafts.article-1', _type: 'article' })
+  assert.deepEqual(tags, ['sanity:id:article-1'])
+})
+
+test('deduplicates repeated references', () => {
+  const tags = collectCacheTags({
+    _id: 'page-1',
+    _type: 'page',
+    a: { _id: 'article-1', _type: 'article' },
+    b: { _id: 'article-1', _type: 'article' },
+  })
+
+  assert.deepEqual(tags.filter(tag => tag === 'sanity:id:article-1').length, 1)
+})
+
+test('survives documents that reference each other', () => {
+  const a: Record<string, unknown> = { _id: 'a', _type: 'project' }
+  const b: Record<string, unknown> = { _id: 'b', _type: 'project', a }
+  a.b = b
+
+  const tags = collectCacheTags({ _id: 'page-1', _type: 'page', a })
+
+  assert.ok(tags.includes('sanity:id:a'))
+  assert.ok(tags.includes('sanity:id:b'))
+})
+
+test('chunks tags to the 128 per call cacheTag accepts', () => {
+  const tags = Array.from({ length: 300 }, (_, i) => `sanity:id:${i}`)
+  const chunks = chunkCacheTags(tags)
+
+  assert.equal(chunks.length, 3)
+  assert.equal(chunks[0].length, 128)
+  assert.equal(chunks[1].length, 128)
+  assert.equal(chunks[2].length, 44)
+  assert.deepEqual(chunks.flat(), tags)
+})
+
+test('returns nothing for empty results', () => {
+  assert.deepEqual(collectCacheTags(null), [])
+  assert.deepEqual(chunkCacheTags([]), [])
+})

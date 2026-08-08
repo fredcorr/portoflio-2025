@@ -2,6 +2,7 @@ import { cache } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { PAGE_BY_SLUG_QUERY } from '@/sanity/queries/base'
 import { client, previewClient } from '@/sanity/client'
+import { chunkCacheTags, collectCacheTags } from '@/utils/collect-cache-tags'
 import type { CmsPages } from '@portfolio/types/pages'
 
 /**
@@ -10,17 +11,27 @@ import type { CmsPages } from '@portfolio/types/pages'
  * explicit `use cache` there is no caching layer at all, and nothing fails
  * loudly to tell you.
  *
- * `sanity:content` is the tag that actually keeps this correct. The page query
- * dereferences documents that change independently of the page itself
- * (`articles[]->`, `projects[]->`, `navigationItems[]->`), so a webhook for an
- * edited project carries that project's `_id` and would never match
- * `sanity:page:${slug}`. The coarse tag is invalidated on any publish.
+ * Tags are derived from the result rather than the request, because the page
+ * query dereferences documents that change independently of the page itself
+ * (`articles[]->`, `projects[]->`, `navigationItems[]->`) and lists others by
+ * type (`*[_type == "article"]`). A webhook for an edited project carries that
+ * project's own id, which `sanity:page:${slug}` would never match.
  */
 async function fetchPublishedPage(slug: string) {
   'use cache'
   cacheLife('cmsPage')
-  cacheTag('sanity:content', 'sanity:page', `sanity:page:${slug}`)
-  return client.fetch<CmsPages | null>(PAGE_BY_SLUG_QUERY, { slug })
+  cacheTag('sanity:page', `sanity:page:${slug}`)
+
+  const page = await client.fetch<CmsPages | null>(PAGE_BY_SLUG_QUERY, { slug })
+
+  // Tagging from the returned payload is what Next documents for data-derived
+  // tags, and it is the only way to know which documents this page actually
+  // dereferenced. Chunked because `cacheTag` drops anything past 128 per call.
+  for (const chunk of chunkCacheTags(collectCacheTags(page))) {
+    cacheTag(...chunk)
+  }
+
+  return page
 }
 
 const getPage = cache(async (slug: string, isDraft: boolean) => {

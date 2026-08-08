@@ -1,14 +1,18 @@
 import { revalidateTag } from 'next/cache'
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
 import { GlobalItemsType, PageTypeName } from '@portfolio/types/base'
+import { idTag, typeTag } from '@/utils/collect-cache-tags'
 
 /**
  * Sanity webhook receiver. Invalidates cached content on publish.
  *
  * Configure in Sanity's API settings to POST here on create/update/delete,
- * with a projection that includes `_type` and `slug`:
+ * with a projection that includes `_id`, `_type` and `slug`:
  *
- *   {"_type": _type, "slug": slug.current}
+ *   {"_id": _id, "_type": _type, "slug": slug.current}
+ *
+ * `_id` is required for precise invalidation — without it every publish falls
+ * back to type-level tags, which is coarser than necessary.
  */
 
 const PAGE_TYPES: string[] = [
@@ -21,6 +25,7 @@ const PAGE_TYPES: string[] = [
 ]
 
 interface WebhookPayload {
+  _id?: string
   _type?: string
   slug?: string
 }
@@ -59,21 +64,31 @@ export async function POST(request: Request) {
 
   const tags = new Set<string>()
 
-  // The coarse tag is what makes this correct. Page queries dereference
-  // documents that change independently of the page displaying them —
-  // `articles[]->`, `projects[]->`, `projectTags[]->`, `navigationItems[]->` —
-  // so a webhook for an edited project carries that project's own type and
-  // slug, and would never match the slug of the page listing it. Invalidating
-  // `sanity:content` on any publish closes that whole class of miss without
-  // trying to model the reference graph.
+  // Two complementary tags, because neither covers the other's case.
+  //
+  // The id tag is exact: it hits precisely the cache entries that dereferenced
+  // this document, so fixing a typo in one article leaves every unrelated page
+  // cached.
+  //
+  // The type tag is what handles *creates and deletes*. A newly published
+  // article has an id that was never in any cache entry, so no id tag can
+  // match it — only a listing that recorded "this entry depends on articles
+  // collectively" will be invalidated.
   //
   // Regeneration is lazy: revalidateTag only marks entries stale, and fresh
   // data is fetched when a page using the tag is next visited. So this does not
   // trigger a burst of rebuilds.
-  tags.add('sanity:content')
+  if (payload._id) {
+    tags.add(idTag(payload._id))
+  }
+
+  if (payload._type) {
+    tags.add(typeTag(payload._type))
+  }
 
   if (payload._type && PAGE_TYPES.includes(payload._type)) {
-    // Listing surfaces change whenever any page-like document does.
+    // Listing surfaces change whenever any page-like document does, including
+    // on create and delete, which no id in the existing result can signal.
     tags.add('sanity:sitemap')
     tags.add('sanity:llms')
 
@@ -84,6 +99,13 @@ export async function POST(request: Request) {
 
   if (payload._type === GlobalItemsType.Settings) {
     tags.add('sanity:settings')
+  }
+
+  // A payload carrying neither an id nor a type tells us nothing about what to
+  // invalidate. Falling back to the coarse tag over-invalidates, which is the
+  // safe direction — serving stale content is the worse failure.
+  if (tags.size === 0) {
+    tags.add('sanity:content')
   }
 
   // 'max' gives stale-while-revalidate: the next visitor is served the cached
