@@ -1,7 +1,7 @@
 # Cache Components migration — evaluation and plan
 
-**Status:** evaluation complete, decisions made, blocked on #44 merging
-**Target:** `apps/web` on Next.js 16.3 (after [#44](https://github.com/fredcorr/portoflio-2025/pull/44) lands)
+**Status:** Phases 1–3 implemented and verified by build. Phase 4 (regression sweep) needs a preview deploy.
+**Target:** `apps/web` on Next.js 16.3 ([#44](https://github.com/fredcorr/portoflio-2025/pull/44), merged)
 **Date:** 2026-08-08
 
 ---
@@ -22,7 +22,7 @@ I ran real `next build`s against Next.js **16.3.0** (installed from PR #44's loc
 
 - **Verified by build output:** every blocker in the table below, the route-classification changes, and the revalidate/expire numbers.
 - **Not verified:** anything requiring live Sanity data. This container's egress allowlist rejects `*.apicdn.sanity.io`, so the data layer was stubbed. Nothing in the findings depends on query _results_ — but the runtime behaviour of draft mode and visual editing was **not** exercised and needs a preview deploy to confirm.
-- **Not verified:** the proposed fixes for the Footer blocker (see below). I confirmed only that the current code blocks the build.
+- **Now verified during implementation:** the cached-server-function fix for the Footer year prerenders cleanly, and the final route table reproduces the pre-migration `Revalidate` / `Expire` values exactly.
 
 ---
 
@@ -49,7 +49,7 @@ So there is no second caching layer underneath. Every cache the site has today c
 
 ## Hard blockers
 
-All six confirmed by build failure. Fixes are mechanical except the last.
+All six confirmed by build failure, and all six now fixed.
 
 | #   | File                                        | Error                                                                                              | Fix                                              |
 | --- | ------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -78,20 +78,23 @@ Both tables are real build output, same stubbed data, Next 16.3.0.
 └ ○ /sitemap.xml                1w      1y
 ```
 
-**After migration (`'use cache'` + `cacheLife` applied):**
+**As shipped (`'use cache'` + custom `cacheLife` profiles):**
 
 ```
-┌ ○ /_not-found                 1h      1d
-├   /[[...slug]]
-│ ├ ◐ /[[...slug]]              1h      1d   ← new: App Shell for unknown slugs
-│ └ ○ /                         1h      1d
-├ ○ /llms.txt                   1w     30d
-└ ○ /sitemap.xml                1w     30d
+┌ ○ /_not-found                 1h      1y
+├   /[[...slug]]                1h      1y
+│ ├ ◐ /[[...slug]]              1h      1y   ← new: App Shell for unknown slugs
+│ └ ○ /                         1h      1y
+├ ƒ /api/revalidate                          ← new: webhook receiver
+├ ○ /llms.txt                   1w      1y
+└ ○ /sitemap.xml                1w      1y
 ```
 
-The `◐` row is a genuine win: slugs not covered by `generateStaticParams` currently **block** on first visit; under Cache Components they get an App Shell instantly and upgrade in the background.
+`Revalidate` and `Expire` match the baseline on every route — the migration is a no-op on caching behaviour, which is what makes any change in production metrics a real signal rather than a tuning artifact.
 
-The `expire` column is a genuine loss. See R1.
+The `◐` row is a genuine win: slugs not covered by `generateStaticParams` previously **blocked** on first visit; they now get an App Shell instantly and upgrade in the background.
+
+Using the stock presets instead would have produced `1h/1d` and `1w/30d` here. See R1.
 
 ---
 
@@ -122,6 +125,18 @@ cacheLife: {
 ```
 
 Then `cacheLife('cmsPage')` / `cacheLife('cmsIndex')` at the call sites. **Do not ship the stock presets.**
+
+#### `expire` propagates as a minimum — found during implementation
+
+A route's effective `expire` is the **minimum across every cache scope that feeds it**, not just the one nearest the data. The first implementation gave `getCopyrightYear()` a stock `cacheLife('days')`, whose `expire` is one week. Because that helper runs in the root layout, it silently pulled every page's expiry from 1 year down to 1 week — reintroducing R1 through the back door, with the profiles themselves still correct.
+
+The build's `Expire` column is what caught it. Any new `use cache` scope reachable from `layout.tsx` needs an `expire` at least as long as `cmsPage`'s, or it caps the whole site:
+
+```ts
+cacheLife({ stale: 300, revalidate: 86400, expire: 31536000 });
+```
+
+`revalidate` can still be short — that only controls background refresh. It's `expire` that has to stay long.
 
 ### R2 — silent loss of all Sanity caching 🔴
 
@@ -264,26 +279,27 @@ Manual pass over R4. Preview deploy for R7. Measure R5.
 
 ## Decisions made
 
-| Decision                   | Choice                                                                             |
-| -------------------------- | ---------------------------------------------------------------------------------- |
-| **Sequencing**             | Wait for #44 to merge; migrate as a separate PR off `develop`                      |
-| **Cache lifetimes**        | Keep today's 1h / 1w. Tags carry freshness; the timer is a backstop                |
-| **Webhook invalidation**   | In scope (Phase 3), not a follow-up                                                |
-| **`generateStaticParams`** | Fail the build loudly — remove the try/catch, no empty-array fallback              |
-| **Footer year**            | Try a cached server function first; fall back to `useEffect`. **Not** `<Suspense>` |
+| Decision                   | Choice                                                                |
+| -------------------------- | --------------------------------------------------------------------- |
+| **Sequencing**             | Wait for #44 to merge; migrate as a separate PR off `develop`         |
+| **Cache lifetimes**        | Keep today's 1h / 1w. Tags carry freshness; the timer is a backstop   |
+| **Webhook invalidation**   | In scope (Phase 3), not a follow-up                                   |
+| **`generateStaticParams`** | Fail the build loudly — remove the try/catch, no empty-array fallback |
+| **Footer year**            | Cached server function — verified working. **Not** `<Suspense>`       |
 
-**On the Footer:** `<Suspense>` was rejected because a dynamic hole in the root layout means no route can be fully static — every route drops from `○` to `◐`, requiring origin compute on every request instead of pure CDN delivery. A site-wide cost for a copyright year. The preferred fix is untested and needs verifying in Phase 1:
+**On the Footer:** `<Suspense>` was rejected because a dynamic hole in the root layout means no route can be fully static — every route drops from `○` to `◐`, requiring origin compute on every request instead of pure CDN delivery. A site-wide cost for a copyright year. The cached-server-function alternative was untested when this was written; it is now **confirmed working** — `new Date()` inside a `use cache` scope prerenders cleanly and routes stay static:
 
 ```ts
 // apps/web/utils/get-copyright-year.ts
-export async function getCopyrightYear() {
+export default async function getCopyrightYear() {
   "use cache";
-  cacheLife("days");
+  // NOT cacheLife('days') — its 1-week expire would cap the whole site.
+  cacheLife({ stale: 300, revalidate: 86400, expire: 31536000 });
   return new Date().getFullYear();
 }
 ```
 
-If Next still rejects `new Date()` inside a cache scope, fall back to `useEffect` with a server-rendered fallback year — routes stay fully static, at the cost of one paint.
+Implemented in `apps/web/utils/get-copyright-year.ts`. The `useEffect` fallback proved unnecessary.
 
 ---
 
