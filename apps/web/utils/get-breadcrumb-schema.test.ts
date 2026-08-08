@@ -1,12 +1,17 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import { getBreadcrumbSchema } from './get-breadcrumb-schema'
+import {
+  getBreadcrumbLabel,
+  getBreadcrumbSchema,
+} from './get-breadcrumb-schema'
 
 const SITE_URL = 'https://example.com'
 
 test('builds a BreadcrumbList rooted at Home', () => {
-  const schema = getBreadcrumbSchema(SITE_URL, 'journals/restraint')
+  const schema = getBreadcrumbSchema(SITE_URL, {
+    slug: { current: 'journals/restraint' },
+  })
 
   assert.ok(schema)
   assert.equal(schema['@context'], 'https://schema.org')
@@ -20,7 +25,9 @@ test('builds a BreadcrumbList rooted at Home', () => {
 })
 
 test('numbers positions from one and resolves absolute item URLs', () => {
-  const schema = getBreadcrumbSchema(SITE_URL, 'journals/restraint')
+  const schema = getBreadcrumbSchema(SITE_URL, {
+    slug: { current: 'journals/restraint' },
+  })
 
   assert.ok(schema)
   assert.deepEqual(
@@ -33,12 +40,11 @@ test('numbers positions from one and resolves absolute item URLs', () => {
   )
 })
 
-test('names the final crumb with the supplied label', () => {
-  const schema = getBreadcrumbSchema(
-    SITE_URL,
-    'journals/on-the-discipline-of-restraint',
-    'On the discipline of restraint'
-  )
+test('names the final crumb from the page document, not the slug', () => {
+  const schema = getBreadcrumbSchema(SITE_URL, {
+    slug: { current: 'journals/on-the-discipline-of-restraint' },
+    title: 'On the discipline of restraint',
+  })
 
   assert.ok(schema)
   const last = schema.itemListElement.at(-1)
@@ -49,15 +55,50 @@ test('names the final crumb with the supplied label', () => {
   )
 })
 
-test('leaves ancestor crumb names untouched when a label is supplied', () => {
-  const schema = getBreadcrumbSchema(SITE_URL, 'journals/restraint', 'A title')
+test('applies the same naming to every page type, not just articles', () => {
+  const schema = getBreadcrumbSchema(SITE_URL, {
+    slug: { current: 'projects/websites' },
+    title: 'Go by one dresscode',
+  })
+
+  assert.ok(schema)
+  assert.deepEqual(
+    schema.itemListElement.map(item => item.name),
+    ['Home', 'Projects', 'Go by one dresscode']
+  )
+})
+
+test('leaves ancestor crumb names untouched', () => {
+  const schema = getBreadcrumbSchema(SITE_URL, {
+    slug: { current: 'journals/restraint' },
+    title: 'A title',
+  })
 
   assert.ok(schema)
   assert.equal(schema.itemListElement[1]?.name, 'Journals')
 })
 
+test('falls back to the supplied slug when the document has none', () => {
+  const schema = getBreadcrumbSchema(SITE_URL, {}, 'journals/restraint')
+
+  assert.ok(schema)
+  assert.equal(schema.itemListElement.at(-1)?.name, 'Restraint')
+})
+
 test('returns null for the home page', () => {
-  assert.equal(getBreadcrumbSchema(SITE_URL, '/'), null)
-  assert.equal(getBreadcrumbSchema(SITE_URL, ''), null)
-  assert.equal(getBreadcrumbSchema(SITE_URL), null)
+  assert.equal(getBreadcrumbSchema(SITE_URL, { slug: { current: '/' } }), null)
+  assert.equal(getBreadcrumbSchema(SITE_URL, {}), null)
+})
+
+test('getBreadcrumbLabel prefers seoTitle then falls back to title', () => {
+  assert.equal(
+    getBreadcrumbLabel({ seoTitle: 'SEO title', title: 'Doc title' }),
+    'SEO title'
+  )
+  assert.equal(getBreadcrumbLabel({ title: 'Doc title' }), 'Doc title')
+  assert.equal(
+    getBreadcrumbLabel({ seoTitle: '', title: 'Doc title' }),
+    'Doc title'
+  )
+  assert.equal(getBreadcrumbLabel({}), undefined)
 })

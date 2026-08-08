@@ -40,13 +40,28 @@ test('uses the article title rather than the slug for the final crumb', () => {
   assert.doesNotMatch(markup, /On The Discipline Of Restraint/)
 })
 
-test('omits breadcrumbs, deck, and eyebrow extras when not provided', () => {
+test('renders without a slug and omits the breadcrumb region entirely', () => {
   const markup = renderToStaticMarkup(<ArticleIntro title="Minimal title" />)
 
   assert.match(markup, /Minimal title/)
   assert.doesNotMatch(markup, /aria-label="Breadcrumb"/)
   assert.ok(!markup.includes('N°'))
   assert.ok(!markup.includes('min read'))
+  // No empty animated cell should be left behind in the hero grid.
+  assert.doesNotMatch(markup, /<div[^>]*md:col-span-12[^>]*><\/div>/)
+})
+
+test('renders with no props at all', () => {
+  assert.doesNotThrow(() => renderToStaticMarkup(<ArticleIntro />))
+})
+
+test('treats a whitespace-only slug as having no hierarchy', () => {
+  const markup = renderToStaticMarkup(
+    <ArticleIntro slug="   " title="Minimal title" />
+  )
+
+  assert.match(markup, /Minimal title/)
+  assert.doesNotMatch(markup, /aria-label="Breadcrumb"/)
 })
 
 test('no longer renders tags or edition number in the breadcrumb row', () => {

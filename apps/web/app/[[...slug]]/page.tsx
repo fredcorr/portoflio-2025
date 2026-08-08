@@ -2,7 +2,6 @@ import PreviewBanner from '@/components/organisms/PreviewBanner/PreviewBanner'
 import { RenderTemplate } from '@/components/hoc/RenderTemplate'
 import { ALL_PAGES_QUERY } from '@/sanity/queries/base'
 import { CmsPages } from '@portfolio/types/pages'
-import { PageTypeName } from '@portfolio/types/base'
 import { notFound } from 'next/navigation'
 import { client } from '@/sanity/client'
 import { draftMode } from 'next/headers'
@@ -55,17 +54,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   const siteUrl = getSiteUrl()
-  // Article heroes render the document title as the final crumb, so the
-  // structured data has to name it the same way to stay in sync.
-  const breadcrumbLabel =
-    page._type === PageTypeName.ArticlePage
-      ? page.seoTitle || page.title
-      : undefined
-  const breadcrumbSchema = getBreadcrumbSchema(
-    siteUrl,
-    page.slug?.current || slug,
-    breadcrumbLabel
-  )
+  const breadcrumbSchema = getBreadcrumbSchema(siteUrl, page, slug)
 
   const { settings } = await getSettings()
   const pageSchemas = getPageSchemas(siteUrl, page, settings)

@@ -1,6 +1,7 @@
 import type { ProjectPageDocument } from '@portfolio/types/pages'
 import { RenderOrganism } from '@/components/hoc/RenderOrganism'
 import ProjectIntro from '@/components/organisms/ProjectIntro/ProjectIntro'
+import { getBreadcrumbLabel } from '@/utils/get-breadcrumb-schema'
 
 export function ProjectTemplate(props: ProjectPageDocument) {
   return (
@@ -8,6 +9,7 @@ export function ProjectTemplate(props: ProjectPageDocument) {
       <ProjectIntro
         slug={props.slug?.current}
         title={props.title}
+        currentLabel={getBreadcrumbLabel(props)}
         description={props.seoDescription}
         heroImage={props.projectHero}
       />

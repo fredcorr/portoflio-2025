@@ -14,6 +14,7 @@ export interface ProjectIntroProps extends ProjectIntroSharedProps {
 const ProjectIntro = ({
   slug,
   title,
+  currentLabel,
   description,
   breadcrumbs,
   className,
@@ -33,7 +34,13 @@ const ProjectIntro = ({
       contentClassName="gap-y-6 md:gap-y-8"
       data-organism="project-intro"
     >
-      {hasBreadcrumbs && <Breadcrumbs className="md:col-span-12" slug={slug} />}
+      {hasBreadcrumbs && (
+        <Breadcrumbs
+          className="md:col-span-12"
+          slug={slug}
+          currentLabel={currentLabel}
+        />
+      )}
       {heading && (
         <FadeIn
           as="h1"

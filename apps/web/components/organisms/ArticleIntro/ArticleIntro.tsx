@@ -22,6 +22,9 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
   className,
 }) => {
   const headline = title?.trim()
+  // Without a slug there is no hierarchy to show. Skip the wrapper entirely
+  // rather than leaving an empty animated cell in the hero grid.
+  const hasBreadcrumbs = Boolean(slug?.trim())
 
   return (
     <ComponentLayout
@@ -31,19 +34,21 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
     >
       {/* Breadcrumbs — the article's real position in the site hierarchy.
           Tags and edition number live in ArticleMeta below. */}
-      <FadeIn
-        as="div"
-        duration={0.6}
-        delay={0}
-        viewport={{ once: true, amount: 0.3 }}
-        className="md:col-span-12"
-      >
-        <Breadcrumbs
-          slug={slug}
-          currentLabel={headline}
-          className="font-heading text-label uppercase tracking-[0.12em]"
-        />
-      </FadeIn>
+      {hasBreadcrumbs && (
+        <FadeIn
+          as="div"
+          duration={0.6}
+          delay={0}
+          viewport={{ once: true, amount: 0.3 }}
+          className="md:col-span-12"
+        >
+          <Breadcrumbs
+            slug={slug}
+            currentLabel={headline}
+            className="font-heading text-label uppercase tracking-[0.12em]"
+          />
+        </FadeIn>
+      )}
 
       {/* Title */}
       {headline && (

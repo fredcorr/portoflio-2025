@@ -1,12 +1,27 @@
 import slugToBreadcrumbs, { buildPageUrl } from '@/utils/slug'
 import type { BreadcrumbListSchema } from '@/types/json-schema'
 
+export interface BreadcrumbPage {
+  slug?: { current?: string }
+  title?: string
+  seoTitle?: string
+}
+
+/**
+ * The label a page contributes as its own breadcrumb crumb. Templates render
+ * the visible crumb from the same helper so the markup and the structured
+ * data can never drift apart.
+ */
+export const getBreadcrumbLabel = (page: BreadcrumbPage): string | undefined =>
+  page.seoTitle || page.title
+
 export const getBreadcrumbSchema = (
   siteUrl: string,
-  slug?: string | null,
-  currentLabel?: string | null
+  page: BreadcrumbPage,
+  fallbackSlug?: string
 ): BreadcrumbListSchema | null => {
-  const items = slugToBreadcrumbs(slug, currentLabel).filter(
+  const slug = page.slug?.current || fallbackSlug
+  const items = slugToBreadcrumbs(slug, getBreadcrumbLabel(page)).filter(
     item => item.label.trim().length > 0
   )
 
