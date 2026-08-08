@@ -28,85 +28,61 @@ npm install
 
 ### 2. Environment Setup
 
-This monorepo uses a hierarchical environment variable structure with shared and app-specific variables.
+One env file per app, loaded natively by that app's framework. There is no
+root `.env` and nothing is derived or generated.
 
 #### Structure
 ```
 Portfolio-2025/
-├── .env                          # Shared, environment-independent (gitignored)
-├── .env.example
-├── .env.develop                  # develop-only overrides (gitignored)
-├── .env.develop.example
-├── .env.prod                     # prod-only overrides (gitignored)
-├── .env.prod.example
-├── scripts/
-│   └── with-env.mjs              # Picks a dataset and runs the command
 └── apps/
     ├── web/
-    │   ├── .env                  # Optional web-only overrides (gitignored)
+    │   ├── .env.local            # Web variables (gitignored)
     │   └── .env.example
     └── studio/
-        ├── .env                  # Optional studio-only overrides (gitignored)
+        ├── .env                  # Studio variables (gitignored)
         └── .env.example
 ```
 
+Next.js loads `apps/web/.env*` and Vite loads `apps/studio/.env*` themselves —
+neither reads anything above its own directory.
+
 #### Initial Setup
 
-**1. Create the root `.env` — shared values that don't change per environment:**
 ```bash
-cp .env.example .env
-```
-```bash
-# .env
-SANITY_PROJECT_ID=your-actual-project-id
-SANITY_API_READ_TOKEN=your-read-token
-SANITY_STUDIO_PREVIEW_SECRET=your-secret-string
-SANITY_STUDIO_HOST=your-studio.sanity.studio
+cp apps/web/.env.example apps/web/.env.local
+cp apps/studio/.env.example apps/studio/.env
 ```
 
-**2. Create the per-dataset overrides — values that *do* change per environment:**
-```bash
-cp .env.develop.example .env.develop
-cp .env.prod.example .env.prod
-```
-
-Both are gitignored. Keep them small: preview URLs, `SITE_URL`, `ALLOW_CRAWLERS`
-— anything else belongs in the root `.env`.
-
-#### How It Works
-
-`scripts/with-env.mjs` is the single entry point for local runs. Given a
-dataset name it:
-
-1. loads the root `.env`, then layers `.env.<dataset>` on top;
-2. forces `SANITY_DATASET` **and** `SANITY_STUDIO_DATASET` to that dataset;
-3. derives `SANITY_STUDIO_PROJECT_ID` from `SANITY_PROJECT_ID` — Vite only
-   exposes `SANITY_STUDIO_`-prefixed vars to the Studio bundle, which is why
-   the same value has to exist under two names;
-4. spawns the command with that environment.
-
-Real environment variables always beat the files, so cloud builds — which
-inject their own env and never call this script — are unaffected.
-
-You therefore define the project ID once, and never type a dataset name into
-an env file at all.
+Fill in both. The project ID appears in each file, once as
+`SANITY_PROJECT_ID` and once as `SANITY_STUDIO_PROJECT_ID`: Vite strips any
+variable without the `SANITY_STUDIO_` prefix out of the Studio bundle, so the
+same value genuinely has to exist under both names.
 
 ### 3. Run Development Server
 
 ```bash
-# Start all apps against the develop dataset (the default)
+# Start all apps
 npm run dev
 
-# Start all apps against the prod dataset
-npm run dev:prod
-
-# Or start individual apps (develop)
+# Or start individual apps
 npm run dev:web      # Web app only
 npm run dev:studio   # Studio only
 ```
 
-The Studio serves **both** datasets at once — `http://localhost:3333/develop`
-and `/prod` — so `dev:prod` mainly changes which dataset the *web app* reads.
+**Switching the dataset.** The Studio serves both at once — pick `Develop` or
+`Production` from the workspace dropdown in the navbar, no restart needed. The
+web app reads one dataset at a time, set by `SANITY_DATASET` in
+`apps/web/.env.local`. To point it at prod for a single run without editing the
+file:
+
+```bash
+SANITY_DATASET=prod npm run dev:web
+```
+
+That works because `SANITY_DATASET` is declared on the `dev` task in
+`turbo.json`. Turbo runs in strict env mode, so an undeclared variable is
+stripped before the task sees it — if you add another variable you want to
+override inline, declare it there too.
 
 ## Workspaces
 
@@ -147,19 +123,14 @@ Shared TypeScript types are maintained in `shared/types/` and can be imported us
 ## Development
 
 ### Run All Apps
-- **Start all apps (develop)**: `npm run dev`
-- **Start all apps (prod)**: `npm run dev:prod`
-- **Build all apps locally**: `npm run build:local` / `npm run build:local:prod`
+- **Start all apps**: `npm run dev`
+- **Build all apps**: `npm run build`
 
 ### Run Individual Apps
 - **Start web app**: `npm run dev:web`
 - **Start Sanity Studio**: `npm run dev:studio`
 - **Build web app**: `npm run build:web`
 - **Build Sanity Studio**: `npm run build:studio`
-
-> `build`, `build:web` and `build:studio` do **not** load `.env` files — they
-> expect env vars to already be present, as they are on Vercel. Use the
-> `build:local*` variants when building on your machine.
 
 ### Code Quality
 - **Lint all apps**: `npm run lint`
@@ -184,10 +155,17 @@ npx turbo run build --graph
 
 ### Adding New Variables
 
-**Never add a variable to `turbo.json` → `globalEnv`.** It is deliberately
-empty: a global entry busts *every* package's build cache, so rotating a
-Studio secret would needlessly rebuild the web app. Add it to the `env` array
-of the package that actually reads it.
+Turbo's `env` arrays control **cache hashing and which variables are passed
+through to the task process** — they have nothing to do with what ends up in a
+JavaScript bundle. Bundling is decided by the framework: Next.js only inlines
+`NEXT_PUBLIC_`-prefixed variables, Vite only exposes `SANITY_STUDIO_`-prefixed
+ones. `SANITY_API_READ_TOKEN` is declared in `web#build.env` and still never
+leaves the server.
+
+**Never add a variable to `globalEnv`.** It is deliberately empty. `globalEnv`
+is the *broader* setting — it applies to every task in every package, so
+rotating a Studio-only secret would bust the web app's build cache and force a
+needless rebuild. The per-package `env` array is strictly narrower.
 
 ```jsonc
 // turbo.json
@@ -195,13 +173,15 @@ of the package that actually reads it.
 "studio#build": { "env": ["MY_NEW_STUDIO_VAR"] }  // only busts the studio cache
 ```
 
-1. Add the variable to root `.env` and `.env.example` (or to
-   `.env.<dataset>.example` if its value differs per environment).
+1. Add the variable to the right app's `.env.local` / `.env` and its
+   `.env.example`.
 2. Add it to the correct `web#build` / `studio#build` `env` array.
 3. Add it to the hosting provider for each environment that needs it.
 
-`dev`, `lint`, `typecheck` and `test` tasks don't need entries — `dev` is
-uncached and the others don't vary by env var.
+`lint`, `typecheck` and `test` don't need entries — they don't vary by env var.
+`dev` is uncached, but it still needs an entry for any variable you expect to
+override inline on the command line, because strict mode strips undeclared
+variables.
 
 ### Variable Naming Conventions
 
@@ -223,18 +203,21 @@ uncached and the others don't vary by env var.
 
 **Variables not loading?**
 1. Restart dev server (`npm run dev`)
-2. Check variable names match exactly (case-sensitive)
-3. Verify `.env` files exist in correct locations
+2. Check variable names match exactly (case-sensitive), including the
+   `SANITY_STUDIO_` / `NEXT_PUBLIC_` prefixes
+3. Verify the file is in the app's own directory — `apps/web/.env.local` or
+   `apps/studio/.env`
 4. Ensure no spaces around `=` in `.env` files
 
-**Need different values per app?**
-- Override shared variables in app-specific `.env` files
-- App-specific values take precedence over root values
-
 **Studio says "Missing SANITY_STUDIO_PROJECT_ID"?**
-You started it without the wrapper (e.g. bare `turbo run dev`). Use
-`npm run dev` / `npm run dev:studio`, or set `SANITY_STUDIO_PROJECT_ID`
-yourself.
+`apps/studio/.env` is missing or doesn't set it. Copy
+`apps/studio/.env.example` and fill it in — the Studio does not read
+`apps/web/.env.local` or anything above its own directory.
+
+**Set a variable inline and the app didn't see it?**
+Turbo runs in strict env mode and drops variables that aren't declared for the
+task. Add it to that task's `env` array in `turbo.json` (this is why `dev`
+declares `SANITY_DATASET`).
 
 **Web build fails with `Unknown SANITY_DATASET "…"`?**
 The dataset name is validated against the `SanityDataset` enum in
@@ -257,12 +240,11 @@ differs.
 **Where dataset names live.** Exactly one place: the `SanityDataset` enum in
 `shared/types/base.ts`. `apps/studio/sanity.config.ts` builds one workspace per
 value, and `apps/web/sanity/client.ts` validates `SANITY_DATASET` against it.
-The only duplicate is the `DATASETS` array in `scripts/with-env.mjs`, which is
-plain ESM and cannot import a TypeScript enum — it carries a comment saying so.
 
 **Studio workspaces.** `sanity.config.ts` exports an array of two workspaces
 rather than a single config, so one deployed Studio serves both datasets and
-you switch with the workspace picker. URLs are namespaced accordingly
+you switch between them with the workspace dropdown in the navbar — no
+restart, no env change. URLs are namespaced accordingly
 (`/develop/structure`, `/prod/structure`); `/` redirects to `develop`.
 
 **Sanity Functions.** `sanity.blueprint.ts` deploys project-wide, not
@@ -275,10 +257,10 @@ guard.
 
 1. Create it: `npx sanity dataset create <name>`
 2. Add a value to `SanityDataset` in `shared/types/base.ts`
-3. Add the name to `DATASETS` in `scripts/with-env.mjs`
-4. Add a workspace to `apps/studio/sanity.config.ts`
-5. Add `.env.<name>.example`, and the gitignore entry for `.env.<name>`
-6. Add `dev:<name>` / `build:local:<name>` scripts to the root `package.json`
+3. Add a workspace to `apps/studio/sanity.config.ts`
+
+That's it — the Studio dropdown picks it up automatically, and the web app
+accepts it as a valid `SANITY_DATASET`.
 
 ## Migrating between datasets
 
@@ -401,23 +383,16 @@ Before you do, know what changes:
 
 ### Build Commands
 
-The project has different build commands for local vs cloud deployments:
-
-**Local builds** (load `.env` + `.env.<dataset>` via `scripts/with-env.mjs`):
-```bash
-npm run build:local        # Builds all apps against the develop dataset
-npm run build:local:prod   # Builds all apps against the prod dataset
-```
-
-**Cloud builds** (env vars injected by the provider — no wrapper script):
 ```bash
 npm run build              # Builds all apps
 npm run build:web          # Web app only
 npm run build:studio       # Studio only
 ```
 
-Because cloud builds bypass `scripts/with-env.mjs`, the provider must set the
-`SANITY_STUDIO_*` names directly — they are not derived for you there.
+Locally these read `apps/web/.env.local` and `apps/studio/.env`. On a cloud
+provider the same commands read whatever the provider injects — set the
+variables there under the exact names each app expects, including the
+`SANITY_STUDIO_` ones.
 
 ### Deploying to Vercel
 
@@ -455,8 +430,8 @@ SANITY_API_READ_TOKEN=your-read-token
 SANITY_STUDIO_PREVIEW_SECRET=your-preview-secret
 SANITY_STUDIO_URL=https://your-studio.sanity.studio
 
-# Studio (must be set under the SANITY_STUDIO_ names — cloud builds do not
-# run scripts/with-env.mjs, so nothing derives them from SANITY_*)
+# Studio (must be set under the SANITY_STUDIO_ names — Vite strips anything
+# without that prefix out of the bundle)
 SANITY_STUDIO_PROJECT_ID=your-project-id
 SANITY_STUDIO_HOST=your-production-studio-url
 SANITY_STUDIO_PREVIEW_URL=https://preview.your-domain.com

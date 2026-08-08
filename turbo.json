@@ -48,7 +48,8 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["SANITY_DATASET"]
     },
     "start": {
       "cache": false,

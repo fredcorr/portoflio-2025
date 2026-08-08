@@ -38,9 +38,8 @@ SANITY_STUDIO_PREVIEW_SECRET=your_secret_here
 ```
 
 All Sanity access is server-side, so none of these use the `NEXT_PUBLIC_`
-prefix. In normal use you set them once in the repo-root `.env` and let
-`npm run dev` / `npm run dev:prod` pick the dataset — see the root README →
-_Environments & datasets_.
+prefix. `SANITY_DATASET` is what points the site at `develop` or `prod` — see
+the root README → _Environments & datasets_.
 
 3. Install dependencies:
 

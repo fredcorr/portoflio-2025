@@ -8,15 +8,12 @@
     "shared/*"
   ],
   "scripts": {
-    "dev": "node scripts/with-env.mjs develop turbo run dev --ui=tui",
-    "dev:prod": "node scripts/with-env.mjs prod turbo run dev --ui=tui",
-    "dev:web": "node scripts/with-env.mjs develop turbo run dev --filter=web",
-    "dev:studio": "node scripts/with-env.mjs develop turbo run dev --filter=studio",
+    "dev": "turbo run dev --ui=tui",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:studio": "turbo run dev --filter=studio",
     "build": "turbo run build",
     "build:web": "turbo run build --filter=web",
     "build:studio": "turbo run build --filter=studio",
-    "build:local": "node scripts/with-env.mjs develop turbo run build",
-    "build:local:prod": "node scripts/with-env.mjs prod turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
