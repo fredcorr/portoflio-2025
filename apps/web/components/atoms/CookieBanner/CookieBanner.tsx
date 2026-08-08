@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import * as CookieConsent from 'vanilla-cookieconsent'
+import { updateAnalyticsConsent } from '@/utils/consent-mode'
 
 export default function CookieBanner() {
   useEffect(() => {
@@ -69,18 +70,10 @@ export default function CookieBanner() {
         },
       },
       onConsent: () => {
-        window.gtag?.('consent', 'update', {
-          analytics_storage: CookieConsent.acceptedCategory('analytics')
-            ? 'granted'
-            : 'denied',
-        })
+        updateAnalyticsConsent(CookieConsent.acceptedCategory('analytics'))
       },
       onChange: () => {
-        window.gtag?.('consent', 'update', {
-          analytics_storage: CookieConsent.acceptedCategory('analytics')
-            ? 'granted'
-            : 'denied',
-        })
+        updateAnalyticsConsent(CookieConsent.acceptedCategory('analytics'))
       },
     })
   }, [])

@@ -1,6 +1,7 @@
 import { GoogleTagManager } from '@next/third-parties/google'
 import Script from 'next/script'
 import WebVitals from '@/components/atoms/WebVitals/WebVitals'
+import { buildConsentDefaultScript } from '@/utils/consent-mode'
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
@@ -13,9 +14,7 @@ export default function GtmProvider() {
       <Script
         id="gtm-consent-default"
         strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied'})`,
-        }}
+        dangerouslySetInnerHTML={{ __html: buildConsentDefaultScript() }}
       />
       <GoogleTagManager gtmId={GTM_ID} />
       <WebVitals />
