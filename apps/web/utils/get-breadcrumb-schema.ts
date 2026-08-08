@@ -3,9 +3,10 @@ import type { BreadcrumbListSchema } from '@/types/json-schema'
 
 export const getBreadcrumbSchema = (
   siteUrl: string,
-  slug?: string | null
+  slug?: string | null,
+  currentLabel?: string | null
 ): BreadcrumbListSchema | null => {
-  const items = slugToBreadcrumbs(slug).filter(
+  const items = slugToBreadcrumbs(slug, currentLabel).filter(
     item => item.label.trim().length > 0
   )
 

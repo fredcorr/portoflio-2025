@@ -3,6 +3,7 @@ import type { ArticleIntroProps as ArticleIntroSharedProps } from '@portfolio/ty
 import { cn } from '@/utils/cn'
 import { ComponentLayout } from '@/components/hoc/ComponentLayout'
 import ArticleMeta from '@/components/molecules/ArticleMeta/ArticleMeta'
+import Breadcrumbs from '@/components/molecules/Breadcrumbs/Breadcrumbs'
 import { FadeIn } from '@/components/animation/FadeIn/FadeIn'
 
 export interface ArticleIntroProps extends ArticleIntroSharedProps {
@@ -10,6 +11,7 @@ export interface ArticleIntroProps extends ArticleIntroSharedProps {
 }
 
 const ArticleIntro: React.FC<ArticleIntroProps> = ({
+  slug,
   title,
   dateLabel,
   readTimeLabel,
@@ -20,14 +22,6 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
   className,
 }) => {
   const headline = title?.trim()
-  const firstTag = tags?.[0]
-  const year = dateLabel
-    ? new Date(dateLabel).getFullYear()
-    : new Date().getFullYear()
-  const editionLabel =
-    editionNumber != null
-      ? `N° ${String(editionNumber).padStart(3, '0')} / ${year}`
-      : undefined
 
   return (
     <ComponentLayout
@@ -35,27 +29,20 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
       className={cn('bg-background text-black dark:text-foreground', className)}
       contentClassName="gap-y-4 md:gap-y-6"
     >
-      {/* Eyebrow */}
+      {/* Breadcrumbs — the article's real position in the site hierarchy.
+          Tags and edition number live in ArticleMeta below. */}
       <FadeIn
         as="div"
         duration={0.6}
         delay={0}
         viewport={{ once: true, amount: 0.3 }}
-        className="md:col-span-12 flex items-center gap-3 font-heading text-label uppercase tracking-[0.12em] text-black/70 dark:text-foreground/70"
+        className="md:col-span-12"
       >
-        <span>Journal</span>
-        {firstTag && (
-          <>
-            <span aria-hidden="true" className="size-1 bg-current opacity-50" />
-            <span>{firstTag}</span>
-          </>
-        )}
-        {editionLabel && (
-          <>
-            <span aria-hidden="true" className="size-1 bg-current opacity-50" />
-            <span>{editionLabel}</span>
-          </>
-        )}
+        <Breadcrumbs
+          slug={slug}
+          currentLabel={headline}
+          className="font-heading text-label uppercase tracking-[0.12em]"
+        />
       </FadeIn>
 
       {/* Title */}

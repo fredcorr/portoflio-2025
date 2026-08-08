@@ -30,7 +30,10 @@ const formatSlugSegmentTitle = (
     .join(' ')
 }
 
-export const slugToBreadcrumbs = (slug?: string | null): BreadcrumbItem[] => {
+export const slugToBreadcrumbs = (
+  slug?: string | null,
+  currentLabel?: string | null
+): BreadcrumbItem[] => {
   const normalized = slug
     ?.split('?')[0]
     ?.replace(/^\/+|\/+$/g, '')
@@ -46,10 +49,13 @@ export const slugToBreadcrumbs = (slug?: string | null): BreadcrumbItem[] => {
     return []
   }
 
+  const overrideLabel = currentLabel?.trim()
+
   return segments.map((segment, index) => {
     const isLast = index === segments.length - 1
     const href = `/${segments.slice(0, index + 1).join('/')}`
-    const label = formatSlugSegmentTitle(segment)
+    const label =
+      isLast && overrideLabel ? overrideLabel : formatSlugSegmentTitle(segment)
 
     const item: BreadcrumbItem = {
       label,
