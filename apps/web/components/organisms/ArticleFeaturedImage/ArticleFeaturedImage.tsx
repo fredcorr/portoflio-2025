@@ -31,6 +31,7 @@ const ArticleFeaturedImage: React.FC<Props> = ({ heroImage, className }) => {
             fill
             priority
             sizes="(min-width: 1440px) 1440px, 100vw"
+            blurDataURL={heroImage?.asset?.metadata?.lqip}
             className="object-cover"
             wrapperClassName="absolute inset-0"
           />

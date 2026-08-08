@@ -79,6 +79,7 @@ const WorkIndexRow = ({
             alt={image.alt || ''}
             width={image.asset.metadata?.dimensions?.width || 1200}
             height={image.asset.metadata?.dimensions?.height || 900}
+            blurDataURL={image.asset.metadata?.lqip}
             wrapperClassName={cn(
               'aspect-[1000/665] w-full rounded-none overflow-hidden',
               'shadow-[16px_16px_36px_4px_rgba(128,128,128,0.54)]'

@@ -23,12 +23,31 @@ interface PageProps {
   }>
 }
 
-const getOpenGraphImage = (page: CmsPages) => {
+const getOpenGraphImage = (
+  page: CmsPages,
+  siteUrl: string,
+  title: string | undefined
+) => {
   const image = page.seoImage ?? getPageHeroImage(page)
   const imageUrl = image?.asset?.url
+  const fallbackAlt = page.seoTitle ?? page.title ?? 'Portfolio'
 
   if (!imageUrl) {
-    return undefined
+    // No editor-chosen image, so fall back to a generated card rather than
+    // shipping a page with no social image at all.
+    const generated = new URL('/api/og', siteUrl)
+    if (title) {
+      generated.searchParams.set('title', title)
+    }
+
+    return [
+      {
+        url: generated.toString(),
+        width: 1200,
+        height: 630,
+        alt: fallbackAlt,
+      },
+    ]
   }
 
   return [
@@ -36,7 +55,7 @@ const getOpenGraphImage = (page: CmsPages) => {
       url: imageUrl,
       width: image.asset?.metadata?.dimensions?.width,
       height: image.asset?.metadata?.dimensions?.height,
-      alt: image.alt ?? page.seoTitle ?? page.title ?? 'Portfolio',
+      alt: image.alt ?? fallbackAlt,
     },
   ]
 }
@@ -110,7 +129,7 @@ export async function generateMetadata({
     const description = page.seoDescription
     const siteUrl = getSiteUrl()
     const url = buildPageUrl(siteUrl, page.slug?.current || slug)
-    const openGraphImages = getOpenGraphImage(page)
+    const openGraphImages = getOpenGraphImage(page, siteUrl, title)
     const indexPage = process.env.ALLOW_CRAWLERS === 'true' && !isDraft
 
     return {

@@ -56,6 +56,7 @@ function PostCard({
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            blurDataURL={article.heroImage?.asset?.metadata?.lqip}
             className="object-cover"
             wrapperClassName="absolute inset-0"
           />
