@@ -8,7 +8,7 @@
 
 ## Verdict
 
-The migration is viable and small — **6 files carry hard blockers, and every one has a mechanical fix.** A naive migration builds and serves a working site, which is exactly the danger: the caching silently disappears and nothing fails. The work is not in getting it to build, it's in deliberately restoring each cache that route-segment `revalidate` is giving us today.
+The migration is viable and small — **7 blockers, all now fixed.** Six were mechanical and visible from a first build; the seventh lived in a dependency and only surfaced in CI. A naive migration builds and serves a working site, which is exactly the danger: the caching silently disappears and nothing fails. The work is not in getting it to build, it's in deliberately restoring each cache that route-segment `revalidate` is giving us today.
 
 Recommended sequencing: **land #44 first, migrate separately.** The two changes fail in different ways — #44's risk is a Vercel deploy-step failure, this one's risk is a silent caching regression — and bisecting them together is unpleasant.
 
@@ -24,7 +24,7 @@ I ran real `next build`s against Next.js **16.3.0** (installed from PR #44's loc
 - **Verified in CI against live Sanity:** the final build is green, 33/33 pages generated, with `Revalidate` / `Expire` matching the baseline on every route.
 - **Still not verified:** draft mode, stega, and visual editing were never exercised — the dev sandbox's egress allowlist rejects `*.apicdn.sanity.io`, and CI only proves the build. These need a manual pass on the preview deploy.
 - **Local builds here are weak evidence.** They run against a stubbed data layer, and the stub silently rendered no organisms for most of this work (wrong page-components key, and a query matcher that caught `PAGE_BY_SLUG_QUERY` as well as `ALL_PAGES_QUERY`). Blocker 7 was missed twice as a result. Trust the CI build over a local one.
-- **Now verified during implementation:** the cached-server-function fix for the Footer year prerenders cleanly, and the final route table reproduces the pre-migration `Revalidate` / `Expire` values exactly.
+- **Resolved during implementation:** the cached-server-function fix for the Footer year, which was an open question when this was written, prerenders cleanly.
 
 ---
 
@@ -51,7 +51,7 @@ So there is no second caching layer underneath. Every cache the site has today c
 
 ## Hard blockers
 
-All six confirmed by build failure, and all six now fixed.
+Six of the seven were confirmed by a first build against stubbed data. The seventh needed live content and is described separately below.
 
 | #   | File                                        | Error                                                                                              | Fix                                              |
 | --- | ------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -81,7 +81,7 @@ This one is worth understanding because static analysis cannot find it — the o
 
 ## Before / after
 
-Both tables are real build output, same stubbed data, Next 16.3.0.
+Baseline is local build output against stubbed data; the shipped table is the green CI build against live Sanity. Both Next 16.3.0.
 
 **Baseline (current code):**
 
