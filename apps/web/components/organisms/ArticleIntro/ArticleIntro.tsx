@@ -21,12 +21,16 @@ const ArticleIntro: React.FC<ArticleIntroProps> = ({
 }) => {
   const headline = title?.trim()
   const firstTag = tags?.[0]
-  const year = dateLabel
-    ? new Date(dateLabel).getFullYear()
-    : new Date().getFullYear()
+  // Derived only from CMS data. Falling back to `new Date()` would read the
+  // current time during prerender, which Cache Components rejects — and it
+  // would bake the build year into an article that has no date, which is a
+  // guess rather than a fact.
+  const year = dateLabel ? new Date(dateLabel).getFullYear() : undefined
   const editionLabel =
     editionNumber != null
-      ? `N° ${String(editionNumber).padStart(3, '0')} / ${year}`
+      ? [`N° ${String(editionNumber).padStart(3, '0')}`, year]
+          .filter(Boolean)
+          .join(' / ')
       : undefined
 
   return (
