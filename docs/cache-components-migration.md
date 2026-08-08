@@ -110,11 +110,37 @@ Both tables below are real Vercel builds against live Sanity, on Next 16.3.0.
 └ ○ /sitemap.xml                                                   1w      1y
 ```
 
-`Revalidate` and `Expire` match the baseline on every route. **The rendering mode does not.** All 21 concrete paths were `●` (SSG, fully prerendered); now 2 are `○` and 19 are `◐` — _"prerendered as static HTML with dynamic server-streamed content"_. A `◐` route serves a static shell from the CDN but needs origin compute per request for the dynamic hole, where a `●` route was pure CDN delivery.
+`Revalidate` and `Expire` match the baseline on every route. The **classification symbols differ**, and what that means is genuinely unresolved. Read the rest of this section before drawing conclusions from it.
 
-The mechanism is `draftMode()`, a dynamic API, in the shared render path — `page.tsx` (component and `generateMetadata`) and `layout.tsx`. The claim elsewhere in this document that draft mode "does not force the route dynamic" holds only in the narrow sense that routes are not `ƒ`.
+**First: `●` does not exist under Cache Components.** Compare the two legends the builds printed.
 
-**Open:** why 2 paths remained `○` while 19 did not. A dynamic read on the shared path should affect all of them equally, so the split is not yet explained. Unresolved — do not treat the `◐` change as understood.
+Baseline:
+
+```
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+```
+
+This branch:
+
+```
+○  (Static)             prerendered as static content
+◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+ƒ  (Dynamic)            server-rendered on demand
+```
+
+The `●` category is absent from the second legend entirely. So "19 routes were demoted from `●`" is the wrong framing — `●` has no successor under `cacheComponents`, and every previously-`●` route had to be reclassified as `○`, `◐` or `ƒ` regardless of whether its behaviour changed.
+
+**Second: the "19 of 21" figure is an inference, not a measurement.** Next prints one symbol for a collapsed group, so `◐ [+19 more paths]` does not establish that all 19 are `◐`; the group may be mixed. Nobody has confirmed per-route classification.
+
+**Third: the `draftMode()` explanation was tested and failed.** An earlier revision of this document asserted the cause was `draftMode()` — a dynamic API — in the shared render path (`page.tsx`, its `generateMetadata`, and `layout.tsx`). That was never verified, and the 2-vs-19 split contradicted it at the time, since a read in the root layout should affect all paths equally.
+
+It was then tested directly: all four reads were moved inside `use cache` scopes via a shared cached helper (commit `c4c38a2`). The classification did not change at all, and the helper — lacking a `cacheLife` call — pulled every page's revalidate from `1h` to `15m`. Reverted in `6bceceb`. `draftMode()` is not established as the cause, and the docs' allowance that `isEnabled` may be read inside a cache scope says nothing about a route staying static.
+
+**What would actually settle it:** per-route `x-vercel-cache` behaviour on the preview, compared against develop's last good deployment — two requests per path, checking whether a route ever reaches `HIT` or goes to the origin every time. Preview deployments sit behind Vercel Deployment Protection, so this needs a Protection Bypass for Automation token (`x-vercel-protection-bypass` header).
+
+Until that measurement exists, treat the symbol change as unexplained and do not describe it as a regression or as harmless.
 
 Using the stock presets instead would have produced `1h/1d` and `1w/30d` here. See R1.
 
@@ -196,9 +222,13 @@ Today `generateStaticParams` swallows fetch errors and returns `[]`, so a Sanity
 
 This is arguably a fix, not a regression — but it changes CI behaviour. **Decided: accept it and fail loudly.**
 
-### R7 — draft mode and visual editing 🟢
+### R7 — draft mode and visual editing 🟠
 
-Lower risk than expected. The docs confirm, and the build agrees, that `draftMode().isEnabled` is readable inside a `'use cache'` scope and does not force the route dynamic — so the current `layout.tsx` / `page.tsx` pattern survives untouched. When draft mode is on, everything under a cache scope re-executes per request and is not written to cache, which is the behaviour we want.
+Draft reads stay **outside** the cache scope, in `layout.tsx` and `page.tsx`, as they are today.
+
+An earlier revision rated this 🟢 on the reasoning that `draftMode().isEnabled` is readable inside a `'use cache'` scope and "does not force the route dynamic". The first half is true and documented; the second half does not follow from it and was never tested. When it was tested, moving the reads inside changed nothing about route classification and regressed revalidate — see Before / after. Do not re-attempt that refactor without the measurement described there.
+
+What the docs do establish, and which still holds: when draft mode is on, everything under a cache scope re-executes per request and is not written to cache.
 
 **Still needs a preview deploy to confirm**, since stega/visual editing was not exercised here.
 
