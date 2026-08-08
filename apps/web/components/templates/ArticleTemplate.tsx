@@ -23,6 +23,7 @@ export const ArticleTemplate = (props: ArticlePageDocument) => {
   return (
     <article>
       <ArticleIntro
+        slug={slug}
         title={title}
         dateLabel={dateLabel}
         readTimeLabel={readTimeLabel}

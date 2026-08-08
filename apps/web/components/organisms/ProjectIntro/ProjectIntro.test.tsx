@@ -17,6 +17,19 @@ test('renders breadcrumbs with current page not clickable', () => {
   assert.doesNotMatch(markup, />Websites<\/a>/)
 })
 
+test('uses currentLabel for the final crumb so it matches the schema', () => {
+  const markup = renderToStaticMarkup(
+    <ProjectIntro
+      slug="/projects/websites"
+      title="Go by one dresscode"
+      currentLabel="Go by one dresscode"
+    />
+  )
+
+  assert.match(markup, />Go by one dresscode</)
+  assert.doesNotMatch(markup, />Websites</)
+})
+
 test('renders title and description when provided', () => {
   const markup = renderToStaticMarkup(<ProjectIntro {...projectIntroMock} />)
 

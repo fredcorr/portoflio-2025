@@ -6,10 +6,18 @@ import slugToBreadcrumbs from '@/utils/slug'
 
 export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLElement> {
   slug?: string | null
+  /** Overrides the final crumb's label, so it can read the document title
+   * rather than the title-cased slug segment. */
+  currentLabel?: string | null
 }
 
-const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
-  const derivedItems = slugToBreadcrumbs(slug)
+const Breadcrumbs = ({
+  slug,
+  currentLabel,
+  className,
+  ...props
+}: BreadcrumbsProps) => {
+  const derivedItems = slugToBreadcrumbs(slug, currentLabel)
   const visibleItems = derivedItems.filter(item => item.label.trim().length > 0)
 
   if (visibleItems.length === 0) {

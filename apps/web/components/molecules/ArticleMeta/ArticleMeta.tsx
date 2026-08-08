@@ -26,7 +26,10 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
     [author?.firstName?.[0], author?.secondName?.[0]]
       .filter(Boolean)
       .join('') || '?'
-  // Derived only from CMS data — see the matching note in ArticleIntro.
+  // Derived only from CMS data. Falling back to `new Date()` would read the
+  // current time during prerender, which Cache Components rejects — and it
+  // would bake the build year into an article that has no date, which is a
+  // guess rather than a fact.
   const year = dateLabel ? new Date(dateLabel).getFullYear() : undefined
   const editionLabel =
     editionNumber != null

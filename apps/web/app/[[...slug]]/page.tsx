@@ -52,10 +52,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   const siteUrl = getSiteUrl()
-  const breadcrumbSchema = getBreadcrumbSchema(
-    siteUrl,
-    page.slug?.current || slug
-  )
+  const breadcrumbSchema = getBreadcrumbSchema(siteUrl, page, slug)
 
   const { settings } = await getSettings()
   const pageSchemas = getPageSchemas(siteUrl, page, settings)
