@@ -3,16 +3,24 @@ import { client } from '@/sanity/client'
 import { SITEMAP_PAGES_QUERY } from '@/sanity/queries/base'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
-
-export const revalidate = 604800
+import { cacheLife, cacheTag } from 'next/cache'
 
 type SitemapPage = { slug?: { current?: string }; updateDate?: string }
+
+// Replaces `export const revalidate = 604800`, which Cache Components rejects.
+// Without this the route would prerender once at build and never refresh.
+async function fetchSitemapPages(): Promise<SitemapPage[]> {
+  'use cache'
+  cacheLife('cmsIndex')
+  cacheTag('sanity:content', 'sanity:sitemap')
+  return client.fetch<SitemapPage[]>(SITEMAP_PAGES_QUERY)
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl()
 
   try {
-    const pages = await client.fetch<SitemapPage[]>(SITEMAP_PAGES_QUERY)
+    const pages = await fetchSitemapPages()
 
     return pages
       .filter(page => page.slug?.current)

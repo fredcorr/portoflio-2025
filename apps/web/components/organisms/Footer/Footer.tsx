@@ -12,9 +12,9 @@ const Footer: React.FC<FooterProps> = ({
   navigationItems,
   openForProjects,
   availabilityText,
+  year,
   className,
 }) => {
-  const year = new Date().getFullYear()
   const hasEmail = Boolean(email)
   const hasSocialLinks = Boolean(socialLinks?.length)
   const hasNavItems = Boolean(navigationItems?.length)

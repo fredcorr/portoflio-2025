@@ -4,6 +4,7 @@ export const footerMock: FooterProps = {
   email: 'hello@federicocorradi.com',
   openForProjects: true,
   availabilityText: 'Q2 2026',
+  year: 2026,
   navigationItems: [
     {
       _id: 'nav-work',

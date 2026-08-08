@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { NextRequest } from 'next/server'
 import { client } from '@/sanity/client'
 import { journalArticleFields } from '@/sanity/queries/components/journals-listing'
