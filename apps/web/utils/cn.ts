@@ -9,6 +9,7 @@ const twMerge = extendTailwindMerge({
       'font-size': [
         {
           text: [
+            'label',
             'body-xl',
             'body-lg',
             'body-md',
