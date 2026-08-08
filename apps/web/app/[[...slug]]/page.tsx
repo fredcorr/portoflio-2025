@@ -79,11 +79,13 @@ export default async function Page({ params }: PageProps) {
 // also the better behaviour: swallowing it produced a green build that deployed
 // a site with zero prerendered pages, which is worse than a loud failure.
 export async function generateStaticParams() {
-  // TEMP DIAGNOSTIC: only prerender /projects, the page failing in CI. Keeps
-  // --debug-prerender inside the build machine's heap.
   const pages = await client.fetch(ALL_PAGES_QUERY)
-  void pages
-  return [{ slug: ['projects'] }]
+
+  return pages.map((page: CmsPages) => {
+    return {
+      slug: page.slug?.current === '/' ? [] : page.slug?.current.split('/'),
+    }
+  })
 }
 
 export async function generateMetadata({
