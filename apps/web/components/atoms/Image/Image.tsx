@@ -13,6 +13,8 @@ export interface ImageProps {
   fill?: boolean
   className?: string
   wrapperClassName?: string
+  /** Sanity `asset.metadata.lqip` — renders as a blur placeholder while loading. */
+  blurDataURL?: string
 }
 
 const DEFAULT_WIDTH = 1200
@@ -28,6 +30,7 @@ export const Image = ({
   fill,
   className,
   wrapperClassName,
+  blurDataURL,
 }: ImageProps) => {
   const resolvedWidth = fill ? undefined : (width ?? DEFAULT_WIDTH)
   const resolvedHeight = fill ? undefined : (height ?? DEFAULT_HEIGHT)
@@ -42,6 +45,8 @@ export const Image = ({
         height={resolvedHeight}
         sizes={sizes ?? '(min-width: 1024px) 560px, 100vw'}
         priority={priority}
+        placeholder={blurDataURL ? 'blur' : undefined}
+        blurDataURL={blurDataURL}
         className={cn('size-full object-cover', className)}
       />
     </div>

@@ -1,3 +1,5 @@
+import { checkBotId } from 'botid/server'
+
 const MAIL_APP_ENDPOINT = process.env.MAIL_APP_ENDPOINT
 const RECAPTCHA_VERIFY_ENDPOINT =
   'https://www.google.com/recaptcha/api/siteverify'
@@ -13,6 +15,14 @@ const toStringValue = (value: unknown): string => {
 }
 
 export async function POST(request: Request) {
+  // Runs before the body is parsed and before the reCAPTCHA round-trip, so
+  // automated traffic is rejected without spending time on either.
+  const verification = await checkBotId()
+
+  if (verification.isBot) {
+    return Response.json({ error: 'Access denied.' }, { status: 403 })
+  }
+
   let payload: unknown
 
   try {

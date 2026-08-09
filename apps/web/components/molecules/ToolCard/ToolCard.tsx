@@ -36,6 +36,7 @@ const ToolCard = ({ title, subtitle, image, className }: ToolCardProps) => {
             alt={altText}
             width={image.asset?.metadata?.dimensions?.width ?? 80}
             height={image.asset?.metadata?.dimensions?.height ?? 80}
+            blurDataURL={image.asset?.metadata?.lqip}
             sizes="80px"
             wrapperClassName="!rounded-none size-20"
             className="object-contain"

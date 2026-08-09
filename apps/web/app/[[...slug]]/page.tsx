@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import getPage from '@/utils/get-page'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
-import { getPageHeroImage } from '@/utils/get-page-hero-image'
+import { getOpenGraphImage } from '@/utils/get-open-graph-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
 import { getPageSchemas } from '@/utils/get-page-schemas'
 import getSettings from '@/utils/get-settings'
@@ -19,24 +19,6 @@ interface PageProps {
   params: Promise<{
     slug?: string[]
   }>
-}
-
-const getOpenGraphImage = (page: CmsPages) => {
-  const image = page.seoImage ?? getPageHeroImage(page)
-  const imageUrl = image?.asset?.url
-
-  if (!imageUrl) {
-    return undefined
-  }
-
-  return [
-    {
-      url: imageUrl,
-      width: image.asset?.metadata?.dimensions?.width,
-      height: image.asset?.metadata?.dimensions?.height,
-      alt: image.alt ?? page.seoTitle ?? page.title ?? 'Portfolio',
-    },
-  ]
 }
 
 export default async function Page({ params }: PageProps) {
