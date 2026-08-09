@@ -1,8 +1,8 @@
 # Cache Components migration — evaluation and plan
 
-**Status:** Phases 1–3 implemented; CI green against live Sanity ([#47](https://github.com/fredcorr/portoflio-2025/pull/47)). Phase 4 (regression sweep) still needs a manual pass on the preview.
+**Status:** Phases 1–3 implemented; CI green against live Sanity ([#47](https://github.com/fredcorr/portoflio-2025/pull/47)), merged up to `develop` @ `d789b87`. The route-classification question is **settled** — see "Settling the symbol change". Phase 4 (regression sweep) still needs a manual pass on the preview, in a browser.
 **Target:** `apps/web` on Next.js 16.3 ([#44](https://github.com/fredcorr/portoflio-2025/pull/44), merged)
-**Date:** 2026-08-08
+**Date:** 2026-08-09
 
 ---
 
@@ -25,6 +25,8 @@ I ran real `next build`s against Next.js **16.3.0** (installed from PR #44's loc
 - **Still not verified:** draft mode, stega, and visual editing were never exercised — the dev sandbox's egress allowlist rejects `*.apicdn.sanity.io`, and CI only proves the build. These need a manual pass on the preview deploy.
 - **Local builds here are weak evidence.** They run against a stubbed data layer, and the stub silently rendered no organisms for most of this work (wrong page-components key, and a query matcher that caught `PAGE_BY_SLUG_QUERY` as well as `ALL_PAGES_QUERY`). Blocker 7 was missed twice as a result. Trust the CI build over a local one.
 - **Resolved during implementation:** the cached-server-function fix for the Footer year, which was an open question when this was written, prerenders cleanly.
+- **Settled from the build output:** per-path route classification and per-path revalidate/expire, read out of `.meta` and `prerender-manifest.json` on a real Vercel build. See "Settling the symbol change".
+- **Not reachable from the agent sandbox at all:** the preview deployments. `*.vercel.app` is blocked by egress policy, and BotID challenges non-browser clients regardless. Anything runtime — draft mode, stega, visual editing, `x-vercel-cache`, cross-instance invalidation — needs a human with a browser.
 
 ---
 
@@ -97,20 +99,20 @@ Both tables below are real Vercel builds against live Sanity, on Next 16.3.0.
 └ ○ /sitemap.xml                                                   1w      1y
 ```
 
-**As shipped** — this branch, 33/33 pages:
+**As shipped** — this branch after merging `develop` @ `d789b87`, 33/33 pages:
 
 ```
 ├   /[[...slug]]                                                   1h      1y
-│ ├ ◐ /[[...slug]]                                                 1h      1y
+│ ├ ◐ /[[...slug]]                                                 1h      1y   ← fallback, not a real page
 │ ├ ○ /journals/what-frontend-architecture-actually-costs          1h      1y
 │ ├ ○ /journals/headless-isnt-the-decision                         1h      1y
-│ └ ◐ [+19 more paths]
+│ └ ◐ [+19 more paths]                                                         ← all 19 are actually ○
 ├ ƒ /api/revalidate                                                          ← webhook receiver
 ├ ○ /llms.txt                                                      1w      1y
 └ ○ /sitemap.xml                                                   1w      1y
 ```
 
-`Revalidate` and `Expire` match the baseline on every route. The **classification symbols differ**, and what that means is genuinely unresolved. Read the rest of this section before drawing conclusions from it.
+`Revalidate` and `Expire` match the baseline on every route. The **classification symbols differ**. That was unresolved through three revisions of this document; it is now settled, and the answer is in "Settling the symbol change" below. The three corrections that preceded it are kept because each one was wrong in an instructive way.
 
 **First: `●` does not exist under Cache Components.** Compare the two legends the builds printed.
 
@@ -138,11 +140,55 @@ The `●` category is absent from the second legend entirely. So "19 routes were
 
 It was then tested directly: all four reads were moved inside `use cache` scopes via a shared cached helper (commit `c4c38a2`). The classification did not change at all, and the helper — lacking a `cacheLife` call — pulled every page's revalidate from `1h` to `15m`. Reverted in `6bceceb`. `draftMode()` is not established as the cause, and the docs' allowance that `isEnabled` may be read inside a cache scope says nothing about a route staying static.
 
-**What would actually settle it:** per-route `x-vercel-cache` behaviour on the preview, compared against develop's last good deployment — two requests per path, checking whether a route ever reaches `HIT` or goes to the origin every time. Preview deployments sit behind Vercel Deployment Protection, so this needs a Protection Bypass for Automation token (`x-vercel-protection-bypass` header).
-
-Until that measurement exists, treat the symbol change as unexplained and do not describe it as a regression or as harmless.
-
 Using the stock presets instead would have produced `1h/1d` and `1w/30d` here. See R1.
+
+---
+
+## Settling the symbol change
+
+**Result: all 21 concrete paths are `○` — fully static, nothing postponed. Not one is `◐`.** The single `◐` in the table is the `/[[...slug]]` fallback entry, which is the shell served for a slug that is _not_ in `generateStaticParams`. The migration costs no per-request origin compute on any real page.
+
+### How this was measured
+
+The intended method was per-route `x-vercel-cache` over repeated requests. **That is not reachable from the agent sandbox**, for three independent reasons, and a Protection Bypass token does not help with any of them:
+
+1. The egress policy rejects `CONNECT` to `*.vercel.app` and `vercel.com` outright, so the request never reaches Vercel and the bypass header is never read.
+2. Requests that do arrive by another path get `x-vercel-mitigated: challenge` — the BotID protection added in #48 answers non-browser clients with a JavaScript Security Checkpoint.
+3. Vercel Deployment Protection, the obstacle originally anticipated, sits behind both of the above.
+
+So the question was settled from the build instead, which turns out to be the more direct evidence anyway. Under Cache Components every app route has PPR enabled, so `getTreeViewSymbol` (`next/dist/build/utils.js`) picks the symbol **per concrete path**:
+
+```
+empty static shell   -> ƒ
+nothing postponed    -> ○   (fully static)
+something postponed  -> ◐   (static shell + streamed dynamic content)
+```
+
+A postponed shell is written into that path's `.meta` file in the build output, so its presence is exactly the signal the table renders. A temporary post-build step read them back on a real Vercel build against live Sanity, and was reverted afterwards.
+
+```
+[classification] ◐  /[[...slug]]                       postponed 15352B
+[classification] ○  /about                             fully static
+[classification] ○  /index                             fully static
+[classification] ○  /journals                          fully static
+[classification] ○  /projects                          fully static
+...  (all 11 /journals/* and all 5 /projects/* likewise ○)
+[classification] totals {"○":27,"◐":1} across 28 paths
+```
+
+The same run dumped `prerender-manifest.json` per path, which confirms the timings at a granularity the collapsed table cannot show: **every one of the 21 paths reads `revalidate=3600 expire=31536000`**, and `/llms.txt` and `/sitemap.xml` read `revalidate=604800 expire=31536000`.
+
+### What this means for the three earlier claims
+
+- **Correction 1 holds and is now the whole explanation.** `●` (SSG) has no successor under Cache Components. All 21 paths were `●` before and are `○` now; both mean fully prerendered. The symbol change is a relabel, not a demotion.
+- **Correction 2 was right to distrust the collapsed line, and understated it.** `◐ [+19 more paths]` is not merely _possibly_ mixed — none of the 19 is `◐`. The symbol on a collapsed group line does not describe its members.
+- **Correction 3 stands, and the reason is now clear.** `draftMode()` was never the cause because there was no effect to explain. Moving the reads into cache scopes (`c4c38a2`) "changed nothing" because nothing was wrong; it only added an uncalibrated `cacheLife` that capped every page at 15m. Do not re-attempt it.
+
+One caveat worth keeping: `renderingMode` in `prerender-manifest.json` reads `PARTIALLY_STATIC` for all of these. That is the **page-level capability** (PPR is on), not the per-path outcome. Reading it as the per-path result would reproduce the original mistake in a new form — the per-path outcome is the presence or absence of a postponed shell.
+
+### Still not measured
+
+Runtime cache behaviour. Whether a route reaches `HIT` on a second request, and how invalidation behaves across instances (R3), remain unverified — they need a browser or a network path this sandbox does not have. The static-vs-partial question is closed; the "does the cache actually serve" question is not.
 
 ---
 
@@ -226,7 +272,7 @@ This is arguably a fix, not a regression — but it changes CI behaviour. **Deci
 
 Draft reads stay **outside** the cache scope, in `layout.tsx` and `page.tsx`, as they are today.
 
-An earlier revision rated this 🟢 on the reasoning that `draftMode().isEnabled` is readable inside a `'use cache'` scope and "does not force the route dynamic". The first half is true and documented; the second half does not follow from it and was never tested. When it was tested, moving the reads inside changed nothing about route classification and regressed revalidate — see Before / after. Do not re-attempt that refactor without the measurement described there.
+An earlier revision rated this 🟢 on the reasoning that `draftMode().isEnabled` is readable inside a `'use cache'` scope and "does not force the route dynamic". The first half is true and documented; the second half does not follow from it and was never tested. When it was tested, moving the reads inside changed nothing about route classification and regressed revalidate. We now know why: the routes were already fully static, so there was nothing for the refactor to fix. See "Settling the symbol change". **Do not re-attempt it.**
 
 What the docs do establish, and which still holds: when draft mode is on, everything under a cache scope re-executes per request and is not written to cache.
 
@@ -388,6 +434,25 @@ export default async function getCopyrightYear() {
 Implemented in `apps/web/utils/get-copyright-year.ts`. The `useEffect` fallback proved unnecessary.
 
 ---
+
+## Merging `develop` @ `d789b87` (2026-08-09)
+
+Two blockers came in with the merge. Neither is caused by this migration, but both had to be fixed here because they made the branch un-buildable.
+
+**`develop` was already red.** Its own deployment for `d789b87` failed typecheck with `TS2345` on `withBotId(nextConfig)`. #48 branched before #44 landed Next 16.3, so it carried `next ^16.2.10`; merging it left **two copies of Next installed** — 16.3.0 nested under `apps/web`, 16.2.12 hoisted to the root. `botid` resolves from the root, so `withBotId` expected a `NextConfig` from 16.2.12 while the config object was typed by 16.3.0, and 16.3 adds six required fields to `NextConfigComplete`.
+
+The root copy was a stale lockfile artifact, not a constraint — every package peer-depending on Next here (`@sanity/visual-editing`, `@vercel/analytics`, `@vercel/speed-insights`, `botid`) accepts `>=16`. Fixed by dropping the `next` / `@next/env` / `@next/swc-*` entries and re-resolving, which confines the lockfile change to those ten names. `npm dedupe` also fixes it but drags ~45 unrelated packages (vite, rolldown, lucide-react, groq) up within their ranges, which is not something to bundle into a caching PR.
+
+Worth noting the runtime half of this, since it is easy to see only the type error: `@sanity/visual-editing` would otherwise have imported Next internals from 16.2.12 while the app ran 16.3.0 — and visual editing is one of the things still unverified.
+
+**`ignoreCommand` errored every new branch's first deploy.** #48 added `turbo query affected --base=$VERCEL_GIT_PREVIOUS_SHA` to both `vercel.json` files. That variable holds the SHA of the last _successful_ deployment, so it is empty on a branch that has never deployed, and turbo exits 2. Vercel's contract defines only two codes — 0 skips, 1 builds — and anything else fails the deployment. Because the variable tracks successful deployments, a retry is empty too: the branch could never build. The command now normalises every outcome to 0 or 1, and skipping only ever results from turbo positively reporting the package unaffected:
+
+```
+empty VERCEL_GIT_PREVIOUS_SHA -> 1 (build)
+turbo 0, not affected         -> 0 (skip)
+turbo 1, affected             -> 1 (build)
+turbo 2 / 127, turbo failed   -> 1 (build)
+```
 
 ## References
 
