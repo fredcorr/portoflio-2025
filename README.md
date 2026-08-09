@@ -255,7 +255,7 @@ guard.
 
 ### Adding a dataset
 
-1. Create it: `npx sanity dataset create <name>`
+1. Create it: `npx sanity datasets create <name>`
 2. Add a value to `SanityDataset` in `shared/types/base.ts`
 3. Add a workspace to `apps/studio/sanity.config.ts`
 
@@ -275,7 +275,7 @@ Two things *are* stored per dataset and do need promoting:
 - **Content** — documents and assets.
 - **The schema manifest** — the JSON description of your types that Sanity's
   schema-aware tooling (Presentation, agent actions, the MCP server) reads.
-  Deployed with `sanity schema deploy`, per dataset.
+  Deployed with `sanity schemas deploy`, per dataset.
 
 ### Order of operations
 
@@ -288,11 +288,11 @@ Run every step against `develop` first, verify, then repeat against `prod`.
    `turbo run lint typecheck build`.
 3. **Migrate develop's content** if the change is not backwards compatible
    (renamed or removed fields) — see _Content migrations_ below.
-4. **Back up prod:** `npx sanity dataset export prod ./backup-<date>.tar.gz`
+4. **Back up prod:** `npx sanity datasets export prod ./backup-<date>.tar.gz`
 5. **Deploy the Studio:** `npm run build:studio && npx sanity deploy`
    (from `apps/studio`). One deploy covers both workspaces.
 6. **Deploy the schema manifest to prod:**
-   `npx sanity schema deploy --workspace prod --dataset prod`
+   `npx sanity schemas deploy --workspace prod --dataset prod`
 7. **Run the same content migration against prod** (dry run first).
 8. **Deploy the web app** with `SANITY_DATASET=prod`.
 9. **Deploy functions** if `sanity.blueprint.ts` changed:
@@ -301,19 +301,26 @@ Run every step against `develop` first, verify, then repeat against `prod`.
 ### Seeding prod from develop
 
 `prod` starts empty. To copy develop's content into it the first time — run
-from `apps/studio`:
+from `apps/studio`, after `npx sanity login`:
 
 ```bash
-npx sanity dataset export develop ./develop.tar.gz
-npx sanity dataset import ./develop.tar.gz prod --replace
+npx sanity datasets export develop ~/develop-backup.tar.gz
+npx sanity datasets import ~/develop-backup.tar.gz --dataset prod
 ```
 
-`--replace` overwrites documents with matching IDs. **Only use it for the
-initial seed.** For subsequent top-ups use `--missing`, which adds documents
-that don't exist in the target and leaves existing ones alone:
+Write the tarball outside the repo — `*.tar.gz` is not gitignored.
+
+> Note: `sanity datasets copy` looks like the obvious tool here, but it is part
+> of Sanity's advanced dataset management tier and is not available on this
+> project's plan. Export/import is the supported path.
+
+A plain import is correct for an empty target. `--replace` overwrites documents
+with matching IDs and should be kept away from a populated prod. For later
+top-ups use `--missing`, which adds documents that don't exist in the target and
+leaves existing ones alone:
 
 ```bash
-npx sanity dataset import ./develop.tar.gz prod --missing
+npx sanity datasets import ./develop.tar.gz --dataset prod --missing
 ```
 
 Exports include assets by default; add `--no-assets` for a documents-only
@@ -330,11 +337,11 @@ For field renames, type changes or backfills — anything that transforms
 existing documents — use the migration tooling rather than export/import:
 
 ```bash
-npx sanity migration create rename-hero-field   # scaffolds under migrations/
-npx sanity migration run rename-hero-field --dataset develop            # dry run
-npx sanity migration run rename-hero-field --dataset develop --no-dry-run
-npx sanity migration run rename-hero-field --dataset prod               # dry run
-npx sanity migration run rename-hero-field --dataset prod --no-dry-run
+npx sanity migrations create rename-hero-field   # scaffolds under migrations/
+npx sanity migrations run rename-hero-field --dataset develop            # dry run
+npx sanity migrations run rename-hero-field --dataset develop --no-dry-run
+npx sanity migrations run rename-hero-field --dataset prod               # dry run
+npx sanity migrations run rename-hero-field --dataset prod --no-dry-run
 ```
 
 `migration run` is a dry run unless you pass `--no-dry-run`. Read the dry-run
@@ -364,7 +371,7 @@ Both datasets are currently **public**, which means anyone who knows the
 project ID can read published documents through the API. To close that:
 
 ```bash
-npx sanity dataset visibility set prod private
+npx sanity datasets visibility set prod private
 ```
 
 Before you do, know what changes:
