@@ -27,6 +27,7 @@ import {
 
 const ID_TAG_PREFIX = 'sanity:id:'
 const TYPE_TAG_PREFIX = 'sanity:type:'
+const COUNT_TAG_PREFIX = 'sanity:count:'
 const DRAFT_ID_PREFIX = 'drafts.'
 
 /**
@@ -61,6 +62,29 @@ export function idTag(id: string): string {
 
 export function typeTag(type: string): string {
   return `${TYPE_TAG_PREFIX}${type}`
+}
+
+/**
+ * "The number of documents of this type changed."
+ *
+ * A narrower signal than `typeTag`, for entries whose only set dependency is a
+ * `count()`. The type tag fires on every create, update *and* delete, because
+ * an update can change which documents a listing contains or how they order.
+ * A count cannot be reordered — it only moves when something enters or leaves
+ * the set — so an entry that reads nothing but a count should not be thrown
+ * away every time an unrelated field is edited.
+ *
+ * Only worth using where a count is the *sole* set dependency. A listing that
+ * also reads `array::unique(...tags[])`, or takes a windowed slice, is
+ * update-sensitive and still needs the full type tag.
+ *
+ * Known limit: an update that changes whether a document matches the query's
+ * filter — clearing `slug.current` on a published project, say — does change
+ * the count while reporting itself as an update. That entry stays stale until
+ * its `cacheLife` expires.
+ */
+export function countTag(type: string): string {
+  return `${COUNT_TAG_PREFIX}${type}`
 }
 
 export function isDocumentType(type: string): boolean {

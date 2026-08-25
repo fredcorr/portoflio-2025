@@ -24,7 +24,7 @@ import type { CmsPages } from '@portfolio/types/pages'
 async function fetchPublishedPage(slug: string) {
   'use cache'
   cacheLife('cmsPage')
-  cacheTag('sanity:page', `sanity:page:${slug}`)
+  cacheTag(`sanity:page:${slug}`)
 
   const page = await client.fetch<CmsPages | null>(PAGE_BY_SLUG_QUERY, { slug })
 

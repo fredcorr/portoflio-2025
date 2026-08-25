@@ -1,7 +1,7 @@
 import { revalidateTag } from 'next/cache'
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
 import { GlobalItemsType, PageTypeName } from '@portfolio/types/base'
-import { idTag, typeTag } from '@/utils/collect-cache-tags'
+import { countTag, idTag, typeTag } from '@/utils/collect-cache-tags'
 
 /**
  * Sanity webhook receiver. Invalidates cached content on publish.
@@ -31,10 +31,18 @@ import { idTag, typeTag } from '@/utils/collect-cache-tags'
  */
 
 /**
- * Sent on every delivery, so it is readable even when the projection resolves
- * to nothing — which is the normal case for a delete.
+ * Sent on every delivery, so they are readable even when the projection
+ * resolves to nothing — which is the normal case for a delete.
  */
 const DATASET_HEADER = 'sanity-dataset'
+const OPERATION_HEADER = 'sanity-operation'
+
+/**
+ * The one operation that cannot change the size of a set. Anything else —
+ * including a header we do not recognise — fires the count tag, so an
+ * unexpected value over-invalidates rather than silently freezing a total.
+ */
+const NON_SET_CHANGING_OPERATION = 'update'
 
 const PAGE_TYPES: string[] = [
   PageTypeName.HomePage,
@@ -128,6 +136,21 @@ export async function POST(request: Request) {
 
   if (payload._type) {
     tags.add(typeTag(payload._type))
+  }
+
+  // The count tag is the type tag's narrower sibling, for entries whose only
+  // set dependency is a `count()`. A total moves when a document enters or
+  // leaves the set and never when one is edited, so withholding this on an
+  // update keeps a copy edit on some project from evicting the site settings
+  // and navigation — entries every page depends on.
+  //
+  // Deliberately not `=== 'create' || === 'delete'`: an unreadable or
+  // unexpected operation should over-invalidate, not freeze a total.
+  if (
+    payload._type &&
+    request.headers.get(OPERATION_HEADER) !== NON_SET_CHANGING_OPERATION
+  ) {
+    tags.add(countTag(payload._type))
   }
 
   if (payload._type && PAGE_TYPES.includes(payload._type)) {

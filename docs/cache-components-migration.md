@@ -1,6 +1,6 @@
 # Cache Components migration — evaluation and plan
 
-**Status:** Phases 1–3 implemented; CI green against live Sanity ([#47](https://github.com/fredcorr/portoflio-2025/pull/47)), merged up to `develop` @ `d789b87`. The route-classification question is **settled** — see "Settling the symbol change". Phase 4 (regression sweep) still needs a manual pass on the preview, in a browser.
+**Status:** Phases 1–3 implemented; CI green against live Sanity ([#47](https://github.com/fredcorr/portoflio-2025/pull/47)), merged up to `develop` @ `5754ee1`. The route-classification question is **settled** — see "Settling the symbol change". Phase 4 (regression sweep) still needs a manual pass on the preview, in a browser.
 **Target:** `apps/web` on Next.js 16.3 ([#44](https://github.com/fredcorr/portoflio-2025/pull/44), merged)
 **Date:** 2026-08-09
 
@@ -10,7 +10,7 @@
 
 The migration is viable and small — **7 blockers, all now fixed.** Six were mechanical and visible from a first build; the seventh lived in a dependency and only surfaced in CI. A naive migration builds and serves a working site, which is exactly the danger: the caching silently disappears and nothing fails. The work is not in getting it to build, it's in deliberately restoring each cache that route-segment `revalidate` is giving us today.
 
-Recommended sequencing: **land #44 first, migrate separately.** The two changes fail in different ways — #44's risk is a Vercel deploy-step failure, this one's risk is a silent caching regression — and bisecting them together is unpleasant.
+Sequencing note, now historical: #44 was landed first deliberately. The two changes fail in different ways — #44's risk was a Vercel deploy-step failure, this one's is a silent caching regression — and bisecting them together would have been unpleasant.
 
 ---
 
@@ -390,13 +390,36 @@ Two deliberate calls in that map:
 
 **The article page reopens the root-type exclusion, on purpose.** `relatedArticles` queries across every article sharing a tag, and `editionNumber` counts all articles — so an article page genuinely depends on the article set, and `ROOT_SET_DEPENDENCIES` says so. The cost is real: any article publish now invalidates every article page. The alternative is worse — new articles silently missing from related lists, and every edition number frozen at the value it held when the page was cached.
 
-`projectCount` has no component to key off, so `get-settings.ts` and `get-navigation.ts` declare `sanity:type:project` at the call site instead.
+`projectCount` has no component to key off, so `get-settings.ts` and `get-navigation.ts` declare their dependency at the call site instead — and they use a narrower tag than the type tag, for the reason below.
+
+#### `sanity:count:` — the type tag's narrower sibling
+
+The type tag fires on create, update _and_ delete, because an update can change membership: `work-index.ts` orders by `year` and `project-listing.ts` windows to `[0...6]`, so editing a project's `year` can push it into a listing it was never part of. No id tag can catch that — the document was not in the entry to begin with.
+
+A **count** has no such exposure. `count()` moves when a document enters or leaves the set and never when one is edited. So an entry whose only set dependency is a count should not be thrown away on every unrelated edit, and `countTag` gives it a tag the webhook withholds on updates.
+
+This matters more than the narrow name suggests: `SETTINGS_QUERY` and `NAVIGATION_QUERY` read nothing from a project except `projectCount`, and both are consumed by every page on the site. Before this, a copy edit on any project evicted the settings and navigation entries site-wide.
+
+It applies **only** where a count is the sole set dependency, which is these two queries and no others:
+
+| Query | Set dependency | Tag |
+| --- | --- | --- |
+| `settings.ts`, `navigation.ts` | `projectCount` only | `sanity:count:project` |
+| `journals-listing.ts` | `total`, but also `array::unique(…tags[])` and a windowed slice | full type tag |
+| `pages/article-page.ts` | `editionNumber`, but also `relatedArticles` | full type tag |
+
+An **article** count tag would have no consumer: every query reading an article count also reads something update-sensitive beside it.
+
+The receiver withholds the tag only on a positively-identified `update`, so an unreadable or unexpected `sanity-operation` over-invalidates rather than freezing a total.
+
+**Known limit.** An update that changes whether a document matches the query's _filter_ — clearing `slug.current` on a published project, since `projectCount` counts `defined(slug.current)` — does change the count while reporting itself as an update. That entry stays stale until `cacheLife` expires. Bounded and rare, but real.
 
 Regeneration stays lazy — per the docs, `revalidateTag` _"marks tagged data as stale, but fresh data is only fetched when pages using that tag are next visited... will not immediately trigger many revalidations at once."_
 
 | Event                              | Tags invalidated                                            |
 | ---------------------------------- | ----------------------------------------------------------- |
 | Any document publish/update/delete | `sanity:id:${_id}`, `sanity:type:${_type}`                  |
+| …where the operation is not `update` | also `sanity:count:${_type}`                              |
 | Page-like doc with a slug          | also `sanity:page:${slug}`, `sanity:sitemap`, `sanity:llms` |
 | `settings` document                | also `sanity:settings`                                      |
 | Payload with neither id nor type   | `sanity:content` (fallback — over-invalidates deliberately) |

@@ -5,6 +5,7 @@ import {
   chunkCacheTags,
   collectCacheTags,
   collectSetDependencyTags,
+  countTag,
   normaliseDocumentId,
 } from './collect-cache-tags'
 
@@ -191,4 +192,11 @@ test('survives mutual references while declaring', () => {
   const tags = collectSetDependencyTags({ _id: 'page-1', _type: 'page', a })
 
   assert.deepEqual(tags.sort(), ['sanity:type:article', 'sanity:type:project'])
+})
+
+test('count tags are namespaced apart from type tags', () => {
+  // The two must never collide: an entry declaring only a count must not be
+  // caught by the type tag an ordinary edit fires.
+  assert.equal(countTag('project'), 'sanity:count:project')
+  assert.notEqual(countTag('project'), 'sanity:type:project')
 })

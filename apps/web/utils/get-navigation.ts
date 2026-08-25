@@ -3,7 +3,7 @@ import { client } from '@/sanity/client'
 import {
   chunkCacheTags,
   collectCacheTags,
-  typeTag,
+  countTag,
 } from '@/utils/collect-cache-tags'
 import { PageTypeName } from '@portfolio/types/base'
 import { NAVIGATION_QUERY } from '@/sanity/queries/navigation'
@@ -15,13 +15,15 @@ import type { NavigationData } from '@portfolio/types/components'
  * them, so a publish on settings carries an id this entry never cached —
  * reordering the nav would otherwise never invalidate it.
  *
- * The project type tag covers `projectCount`, a `count()` over every project.
- * Counts carry no ids, so nothing in the payload changes when one is added.
+ * The count tag covers `projectCount`, a `count()` over every project. Counts
+ * carry no ids, so nothing in the payload changes when one is added — and the
+ * narrower count tag is right here because the nav reads only the total, which
+ * moves when a project enters or leaves the set and never when one is edited.
  */
 const getNavigation = async () => {
   'use cache'
   cacheLife('cmsPage')
-  cacheTag('sanity:settings', typeTag(PageTypeName.ProjectPage))
+  cacheTag('sanity:settings', countTag(PageTypeName.ProjectPage))
 
   const navigation = await client.fetch<NavigationData>(NAVIGATION_QUERY)
 
