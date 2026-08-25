@@ -50,7 +50,10 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
       {/* Body + share rail */}
       <div
         className={
-          'md:col-span-12 grid gap-8 md:grid-cols-[56px_1fr] xl:grid-cols-[80px_1fr]'
+          // minmax(0,1fr), not a bare 1fr: a bare 1fr means minmax(auto,1fr),
+          // whose minimum is the content's min-content width. Tailwind's own
+          // grid-cols-* utilities use minmax(0,1fr) for exactly this reason.
+          'md:col-span-12 min-w-0 grid gap-8 md:grid-cols-[56px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)]'
         }
         // style={{ counterReset: 'chapter' }}
       >
@@ -61,9 +64,11 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
             showReaderCount={showReaderCount}
           />
         )}
-        {/* Body */}
+        {/* Body — w-full is load-bearing: mx-auto makes this grid item
+            shrink-to-fit, so without it the item sizes to its widest child's
+            max-content (a code block's longest line) and overflows the track. */}
         {hasContent && (
-          <div className={'min-w-0 max-w-[100ch] mx-auto'}>
+          <div className={'w-full min-w-0 max-w-[100ch] mx-auto'}>
             <RichText
               value={content ?? []}
               size={RichTextSize.Lg}

@@ -39,13 +39,19 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const highlighted = hljs.highlight(code, { language: lang }).value
 
   return (
-    <figure className="my-8 overflow-hidden rounded-sm border border-black/8 dark:border-white/10">
+    <figure
+      data-component="code-block"
+      className="my-8 overflow-hidden rounded-sm border border-black/8 dark:border-white/10"
+    >
       {filename && (
         <div className="border-b border-black/8 bg-black/[0.03] px-4 py-2 font-mono text-xs text-black/70 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70">
           {filename}
         </div>
       )}
-      <pre className="overflow-x-auto p-5 text-sm leading-relaxed">
+      {/* Padding lives on the <code> element, not here — highlight.js makes
+          `pre code.hljs` the scroll container and paints the background there,
+          so padding on <pre> would inset it and leave a gutter. See globals.css. */}
+      <pre className="min-w-0 max-w-full overflow-x-auto text-sm leading-relaxed">
         <code
           className={`hljs language-${lang} font-mono`}
           dangerouslySetInnerHTML={{ __html: highlighted }}
