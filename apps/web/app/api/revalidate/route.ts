@@ -6,14 +6,35 @@ import { idTag, typeTag } from '@/utils/collect-cache-tags'
 /**
  * Sanity webhook receiver. Invalidates cached content on publish.
  *
- * Configure in Sanity's API settings to POST here on create/update/delete,
- * with a projection that includes `_id`, `_type` and `slug`:
+ * Configure one webhook **per dataset** in Sanity's API settings, each pointing
+ * at the deployment that serves that dataset, triggering on create, update and
+ * delete. Set its `dataset` field explicitly — the field accepts `*`, meaning
+ * every dataset in the project, which would send develop's publishes to
+ * production.
  *
- *   {"_id": _id, "_type": _type, "slug": slug.current}
+ * Projection:
  *
- * `_id` is required for precise invalidation — without it every publish falls
- * back to type-level tags, which is coarser than necessary.
+ *   {
+ *     "_id": coalesce(_id, before()._id),
+ *     "_type": coalesce(_type, before()._type),
+ *     "slug": coalesce(slug.current, before().slug.current)
+ *   }
+ *
+ * A bare `_id` is not enough. The payload is the document *after* the change,
+ * and after a delete there is no document — so `before()` is the only way to
+ * learn which document went away. Deletes are precisely when accurate tags
+ * matter most: an unpublished article has to leave the listings and the
+ * sitemap, and nothing else will tell them.
+ *
+ * `_id` drives precise invalidation; without it a publish falls back to
+ * type-level tags, which is coarser than necessary.
  */
+
+/**
+ * Sent on every delivery, so it is readable even when the projection resolves
+ * to nothing — which is the normal case for a delete.
+ */
+const DATASET_HEADER = 'sanity-dataset'
 
 const PAGE_TYPES: string[] = [
   PageTypeName.HomePage,
@@ -52,6 +73,29 @@ export async function POST(request: Request) {
 
   if (!(await isValidSignature(body, signature, secret))) {
     return Response.json({ error: 'Invalid signature.' }, { status: 401 })
+  }
+
+  // Each deployment reads exactly one dataset, so an event from any other one
+  // describes content this cache does not hold. Distinct secrets per
+  // environment should already prevent it, but a webhook whose `dataset` is
+  // left as `*` fires for every dataset in the project — and because `prod` is
+  // cloned from `develop`, document ids match across them, so those events
+  // would land on real id tags and evict live entries.
+  //
+  // Nothing would be served wrong: each deployment refetches from its own
+  // dataset. The cost is cache thrash, and it is silent, which is why this
+  // answers loudly rather than ignoring the event. Sanity treats 4xx as
+  // undeliverable and stops retrying, and the response body surfaces in the
+  // webhook attempts log.
+  const eventDataset = request.headers.get(DATASET_HEADER)
+
+  if (eventDataset !== process.env.SANITY_DATASET) {
+    return Response.json(
+      {
+        error: `Dataset mismatch: event for "${eventDataset}", this deployment serves "${process.env.SANITY_DATASET}".`,
+      },
+      { status: 400 }
+    )
   }
 
   let payload: WebhookPayload

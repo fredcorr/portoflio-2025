@@ -2,7 +2,11 @@ import { cache } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { PAGE_BY_SLUG_QUERY } from '@/sanity/queries/base'
 import { client, previewClient } from '@/sanity/client'
-import { chunkCacheTags, collectCacheTags } from '@/utils/collect-cache-tags'
+import {
+  chunkCacheTags,
+  collectCacheTags,
+  collectSetDependencyTags,
+} from '@/utils/collect-cache-tags'
 import type { CmsPages } from '@portfolio/types/pages'
 
 /**
@@ -27,7 +31,14 @@ async function fetchPublishedPage(slug: string) {
   // Tagging from the returned payload is what Next documents for data-derived
   // tags, and it is the only way to know which documents this page actually
   // dereferenced. Chunked because `cacheTag` drops anything past 128 per call.
-  for (const chunk of chunkCacheTags(collectCacheTags(page))) {
+  //
+  // The set-dependency tags are what the payload cannot express: a listing
+  // component depends on its whole document set even when it returned an empty
+  // array, and its `total` / `categories` aggregates are computed over
+  // documents that never appear here at all.
+  const tags = [...collectCacheTags(page), ...collectSetDependencyTags(page)]
+
+  for (const chunk of chunkCacheTags(tags)) {
     cacheTag(...chunk)
   }
 

@@ -371,6 +371,27 @@ Three tags stay explicit because they cannot be derived from a result:
 | `sanity:sitemap`  | listing changes on create/delete, which no id already in the result can signal                                                                |
 | `sanity:llms`     | same                                                                                                                                          |
 
+#### Declared set dependencies — what a result cannot express
+
+Deriving type tags from the payload has a structural limit: **the walk can only tag documents that came back.** Three cases escape it entirely, and all three were live bugs before `collectSetDependencyTags`:
+
+| Case                             | Example                                                                    | Why the walk misses it                                          |
+| -------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Aggregates over an unread set    | `total`, `categories`, `editionNumber`, `projectCount`                     | a `count()` is a number; no ids travel with it                   |
+| An empty listing                 | a `journalsListing` before the first article exists                        | nothing to walk, so it can never learn about its first member    |
+| A projection that omits `_type`  | `journals-listing.ts` projected `_id` only                                 | id tags fire on edits, but nothing fires on create or delete     |
+
+So membership is now **declared from the shape of the query**, not derived from its answer. `collectSetDependencyTags` maps a component's `_type` to the document sets that component queries over — `journalsListing → article`, `projectListing`/`workIndex` → `project` — and the tag is applied whether the listing returned twelve documents or none.
+
+Two deliberate calls in that map:
+
+- **`journalsFeed` is excluded.** It projects `articles[]->`, a curated list of references. Membership only changes when one of those documents changes, and each is already in the payload with an id tag. Declaring a set dependency there would invalidate every feed on every unrelated article publish.
+- **`projectListing` is included unconditionally**, even though it only queries the project set when its curated `projects[]` is empty. Which branch ran is invisible in the result; over-invalidating a hand-picked list is the safe direction.
+
+**The article page reopens the root-type exclusion, on purpose.** `relatedArticles` queries across every article sharing a tag, and `editionNumber` counts all articles — so an article page genuinely depends on the article set, and `ROOT_SET_DEPENDENCIES` says so. The cost is real: any article publish now invalidates every article page. The alternative is worse — new articles silently missing from related lists, and every edition number frozen at the value it held when the page was cached.
+
+`projectCount` has no component to key off, so `get-settings.ts` and `get-navigation.ts` declare `sanity:type:project` at the call site instead.
+
 Regeneration stays lazy — per the docs, `revalidateTag` _"marks tagged data as stale, but fresh data is only fetched when pages using that tag are next visited... will not immediately trigger many revalidations at once."_
 
 | Event                              | Tags invalidated                                            |
@@ -390,10 +411,44 @@ Tagging from the fetched payload is the documented pattern — Next's `cacheTag`
 The webhook projection must now include `_id`:
 
 ```
-{"_id": _id, "_type": _type, "slug": slug.current}
+{
+  "_id": coalesce(_id, before()._id),
+  "_type": coalesce(_type, before()._type),
+  "slug": coalesce(slug.current, before().slug.current)
+}
 ```
 
-Without it every publish falls back to type-level tags — still correct, but coarser than necessary.
+Without `_id` every publish falls back to type-level tags — still correct, but coarser than necessary.
+
+The `before()` half is what makes deletes work. A webhook payload is the document _after_ the change, and after a delete there is no document, so a bare `_id` projection resolves to `null` and the handler falls through to the coarse `sanity:content` tag. That is safe but flushes everything — and a delete is the case where precise tags matter most, since an unpublished article has to leave the listings and the sitemap and nothing else will signal it. `before()` holds the pre-change document, so the same projection serves all three triggers.
+
+### One webhook per dataset
+
+`dataset` is a required field on a Sanity webhook and accepts `*`, meaning every dataset in the project. With two datasets served by two deployments with two independent caches, one hook cannot address both — a hook posts to a single URL. So:
+
+| Webhook | `dataset` | URL | Secret |
+| --- | --- | --- | --- |
+| Revalidate prod | `prod` | live domain + `/api/revalidate` | production `SANITY_REVALIDATE_SECRET` |
+| Revalidate develop | `develop` | develop branch alias + `/api/revalidate` | preview `SANITY_REVALIDATE_SECRET` |
+
+Filter, projection and triggers are identical between them; only these three fields differ.
+
+Two things about the develop hook specifically:
+
+- **Point it at the branch alias, not a deployment URL.** Per-deployment URLs change on every push.
+- **Deployment Protection will reject it with a 401**, and Sanity treats 4xx as undeliverable and does not retry — so invalidation silently never lands. Add a Protection Bypass for Automation secret as an `x-vercel-protection-bypass` header on the webhook. BotID is not a factor: `instrumentation-client.ts` registers only `/api/submit`.
+
+Distinct secrets per environment are what actually enforce the boundary, since `isValidSignature` rejects a mismatched one outright. `route.ts` additionally compares the always-present `sanity-dataset` header against `SANITY_DATASET` and answers 400 on a mismatch — because `*` is one dropdown away, ids are identical across a cloned dataset so stray events land on real id tags, and the resulting cache thrash is otherwise completely silent.
+
+### The API CDN has to be off, or invalidation only appears to work
+
+`client.ts` previously set `useCdn: process.env.NODE_ENV === 'production'`, which put `apicdn.sanity.io` underneath the `use cache` layer — two caches with independent expiry, stacked.
+
+The failure that produces is quiet and total: a publish fires the webhook, `revalidateTag` marks the entry stale, the page regenerates, and the regenerating fetch reads a **pre-publish** response from the CDN. That stale value is then cached for another full `cacheLife` hour. Every part of the pipeline reports success and the site keeps serving old content.
+
+Sanity documents the rule directly — use the uncached API "when building integrations with Sanity or responding to webhooks" ([API CDN](https://www.sanity.io/docs/content-lake/api-cdn)) — and a revalidation-triggered render is exactly that. `useCdn` is now `false`.
+
+The CDN was buying nothing here in any case: every consumer of this client either sits behind a `use cache` scope or runs at build time, so the caching it provides is already provided a layer up.
 
 Note this supersedes the source-map alternative previously parked here: `@sanity/client`'s `resultSourceMap` is unnecessary, because the queries already project `_id` on every dereference.
 

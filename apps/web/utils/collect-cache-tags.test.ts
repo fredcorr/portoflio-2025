@@ -4,6 +4,7 @@ import test from 'node:test'
 import {
   chunkCacheTags,
   collectCacheTags,
+  collectSetDependencyTags,
   normaliseDocumentId,
 } from './collect-cache-tags'
 
@@ -108,4 +109,86 @@ test('chunks tags to the 128 per call cacheTag accepts', () => {
 test('returns nothing for empty results', () => {
   assert.deepEqual(collectCacheTags(null), [])
   assert.deepEqual(chunkCacheTags([]), [])
+})
+
+test('declares the article set for a listing that returned nothing', () => {
+  // The case no result-derived tag can reach: before the first article exists
+  // there is nothing to walk, so only a declared tag can invalidate the page
+  // when one is finally published.
+  const page = {
+    _id: 'page-journals',
+    _type: 'page',
+    pageComponents: [
+      {
+        _type: 'journalsListing',
+        _key: 'a',
+        initialData: { articles: [], total: 0, categories: [] },
+      },
+    ],
+  }
+
+  assert.deepEqual(collectCacheTags(page), ['sanity:id:page-journals'])
+  assert.deepEqual(collectSetDependencyTags(page), ['sanity:type:article'])
+})
+
+test('declares the project set for both listing components', () => {
+  const forComponent = (type: string) =>
+    collectSetDependencyTags({
+      _id: 'page-1',
+      _type: 'page',
+      pageComponents: [{ _type: type, _key: 'a', projects: [] }],
+    })
+
+  assert.deepEqual(forComponent('workIndex'), ['sanity:type:project'])
+  assert.deepEqual(forComponent('projectListing'), ['sanity:type:project'])
+})
+
+test('does not declare a set for a curated reference list', () => {
+  // journalsFeed projects `articles[]->`. Every member is already in the
+  // payload with an id tag, so declaring the set would invalidate every feed
+  // on every unrelated article publish.
+  const tags = collectSetDependencyTags({
+    _id: 'page-1',
+    _type: 'page',
+    pageComponents: [
+      {
+        _type: 'journalsFeed',
+        _key: 'a',
+        articles: [{ _id: 'article-1', _type: 'article' }],
+      },
+    ],
+  })
+
+  assert.deepEqual(tags, [])
+})
+
+test('declares the article set on an article page, but not on a nested article', () => {
+  // relatedArticles and editionNumber query across every article, so the page
+  // depends on the set as a whole — the one place the root-type exclusion is
+  // deliberately reopened.
+  assert.deepEqual(
+    collectSetDependencyTags({ _id: 'article-1', _type: 'article' }),
+    ['sanity:type:article']
+  )
+
+  // The same document nested inside another page must not drag the dependency
+  // along with it.
+  assert.deepEqual(
+    collectSetDependencyTags({
+      _id: 'page-1',
+      _type: 'page',
+      featured: { _id: 'article-1', _type: 'article' },
+    }),
+    []
+  )
+})
+
+test('survives mutual references while declaring', () => {
+  const a: Record<string, unknown> = { _type: 'workIndex' }
+  const b: Record<string, unknown> = { _type: 'journalsListing', a }
+  a.b = b
+
+  const tags = collectSetDependencyTags({ _id: 'page-1', _type: 'page', a })
+
+  assert.deepEqual(tags.sort(), ['sanity:type:article', 'sanity:type:project'])
 })

@@ -24,11 +24,28 @@ if (!KNOWN_DATASETS.includes(dataset as SanityDataset)) {
   )
 }
 
+/**
+ * `useCdn` is off deliberately.
+ *
+ * Every consumer of this client either sits behind a `use cache` scope or runs
+ * at build time, so the API CDN would be a second cache layered under one that
+ * already exists — and the two expire independently. The failure that causes
+ * is specific: a publish fires the webhook, `revalidateTag` marks the entry
+ * stale, the page regenerates, and the regenerating fetch reads a pre-publish
+ * response from `apicdn`. That stale value is then cached for a further hour,
+ * so the webhook appears to have worked while the site keeps serving old
+ * content.
+ *
+ * Sanity's own guidance says the same thing: use the uncached API "when
+ * building integrations with Sanity or responding to webhooks" — which is
+ * exactly what a revalidation-triggered render is.
+ * https://www.sanity.io/docs/content-lake/api-cdn
+ */
 export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2025-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false,
   perspective: 'published',
   ...(token && { token }),
 })
