@@ -96,6 +96,7 @@ export async function POST(request: Request) {
   // undeliverable and stops retrying, and the response body surfaces in the
   // webhook attempts log.
   const eventDataset = request.headers.get(DATASET_HEADER)
+  const operation = request.headers.get(OPERATION_HEADER)
 
   if (eventDataset !== process.env.SANITY_DATASET) {
     return Response.json(
@@ -146,10 +147,7 @@ export async function POST(request: Request) {
   //
   // Deliberately not `=== 'create' || === 'delete'`: an unreadable or
   // unexpected operation should over-invalidate, not freeze a total.
-  if (
-    payload._type &&
-    request.headers.get(OPERATION_HEADER) !== NON_SET_CHANGING_OPERATION
-  ) {
+  if (payload._type && operation !== NON_SET_CHANGING_OPERATION) {
     tags.add(countTag(payload._type))
   }
 
@@ -169,10 +167,37 @@ export async function POST(request: Request) {
   }
 
   // A payload carrying neither an id nor a type tells us nothing about what to
-  // invalidate. Falling back to the coarse tag over-invalidates, which is the
-  // safe direction — serving stale content is the worse failure.
+  // invalidate.
+  //
+  // This used to fall back to a coarse `sanity:content` tag, described as
+  // deliberately over-invalidating. It did not: no cached entry declares that
+  // tag, so `revalidateTag('sanity:content')` matched nothing and the event was
+  // dropped while the response claimed success. A safety net that catches
+  // nothing is worse than none, because it stops you looking.
+  //
+  // There is no honest recovery here — the only signal about what changed is
+  // the part that went missing. So fail loudly instead: log for the platform's
+  // runtime logs, and answer 4xx so the same message lands in Sanity's webhook
+  // attempts log, where whoever configured the projection will see it. The
+  // `cacheLife` timer remains the backstop.
   if (tags.size === 0) {
-    tags.add('sanity:content')
+    const detail = `operation=${operation ?? 'unknown'} dataset=${eventDataset}`
+
+    console.error(
+      `[revalidate] Unusable webhook payload (${detail}). Nothing was invalidated. ` +
+        'The projection is almost certainly missing before(), which a delete needs: ' +
+        '{"_id": coalesce(_id, before()._id), "_type": coalesce(_type, before()._type), ' +
+        '"slug": coalesce(slug.current, before().slug.current)}'
+    )
+
+    return Response.json(
+      {
+        revalidated: false,
+        error:
+          'Payload carried neither _id nor _type — nothing could be invalidated. Add before() to the webhook projection.',
+      },
+      { status: 422 }
+    )
   }
 
   // 'max' gives stale-while-revalidate: the next visitor is served the cached

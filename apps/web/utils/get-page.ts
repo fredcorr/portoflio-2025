@@ -20,6 +20,14 @@ import type { CmsPages } from '@portfolio/types/pages'
  * (`articles[]->`, `projects[]->`, `navigationItems[]->`) and lists others by
  * type (`*[_type == "article"]`). A webhook for an edited project carries that
  * project's own id, which `sanity:page:${slug}` would never match.
+ *
+ * `sanity:page:${slug}` looks redundant beside the derived id tag — the root
+ * document's `_id` is projected, so an existing page is already addressed
+ * precisely. It is kept for the one case the id tag cannot reach: **a cached
+ * miss.** When the query finds nothing this function caches `null` for an
+ * hour and the route renders a 404, and a null result contains no ids to walk.
+ * Without a slug tag, publishing a page at a URL somebody had already tried
+ * would leave that 404 cached until `cacheLife` expired.
  */
 async function fetchPublishedPage(slug: string) {
   'use cache'

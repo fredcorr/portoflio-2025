@@ -422,7 +422,19 @@ Regeneration stays lazy — per the docs, `revalidateTag` _"marks tagged data as
 | …where the operation is not `update` | also `sanity:count:${_type}`                              |
 | Page-like doc with a slug          | also `sanity:page:${slug}`, `sanity:sitemap`, `sanity:llms` |
 | `settings` document                | also `sanity:settings`                                      |
-| Payload with neither id nor type   | `sanity:content` (fallback — over-invalidates deliberately) |
+| Payload with neither id nor type   | none — logged and answered 422 (see below)                   |
+
+#### The fallback that caught nothing
+
+An earlier revision answered an unusable payload with a coarse `sanity:content` tag, documented as deliberately over-invalidating — the safe direction. It was not doing that. **No cached entry declares `sanity:content`**, so `revalidateTag('sanity:content')` matched nothing: the event was dropped while the response reported `{ revalidated: true }`. A safety net that catches nothing is worse than no net, because it stops you looking for one.
+
+There is no honest recovery at that point — the only signal about what changed is the part that went missing. So the receiver now logs to the platform's runtime logs and answers **422**, which puts the same message in Sanity's webhook attempts log where whoever configured the projection will see it. The `cacheLife` timer stays the backstop. In practice this should never fire once the projection carries `before()`; if it does, it means the projection regressed.
+
+#### `sanity:page:${slug}` is not redundant
+
+It looks redundant beside the derived id tag: `basePageFields` projects the root `_id`, so an existing page is already addressed precisely, and the slug form is the fragile one — rename a page and the webhook fires the *new* slug while the cached entry still carries the old.
+
+It is kept for the one case an id tag cannot reach: **a cached miss.** `PAGE_BY_SLUG_QUERY` returning nothing means `fetchPublishedPage` caches `null` and the route renders a 404 — and a null result has no ids to walk. Without the slug tag, publishing a page at a URL somebody had already tried would serve that cached 404 for up to an hour.
 
 **Implementation:** `utils/collect-cache-tags.ts` does the walk; `app/api/revalidate/route.ts` receives the webhook, signature-verified with `@sanity/webhook`. Two constraints the implementation handles:
 
