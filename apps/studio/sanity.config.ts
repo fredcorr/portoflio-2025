@@ -68,7 +68,12 @@ const createWorkspace = ({
       previewUrl: {
         initial: previewUrl,
         previewMode: {
-          enable: `${process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'}/api/draft`,
+          // Absolute, and built from this workspace's own previewUrl. The
+          // Studio and the site are separate origins, so a relative path would
+          // resolve against the Studio; a URL fixed to one workspace's site
+          // would enable draft mode on the wrong deployment, which reads the
+          // wrong dataset.
+          enable: `${previewUrl}/api/draft`,
         },
       },
     }),
