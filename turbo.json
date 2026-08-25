@@ -22,6 +22,8 @@
         "SANITY_DATASET",
         "SANITY_API_READ_TOKEN",
         "SANITY_REVALIDATE_SECRET",
+        "SANITY_STUDIO_URL",
+        "SANITY_STUDIO_PREVIEW_SECRET",
         "NEXT_PUBLIC_GTM_ID"
       ]
     },
@@ -32,16 +34,23 @@
         "SANITY_STUDIO_PROJECT_ID",
         "SANITY_STUDIO_DATASET",
         "SANITY_STUDIO_PREVIEW_URL",
+        "SANITY_STUDIO_PREVIEW_URL_PROD",
         "SANITY_STUDIO_PREVIEW_SECRET",
         "SANITY_STUDIO_URL",
+        "SANITY_STUDIO_HOST",
         "SANITY_STUDIO_GSC_SERVICE_ACCOUNT_EMAIL",
         "SANITY_STUDIO_GSC_PRIVATE_KEY",
-        "SANITY_STUDIO_GSC_SITE_URL"
+        "SANITY_STUDIO_GSC_SITE_URL",
+        "SANITY_STUDIO_VERCEL_PROJECT_URL",
+        "SANITY_STUDIO_REPO_URL",
+        "SANITY_STUDIO_MANAGE_URL",
+        "SANITY_STUDIO_PLAYBOOK_URL"
       ]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["SANITY_DATASET"]
     },
     "start": {
       "cache": false,
