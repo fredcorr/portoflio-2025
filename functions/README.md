@@ -32,9 +32,13 @@ function resolves them from the root install). Do **not** add a per-function
    ```
 
    Project/dataset are resolved from the `.sanity/` stack config created by
-   `blueprints init` — no env setup needed for deploy. The function is scoped to
-   its own project's datasets automatically; to limit it to one dataset, add
-   `&& sanity::dataset() == "<name>"` to the filter in `sanity.blueprint.ts`.
+   `blueprints init` — no env setup needed for deploy.
+
+   > **Blueprints deploy project-wide, not per dataset.** The filter in
+   > `sanity.blueprint.ts` is therefore scoped with
+   > `sanity::dataset() == "prod"`, so an article that exists in both `develop`
+   > and `prod` only syndicates once. Any new function needs the same guard —
+   > see the root README → _Environments & datasets_.
 
 2. **Set the Dev.to API key as a function environment variable:**
 

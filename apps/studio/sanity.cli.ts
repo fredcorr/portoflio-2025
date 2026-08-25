@@ -1,10 +1,15 @@
 import { resolve } from 'node:path'
 import { defineCliConfig } from 'sanity/cli'
+import { SanityDataset } from '@portfolio/types/base'
 
 export default defineCliConfig({
   api: {
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    dataset: process.env.SANITY_STUDIO_DATASET,
+    // Datasets are declared per workspace in sanity.config.ts; this only sets
+    // the default target for CLI commands (dataset export, migration run,
+    // schema deploy). It defaults to develop so an unset env can never point a
+    // destructive command at prod — pass `--dataset prod` explicitly instead.
+    dataset: process.env.SANITY_STUDIO_DATASET || SanityDataset.Develop,
   },
 
   vite: {

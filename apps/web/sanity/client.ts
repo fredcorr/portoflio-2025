@@ -1,8 +1,11 @@
 import { createClient } from '@sanity/client'
+import { SanityDataset } from '@portfolio/types/base'
 
 const projectId = process.env.SANITY_PROJECT_ID
 const dataset = process.env.SANITY_DATASET
 const token = process.env.SANITY_API_READ_TOKEN
+
+const KNOWN_DATASETS = Object.values(SanityDataset)
 
 if (!projectId) {
   throw new Error('Missing SANITY_PROJECT_ID environment variable')
@@ -10,6 +13,15 @@ if (!projectId) {
 
 if (!dataset) {
   throw new Error('Missing SANITY_DATASET environment variable')
+}
+
+// Fail the build on a typo rather than silently querying a dataset that does
+// not exist — an unknown name returns no documents, which looks like empty CMS
+// content instead of a misconfiguration.
+if (!KNOWN_DATASETS.includes(dataset as SanityDataset)) {
+  throw new Error(
+    `Unknown SANITY_DATASET "${dataset}" — expected one of: ${KNOWN_DATASETS.join(', ')}`
+  )
 }
 
 export const client = createClient({
