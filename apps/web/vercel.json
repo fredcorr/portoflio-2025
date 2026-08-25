@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "npx turbo query affected --base=$VERCEL_GIT_PREVIOUS_SHA --packages web --exit-code",
+  "ignoreCommand": "if [ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && npx turbo query affected --base=\"$VERCEL_GIT_PREVIOUS_SHA\" --packages web --exit-code; then exit 0; else exit 1; fi",
   "headers": [
     {
       "source": "/(.*)",

@@ -12,6 +12,7 @@ import VisualEditingEnabled from '@/components/atoms/VisualEditing/VisualEditing
 import CookieBanner from '@/components/atoms/CookieBanner/CookieBanner'
 import GtmProvider from '@/components/atoms/GtmProvider/GtmProvider'
 import getSettings from '@/utils/get-settings'
+import getCopyrightYear from '@/utils/get-copyright-year'
 import { getSiteUrl } from '@/utils/get-site-url'
 
 export const metadata: Metadata = {
@@ -39,6 +40,7 @@ export default async function RootLayout({
   const { settings, projectCount } = await getSettings()
   const items = settings?.navigationItems ?? []
   const { isEnabled: isDraftMode } = await draftMode()
+  const copyrightYear = await getCopyrightYear()
 
   return (
     <html lang="en" data-scroll-behavior="smooth">
@@ -66,6 +68,7 @@ export default async function RootLayout({
             navigationItems={settings?.navigationItems}
             openForProjects={settings?.openForProjects}
             availabilityText={settings?.availabilityText}
+            year={copyrightYear}
           />
           <ThemeToggle />
           <GtmProvider />

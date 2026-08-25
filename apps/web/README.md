@@ -127,14 +127,23 @@ Required environment variables:
 | Variable                       | Description                                   |
 | ------------------------------ | --------------------------------------------- |
 | `SANITY_PROJECT_ID`            | Your Sanity project ID                        |
-| `SANITY_DATASET`               | Dataset to read from — `develop` or `prod`     |
-| `SANITY_API_READ_TOKEN`        | Sanity read token for preview mode             |
-| `SANITY_STUDIO_PREVIEW_SECRET` | Secret key for draft mode authentication       |
-| `SANITY_STUDIO_URL`            | Studio origin used for stega/visual editing    |
+| `SANITY_DATASET`               | Dataset to read from — `develop` or `prod`    |
+| `SANITY_API_READ_TOKEN`        | Sanity read token for preview mode            |
+| `SANITY_STUDIO_PREVIEW_SECRET` | Secret key for draft mode authentication      |
+| `SANITY_STUDIO_URL`            | Studio origin used for stega/visual editing   |
+| `SANITY_REVALIDATE_SECRET`     | Signing secret for the Sanity publish webhook |
 
 `SANITY_DATASET` is validated against the `SanityDataset` enum in
 `shared/types/base.ts` at module load, so an unknown value fails the build
 instead of silently returning no content.
+
+`SANITY_REVALIDATE_SECRET` signs the webhook that invalidates cached content on
+publish (`/api/revalidate`). Give the Production and Preview environments
+**different** values: each dataset gets its own webhook pointed at its own
+deployment, and the differing secret is what stops a `develop` publish from
+being accepted by production. Without this variable the route returns 500 and
+pages only refresh on the one-hour `cacheLife` timer. See
+`docs/cache-components-migration.md` for the webhook setup.
 
 ## Learn More
 

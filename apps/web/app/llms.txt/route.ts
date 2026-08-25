@@ -4,8 +4,8 @@ import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
 import { PageTypeName } from '@portfolio/types/base'
 import { NextResponse } from 'next/server'
-
-export const revalidate = 604800
+import { chunkCacheTags, collectCacheTags } from '@/utils/collect-cache-tags'
+import { cacheLife, cacheTag } from 'next/cache'
 
 interface LlmsPage {
   _type: string
@@ -19,13 +19,32 @@ interface LlmsData {
   settings?: { email?: string }
 }
 
+// Replaces `export const revalidate = 604800`, which Cache Components rejects.
+// `use cache` cannot be applied to the GET export itself, so the data access
+// moves into this helper.
+// `sanity:llms` stays explicit for the same reason as the sitemap: it lists
+// pages, so a create or delete changes it without touching any id it holds.
+async function fetchLlmsData(): Promise<LlmsData> {
+  'use cache'
+  cacheLife('cmsIndex')
+  cacheTag('sanity:llms')
+
+  const data = await client.fetch<LlmsData>(LLMS_QUERY)
+
+  for (const chunk of chunkCacheTags(collectCacheTags(data))) {
+    cacheTag(...chunk)
+  }
+
+  return data
+}
+
 export async function GET(): Promise<NextResponse> {
   const siteUrl = getSiteUrl()
 
   let data: LlmsData = { pages: [] }
 
   try {
-    data = await client.fetch<LlmsData>(LLMS_QUERY)
+    data = await fetchLlmsData()
   } catch (error) {
     console.error('Failed to generate llms.txt:', error)
   }

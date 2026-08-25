@@ -6,6 +6,23 @@ const nextConfig: NextConfig = {
   // Set the workspace root for the monorepo
   outputFileTracingRoot: path.join(__dirname, '../../'),
 
+  cacheComponents: true,
+
+  // Custom cache profiles that reproduce the route-segment `revalidate` values
+  // this app used before Cache Components.
+  //
+  // `expire` is the load-bearing field. The stock presets ('hours', 'weeks')
+  // cap it at 1 day / 30 days, and past `expire` the next visitor waits on a
+  // synchronous Sanity round-trip instead of being served stale. On a
+  // low-traffic portfolio that would hit a large share of page views, so both
+  // profiles pin it to a year — matching the pre-migration behaviour.
+  cacheLife: {
+    // Was `export const revalidate = 3600` in app/[[...slug]]/page.tsx
+    cmsPage: { stale: 300, revalidate: 3600, expire: 31536000 },
+    // Was `export const revalidate = 604800` in sitemap.ts and llms.txt/route.ts
+    cmsIndex: { stale: 300, revalidate: 604800, expire: 31536000 },
+  },
+
   // ==========================================================================
   // TEMPORARY WORKAROUND — added 2026-08-07, delete when Vercel fixes this.
   //
