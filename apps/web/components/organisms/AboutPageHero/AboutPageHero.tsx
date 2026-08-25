@@ -76,7 +76,7 @@ const AboutPageHero = ({
                     key="meta"
                     as="div"
                     direction={SlideDirection.Left}
-                    className="mt-8 flex flex-wrap items-center gap-3 text-sm text-background/60 md:mt-12 md:gap-4 md:text-base"
+                    className="mt-8 flex flex-wrap items-center gap-3 text-sm text-background/70 md:mt-12 md:gap-4 md:text-base"
                   >
                     {location && (
                       <div className="flex items-center gap-2">

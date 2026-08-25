@@ -98,7 +98,7 @@ export const HomePageHero = async ({
                   {(contactLabel || contactEmail) && (
                     <div className="border-t border-foreground/10 pt-8">
                       {contactLabel && (
-                        <p className="font-heading text-sm uppercase tracking-wider text-foreground/60">
+                        <p className="font-heading text-sm uppercase tracking-wider text-foreground/70">
                           {contactLabel}
                         </p>
                       )}

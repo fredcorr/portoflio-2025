@@ -50,7 +50,10 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
       {/* Body + share rail */}
       <div
         className={
-          'md:col-span-12 grid gap-8 md:grid-cols-[56px_1fr] xl:grid-cols-[80px_1fr]'
+          // minmax(0,1fr), not a bare 1fr: a bare 1fr means minmax(auto,1fr),
+          // whose minimum is the content's min-content width. Tailwind's own
+          // grid-cols-* utilities use minmax(0,1fr) for exactly this reason.
+          'md:col-span-12 min-w-0 grid gap-8 md:grid-cols-[56px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)]'
         }
         // style={{ counterReset: 'chapter' }}
       >
@@ -61,9 +64,11 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
             showReaderCount={showReaderCount}
           />
         )}
-        {/* Body */}
+        {/* Body — w-full is load-bearing: mx-auto makes this grid item
+            shrink-to-fit, so without it the item sizes to its widest child's
+            max-content (a code block's longest line) and overflows the track. */}
         {hasContent && (
-          <div className={'min-w-0 max-w-[100ch] mx-auto'}>
+          <div className={'w-full min-w-0 max-w-[100ch] mx-auto'}>
             <RichText
               value={content ?? []}
               size={RichTextSize.Lg}
@@ -84,7 +89,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
                       style={{ counterIncrement: 'chapter' }}
                     >
                       <div
-                        className="mb-3 flex items-center gap-3.5 font-heading text-[11px] uppercase tracking-[0.18em] text-black/55 dark:text-foreground/55"
+                        className="mb-3 flex items-center gap-3.5 font-heading text-label uppercase tracking-[0.18em] text-black/70 dark:text-foreground/70"
                         aria-hidden="true"
                         style={
                           {
@@ -126,7 +131,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
             {/* End mark */}
             <div
               aria-hidden="true"
-              className="my-14 text-center font-heading text-[11px] uppercase tracking-[0.18em] text-black/55 dark:text-foreground/55"
+              className="my-14 text-center font-heading text-label uppercase tracking-[0.18em] text-black/70 dark:text-foreground/70"
             >
               <span className="mb-3 block text-sm leading-none">■</span>
               End

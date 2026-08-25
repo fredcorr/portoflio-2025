@@ -95,10 +95,10 @@ const NavItem = ({
             <span
               data-development="Displays the total published project pages."
               className={cn(
-                'inline-flex size-4 items-center justify-center text-[10px] font-semibold',
+                'inline-flex size-5 items-center justify-center text-label font-semibold',
                 blendMode
                   ? 'border border-current text-current bg-transparent'
-                  : 'bg-black text-white'
+                  : 'bg-black text-background'
               )}
             >
               {projectCount}

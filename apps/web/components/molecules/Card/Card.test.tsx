@@ -171,8 +171,8 @@ test('indexAboveImage suppresses the in-content icon row', () => {
     <Card title="Below" image={image} index={0} />
   )
 
-  // Without indexAboveImage, index renders inside the content area (text-black/50)
-  assert.match(withoutAbove, /text-black\/50/)
+  // Without indexAboveImage, index renders inside the content area (text-foreground/70)
+  assert.match(withoutAbove, /text-foreground\/70/)
   // With indexAboveImage, no in-content index span
-  assert.doesNotMatch(withAbove, /text-black\/50/)
+  assert.doesNotMatch(withAbove, /text-foreground\/70/)
 })

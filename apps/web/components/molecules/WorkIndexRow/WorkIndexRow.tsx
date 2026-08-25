@@ -53,7 +53,7 @@ const WorkIndexRow = ({
     <>
       <div className="flex flex-col md:w-[31%] md:pr-8">
         {formattedTag && (
-          <span className="inline-flex self-start border border-black/25 px-2 py-0.5 font-heading text-[10px] uppercase tracking-[0.12em]">
+          <span className="inline-flex self-start border border-black/25 px-2 py-0.5 font-heading text-label uppercase tracking-[0.12em]">
             {formattedTag}
           </span>
         )}
@@ -61,7 +61,7 @@ const WorkIndexRow = ({
           {title}
         </p>
         {description && (
-          <p className="mt-2 line-clamp-3 text-body-lg text-black/50">
+          <p className="mt-2 line-clamp-3 text-body-lg text-black/70">
             {description}
           </p>
         )}
@@ -79,6 +79,7 @@ const WorkIndexRow = ({
             alt={image.alt || ''}
             width={image.asset.metadata?.dimensions?.width || 1200}
             height={image.asset.metadata?.dimensions?.height || 900}
+            blurDataURL={image.asset.metadata?.lqip}
             wrapperClassName={cn(
               'aspect-[1000/665] w-full rounded-none overflow-hidden',
               'shadow-[16px_16px_36px_4px_rgba(128,128,128,0.54)]'

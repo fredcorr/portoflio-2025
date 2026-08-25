@@ -29,8 +29,8 @@ export const Modal = ({
 
   const accentClass =
     variant === 'success'
-      ? 'bg-status-success text-black'
-      : 'bg-status-error text-white'
+      ? 'bg-status-success text-black dark:text-background'
+      : 'bg-status-error text-white dark:text-background'
 
   return (
     <RemoveScroll>

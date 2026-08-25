@@ -9,36 +9,16 @@ import type { Metadata } from 'next'
 import getPage from '@/utils/get-page'
 import { getSiteUrl } from '@/utils/get-site-url'
 import { buildPageUrl } from '@/utils/slug'
-import { getPageHeroImage } from '@/utils/get-page-hero-image'
+import { getOpenGraphImage } from '@/utils/get-open-graph-image'
 import { getBreadcrumbSchema } from '@/utils/get-breadcrumb-schema'
 import { getPageSchemas } from '@/utils/get-page-schemas'
 import getSettings from '@/utils/get-settings'
 import JsonLdSchema from '@/components/atoms/JsonLdSchema/JsonLdSchema'
 
-export const revalidate = 3600
-
 interface PageProps {
   params: Promise<{
     slug?: string[]
   }>
-}
-
-const getOpenGraphImage = (page: CmsPages) => {
-  const image = page.seoImage ?? getPageHeroImage(page)
-  const imageUrl = image?.asset?.url
-
-  if (!imageUrl) {
-    return undefined
-  }
-
-  return [
-    {
-      url: imageUrl,
-      width: image.asset?.metadata?.dimensions?.width,
-      height: image.asset?.metadata?.dimensions?.height,
-      alt: image.alt ?? page.seoTitle ?? page.title ?? 'Portfolio',
-    },
-  ]
 }
 
 export default async function Page({ params }: PageProps) {
@@ -54,10 +34,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   const siteUrl = getSiteUrl()
-  const breadcrumbSchema = getBreadcrumbSchema(
-    siteUrl,
-    page.slug?.current || slug
-  )
+  const breadcrumbSchema = getBreadcrumbSchema(siteUrl, page, slug)
 
   const { settings } = await getSettings()
   const pageSchemas = getPageSchemas(siteUrl, page, settings)
@@ -76,19 +53,18 @@ export default async function Page({ params }: PageProps) {
   )
 }
 
+// Deliberately unguarded. Cache Components requires at least one param, so the
+// old `catch → return []` is no longer legal. Letting the error propagate is
+// also the better behaviour: swallowing it produced a green build that deployed
+// a site with zero prerendered pages, which is worse than a loud failure.
 export async function generateStaticParams() {
-  try {
-    const pages = await client.fetch(ALL_PAGES_QUERY)
+  const pages = await client.fetch(ALL_PAGES_QUERY)
 
-    return pages.map((page: CmsPages) => {
-      return {
-        slug: page.slug?.current === '/' ? [] : page.slug?.current.split('/'),
-      }
-    })
-  } catch (error) {
-    console.warn('Failed to fetch pages for static generation:', error)
-    return []
-  }
+  return pages.map((page: CmsPages) => {
+    return {
+      slug: page.slug?.current === '/' ? [] : page.slug?.current.split('/'),
+    }
+  })
 }
 
 export async function generateMetadata({

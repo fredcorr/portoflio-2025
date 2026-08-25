@@ -26,12 +26,14 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
     [author?.firstName?.[0], author?.secondName?.[0]]
       .filter(Boolean)
       .join('') || '?'
-  const year = dateLabel
-    ? new Date(dateLabel).getFullYear()
-    : new Date().getFullYear()
+  // Derived only from CMS data. Falling back to `new Date()` would read the
+  // current time during prerender, which Cache Components rejects — and it
+  // would bake the build year into an article that has no date, which is a
+  // guess rather than a fact.
+  const year = dateLabel ? new Date(dateLabel).getFullYear() : undefined
   const editionLabel =
     editionNumber != null
-      ? `N° ${padEdition(editionNumber)} / ${year}`
+      ? [`N° ${padEdition(editionNumber)}`, year].filter(Boolean).join(' / ')
       : undefined
   const topicsLabel = tags?.join(', ')
 
@@ -54,7 +56,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
         as="div"
         className="col-span-2 flex flex-col gap-1.5 md:col-span-4"
       >
-        <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
+        <dt className="font-heading text-label uppercase tracking-[0.14em] text-black/70 dark:text-foreground/70">
           Written by
         </dt>
         <dd className="flex items-center gap-2.5 font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
@@ -71,7 +73,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       {/* Published */}
       {dateLabel && (
         <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
-          <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
+          <dt className="font-heading text-label uppercase tracking-[0.14em] text-black/70 dark:text-foreground/70">
             Published
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
@@ -83,7 +85,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       {/* Reading time */}
       {readTimeLabel && (
         <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
-          <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
+          <dt className="font-heading text-label uppercase tracking-[0.14em] text-black/70 dark:text-foreground/70">
             Reading time
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
@@ -95,7 +97,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       {/* Topics */}
       {topicsLabel && (
         <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
-          <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
+          <dt className="font-heading text-label uppercase tracking-[0.14em] text-black/70 dark:text-foreground/70">
             Topics
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">
@@ -107,7 +109,7 @@ const ArticleMeta: React.FC<ArticleMetaProps> = ({
       {/* Edition */}
       {editionLabel && (
         <FadeIn as="div" className="flex flex-col gap-1.5 md:col-span-2">
-          <dt className="font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55">
+          <dt className="font-heading text-label uppercase tracking-[0.14em] text-black/70 dark:text-foreground/70">
             Edition
           </dt>
           <dd className="font-heading text-[15px] tracking-[-0.01em] text-black dark:text-foreground">

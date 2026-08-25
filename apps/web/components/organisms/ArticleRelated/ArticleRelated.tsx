@@ -56,6 +56,7 @@ function PostCard({
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            blurDataURL={article.heroImage?.asset?.metadata?.lqip}
             className="object-cover"
             wrapperClassName="absolute inset-0"
           />
@@ -75,7 +76,7 @@ function PostCard({
 
       {/* Copy */}
       <div className="flex flex-col gap-2 px-1.5">
-        <span className="font-heading text-[11px] tracking-[0.12em] text-black/55 dark:text-foreground/55">
+        <span className="font-heading text-label tracking-[0.12em] text-black/70 dark:text-foreground/70">
           {editionLabel}
         </span>
         {article.title && (
@@ -86,7 +87,7 @@ function PostCard({
             {article.title}
           </h3>
         )}
-        <span className="flex items-center gap-3 font-heading text-[11px] uppercase tracking-[0.12em] text-black/55 dark:text-foreground/55">
+        <span className="flex items-center gap-3 font-heading text-label uppercase tracking-[0.12em] text-black/70 dark:text-foreground/70">
           {firstTag && <span>{firstTag}</span>}
           {firstTag && dateStr && <span>·</span>}
           {dateStr && <span>{dateStr}</span>}

@@ -6,10 +6,18 @@ import slugToBreadcrumbs from '@/utils/slug'
 
 export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLElement> {
   slug?: string | null
+  /** Overrides the final crumb's label, so it can read the document title
+   * rather than the title-cased slug segment. */
+  currentLabel?: string | null
 }
 
-const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
-  const derivedItems = slugToBreadcrumbs(slug)
+const Breadcrumbs = ({
+  slug,
+  currentLabel,
+  className,
+  ...props
+}: BreadcrumbsProps) => {
+  const derivedItems = slugToBreadcrumbs(slug, currentLabel)
   const visibleItems = derivedItems.filter(item => item.label.trim().length > 0)
 
   if (visibleItems.length === 0) {
@@ -33,7 +41,7 @@ const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
                 <Link
                   href={item.href}
                   className={cn(
-                    'text-black/60 transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:text-foreground/70 dark:hover:text-foreground dark:focus-visible:outline-white'
+                    'text-black/70 transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black dark:text-foreground/70 dark:hover:text-foreground dark:focus-visible:outline-white'
                   )}
                 >
                   {item.label}
@@ -43,7 +51,7 @@ const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
                 <span
                   className={cn(
                     'text-black dark:text-foreground',
-                    !isCurrent && 'text-black/60 dark:text-foreground/70'
+                    !isCurrent && 'text-black/70 dark:text-foreground/70'
                   )}
                   {...(isCurrent && { 'aria-current': 'page' })}
                 >
@@ -53,7 +61,7 @@ const Breadcrumbs = ({ slug, className, ...props }: BreadcrumbsProps) => {
               {!isLast && (
                 <span
                   aria-hidden="true"
-                  className="mx-2 text-black/50 dark:text-foreground/50"
+                  className="mx-2 text-black/70 dark:text-foreground/70"
                 >
                   →
                 </span>

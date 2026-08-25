@@ -47,7 +47,7 @@ const Shares: React.FC<ShareProps> = ({
       className="md:sticky md:top-24 md:self-start md:pt-1.5"
     >
       <div className="flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-3">
-        <span className="hidden font-heading text-[10px] uppercase tracking-[0.14em] text-black/55 dark:text-foreground/55 md:mb-1.5 md:block">
+        <span className="hidden font-heading text-label uppercase tracking-[0.14em] text-black/70 dark:text-foreground/70 md:mb-1.5 md:block">
           Share
         </span>
 
@@ -95,7 +95,7 @@ const Shares: React.FC<ShareProps> = ({
             />
             <span
               aria-hidden="true"
-              className="hidden font-heading text-[11px] tracking-[0.04em] text-black/55 dark:text-foreground/55 md:block"
+              className="hidden font-heading text-label tracking-[0.04em] text-black/70 dark:text-foreground/70 md:block"
             >
               <strong className="block font-heading text-[22px] font-normal leading-none tracking-[-0.02em] text-black dark:text-foreground">
                 248
